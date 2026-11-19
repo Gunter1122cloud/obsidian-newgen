@@ -2,22 +2,28 @@ import type { ReactElement } from "react";
 import { ActionIcon, Group, Tooltip } from "@mantine/core";
 import { ArrowSquareOut, MagnifyingGlass, Plus, Trash } from "@phosphor-icons/react";
 import { confirmRemoveServerMod } from "./confirmRemoveServerMod";
+import { ServerModsLocalFileActions } from "./ServerModsLocalFileActions";
 import type { ModRow } from "./serverModsModel";
 
 interface Props {
   row: ModRow;
   mode: "server" | "discover";
   busy: boolean;
+  /** Disables Clear downloaded files while the server is active (#702). */
+  serverActive?: boolean;
+  /** Enables Open local folder / Clear when ASA folders exist (#702). */
+  hasLocalFiles?: boolean;
   onInspect: (row: ModRow) => void;
   onAdd: (row: ModRow) => void;
   onRemove: (id: string) => void;
   onOpenExternal: (url: string) => void;
+  onOpenLocalFolder?: (row: ModRow) => void;
+  onClearDownloadedFiles?: (row: ModRow) => void;
 }
 
 /**
- * Icon-only row actions for Mods (details, CurseForge, add/remove).
- * Passive load is its own column; the context menu still offers it via
- * `buildServerModsRowActions` on the table.
+ * Icon-only row actions for Mods (details, CurseForge, local folder, clear files, add/remove).
+ * Passive load is its own column; context menu mirrors these (#702).
  */
 export function ServerModsActionsCell(props: Props): ReactElement {
   const { row } = props;
@@ -50,6 +56,16 @@ export function ServerModsActionsCell(props: Props): ReactElement {
           <ArrowSquareOut size={16} />
         </ActionIcon>
       </Tooltip>
+      {props.mode === "server" ? (
+        <ServerModsLocalFileActions
+          row={row}
+          busy={props.busy}
+          serverActive={props.serverActive === true}
+          hasLocalFiles={props.hasLocalFiles === true}
+          onOpenLocalFolder={props.onOpenLocalFolder}
+          onClearDownloadedFiles={props.onClearDownloadedFiles}
+        />
+      ) : null}
       {props.mode === "discover" ? (
         <Tooltip label={row.configured ? "Already added" : `Add ${row.name}`} withArrow>
           <ActionIcon

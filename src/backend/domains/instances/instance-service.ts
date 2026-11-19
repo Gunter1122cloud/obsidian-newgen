@@ -30,6 +30,12 @@ import type { ListedPlayer } from "../backups/list-players";
 import type { BanListEntry } from "./ban-list";
 import { assertSafeInstallDirForWipe, installDirKey } from "./install-dir-safety";
 import { assertNotInsideAsaInstall } from "./import-existing-install";
+import type { DeleteLocalModFoldersResult } from "../mods/asa-mod-local-files";
+import {
+  listServerLocalModFolders,
+  listServerLocalModPresence,
+  redownloadLocalModFiles as redownloadLocalModFilesForHost,
+} from "./instance-mod-local-files";
 import { ProfileWriteQueue } from "./profile-write-queue";
 import { invalidateInstallInspectCache, inspectServerInstallationAsync } from "./server-installation";
 import { applyProfileOwnedIni } from "./sync-profile-ini";
@@ -634,6 +640,34 @@ export class InstanceService extends EventEmitter {
       throw new Error(`Server folder does not exist: ${profile.installDir}`);
     }
     return profile.installDir;
+  }
+
+  /**
+   * Delete local `{projectId}_{fileId}` folders so the next Start redownloads (#702).
+   * Holds start locks for every profile on this install, then re-checks idle under that lock.
+   */
+  async redownloadLocalModFiles(serverId: string, projectId: string): Promise<DeleteLocalModFoldersResult> {
+    return redownloadLocalModFilesForHost(this.modLocalFilesHost(), serverId, projectId);
+  }
+
+  /** Absolute paths of local folders for one Project ID (may be empty) (#702). */
+  async listLocalModFolders(serverId: string, projectId: string): Promise<string[]> {
+    return listServerLocalModFolders(this.modLocalFilesHost(), serverId, projectId);
+  }
+
+  /** Which Project IDs have local ASA folders under this install (#702). */
+  async listLocalModPresence(serverId: string, projectIds: readonly string[]): Promise<Record<string, boolean>> {
+    return listServerLocalModPresence(this.modLocalFilesHost(), serverId, projectIds);
+  }
+
+  private modLocalFilesHost() {
+    return {
+      mustGet: (id: string) => this.mustGet(id),
+      installDirFor: (id: string) => this.installDirFor(id),
+      repo: this.repo,
+      processes: this.processes,
+      locks: this.locks,
+    };
   }
 
   async installationInfo(
