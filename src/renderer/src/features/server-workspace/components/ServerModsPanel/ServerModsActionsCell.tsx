@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import { ActionIcon, Group, Menu, Tooltip } from "@mantine/core";
-import { DotsThreeVertical, MagnifyingGlass, Plus, Trash } from "@phosphor-icons/react";
+import { ArrowSquareOut, DotsThreeVertical, MagnifyingGlass, Plus, Trash } from "@phosphor-icons/react";
 import { RowActionMenuItems } from "@ui/RowActionMenu/RowActionMenuItems";
 import { confirmRemoveServerMod } from "./confirmRemoveServerMod";
 import { buildServerModsRowActions } from "./serverModsRowActions";
@@ -26,14 +26,84 @@ interface Props {
 }
 
 /**
- * Primary icons (details / add / remove) as shortcuts. Kebab and right-click
- * share the same full `buildServerModsRowActions` list (#638).
+ * Primary icons as shortcuts. Discover: Add + View + Open CurseForge (no kebab).
+ * Server: View + kebab + Remove; kebab/right-click share the full list (#638).
  */
 export function ServerModsActionsCell(props: Props): ReactElement {
+  if (props.mode === "discover") {
+    return (
+      <DiscoverModsActions
+        row={props.row}
+        busy={props.busy}
+        onAdd={props.onAdd}
+        onInspect={props.onInspect}
+        onOpenExternal={props.onOpenExternal}
+      />
+    );
+  }
+  return <ServerInventoryModsActions {...props} />;
+}
+
+function DiscoverModsActions(props: {
+  row: ModRow;
+  busy: boolean;
+  onAdd: (row: ModRow) => void;
+  onInspect: (row: ModRow) => void;
+  onOpenExternal: (url: string) => void;
+}): ReactElement {
+  const { row } = props;
+  const curseForgeDisabled = props.busy || row.url === null;
+
+  return (
+    <Group gap={4} justify="flex-end" wrap="nowrap">
+      <Tooltip label={row.configured ? "Already added" : `Add ${row.name}`} withArrow>
+        <ActionIcon
+          variant={row.configured ? "transparent" : "subtle"}
+          size="sm"
+          color="ok"
+          aria-label={row.configured ? `Already added ${row.name}` : `Add ${row.name}`}
+          loading={props.busy}
+          disabled={row.configured || props.busy}
+          styles={row.configured ? { root: { backgroundColor: "transparent" } } : undefined}
+          onClick={() => props.onAdd(row)}
+        >
+          <Plus size={16} />
+        </ActionIcon>
+      </Tooltip>
+      <Tooltip label="View details" withArrow>
+        <ActionIcon
+          variant="subtle"
+          size="sm"
+          aria-label={`View details ${row.name}`}
+          disabled={props.busy}
+          onClick={() => props.onInspect(row)}
+        >
+          <MagnifyingGlass size={16} />
+        </ActionIcon>
+      </Tooltip>
+      <Tooltip label="Open CurseForge" withArrow>
+        <ActionIcon
+          variant="subtle"
+          size="sm"
+          aria-label={`Open CurseForge ${row.name}`}
+          disabled={curseForgeDisabled}
+          onClick={() => {
+            if (row.url === null) return;
+            props.onOpenExternal(row.url);
+          }}
+        >
+          <ArrowSquareOut size={16} />
+        </ActionIcon>
+      </Tooltip>
+    </Group>
+  );
+}
+
+function ServerInventoryModsActions(props: Props): ReactElement {
   const { row } = props;
   const menuEntries = buildServerModsRowActions({
     row,
-    mode: props.mode,
+    mode: "server",
     busy: props.busy,
     serverActive: props.serverActive,
     hasLocalFiles: props.hasLocalFiles,
@@ -77,22 +147,7 @@ export function ServerModsActionsCell(props: Props): ReactElement {
           <RowActionMenuItems entries={menuEntries} />
         </Menu.Dropdown>
       </Menu>
-      {props.mode === "discover" ? (
-        <Tooltip label={row.configured ? "Already added" : `Add ${row.name}`} withArrow>
-          <ActionIcon
-            variant={row.configured ? "transparent" : "subtle"}
-            size="sm"
-            color="ok"
-            aria-label={row.configured ? `Already added ${row.name}` : `Add ${row.name}`}
-            loading={props.busy}
-            disabled={row.configured || props.busy}
-            styles={row.configured ? { root: { backgroundColor: "transparent" } } : undefined}
-            onClick={() => props.onAdd(row)}
-          >
-            <Plus size={16} />
-          </ActionIcon>
-        </Tooltip>
-      ) : row.id !== null ? (
+      {row.id !== null ? (
         <Tooltip label={`Remove ${row.name}`} withArrow>
           <ActionIcon
             color="red"
