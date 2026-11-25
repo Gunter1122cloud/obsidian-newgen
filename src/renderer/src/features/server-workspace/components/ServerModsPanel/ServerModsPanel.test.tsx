@@ -168,7 +168,7 @@ describe("ServerModsPanel", () => {
       </AppProviders>,
     );
 
-    expect(screen.getByText("1 disabled")).toBeInTheDocument();
+    expect(screen.getByText("0 active · 1 disabled")).toBeInTheDocument();
     expect(document.querySelector('[data-mod-enabled="false"]')).not.toBeNull();
 
     await user.click(screen.getByRole("switch", { name: "Enable Svartalfheim Premium" }));
@@ -778,6 +778,79 @@ describe("ServerModsPanel", () => {
     expect(await screen.findByText("Loading…")).toBeInTheDocument();
   });
 
+  it("writes one patch per selected enable/disable/remove (#635)", async () => {
+    const api = installApi();
+    const user = userEvent.setup();
+    render(
+      <AppProviders>
+        <ServerModsPanel
+          server={{
+            ...server,
+            mods: ["947033", "962796"],
+            disabledMods: ["947033", "962796"],
+            modMetadataCache: { "947033": awesomeDetail, "962796": mapModDetail },
+          }}
+          onServerUpdated={vi.fn()}
+        />
+      </AppProviders>,
+    );
+
+    expect(await screen.findByText("0 active · 2 disabled")).toBeInTheDocument();
+    await user.click(screen.getByRole("checkbox", { name: "Select mod Awesome Spyglass!" }));
+    expect(await screen.findByText("1 selected")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Enable all" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Disable all" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Remove all disabled" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Copy selected Project IDs" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "IDs" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Enable" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Remove" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Clear selection" })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Enable" }));
+    await waitFor(() => {
+      expect(api.updateServerPatch).toHaveBeenCalledTimes(1);
+      expect(api.updateServerPatch).toHaveBeenLastCalledWith(
+        "server-1",
+        expect.objectContaining({
+          group: "mods",
+          mods: ["947033", "962796"],
+          disabledMods: ["962796"],
+        }),
+      );
+    });
+
+    await user.click(screen.getByRole("button", { name: "Disable" }));
+    await waitFor(() => {
+      expect(api.updateServerPatch).toHaveBeenCalledTimes(2);
+      expect(api.updateServerPatch).toHaveBeenLastCalledWith(
+        "server-1",
+        expect.objectContaining({
+          group: "mods",
+          mods: ["947033", "962796"],
+          disabledMods: ["962796", "947033"],
+        }),
+      );
+    });
+
+    await user.click(screen.getByRole("button", { name: "Remove" }));
+    const dialog = await screen.findByRole("dialog");
+    await user.click(within(dialog).getByRole("button", { name: "Remove selected" }));
+    await waitFor(() => {
+      expect(api.updateServerPatch).toHaveBeenCalledTimes(3);
+      expect(api.updateServerPatch).toHaveBeenLastCalledWith(
+        "server-1",
+        expect.objectContaining({
+          group: "mods",
+          mods: ["962796"],
+          disabledMods: ["962796"],
+        }),
+      );
+    });
+    expect(screen.queryByText("1 selected")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Enable all" })).toBeInTheDocument();
+  });
+
   it("writes one patch per bulk enable/disable/remove-all (#637)", async () => {
     const api = installApi();
     const user = userEvent.setup();
@@ -787,7 +860,7 @@ describe("ServerModsPanel", () => {
       </AppProviders>,
     );
 
-    expect(await screen.findByText("1 disabled")).toBeInTheDocument();
+    expect(await screen.findByText("0 active · 1 disabled")).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Enable all" }));
     await waitFor(() => {
@@ -852,14 +925,13 @@ describe("ServerModsPanel", () => {
 
     expect(await screen.findByText("Awesome Spyglass!")).toBeInTheDocument();
     expect(screen.getByText("Svartalfheim Premium")).toBeInTheDocument();
-    expect(screen.getByText("1 active")).toBeInTheDocument();
-    expect(screen.getByText("1 disabled")).toBeInTheDocument();
+    expect(screen.getByText("1 active · 1 disabled")).toBeInTheDocument();
 
     await user.type(screen.getByRole("textbox", { name: /Find on this server/i }), "svart");
     expect(screen.queryByText("Awesome Spyglass!")).not.toBeInTheDocument();
     expect(screen.getByText("Svartalfheim Premium")).toBeInTheDocument();
     expect(screen.getByText("1 of 2")).toBeInTheDocument();
-    expect(screen.getByText("1 active")).toBeInTheDocument();
+    expect(screen.getByText("1 active · 1 disabled")).toBeInTheDocument();
     // Toolbar Clear only — no extra “Clear filter to reorder” bar above the table.
     expect(screen.getByRole("button", { name: "Clear" })).toBeInTheDocument();
     expect(screen.queryByText(/Clear filter to reorder/i)).not.toBeInTheDocument();
@@ -891,6 +963,40 @@ describe("ServerModsPanel", () => {
     expect(await screen.findByRole("menuitem", { name: /Copy all/i })).toBeInTheDocument();
     expect(screen.getByRole("menuitem", { name: /Copy enabled/i })).toBeInTheDocument();
     expect(screen.getByRole("menuitem", { name: /Copy disabled/i })).toBeInTheDocument();
+    expect(screen.getByRole("menuitem", { name: /Copy selected/i })).toBeDisabled();
     expect(screen.queryByRole("menuitem", { name: /Import IDs/i })).not.toBeInTheDocument();
+  });
+
+  it("copies selected Project IDs in load order from the IDs menu (#635)", async () => {
+    installApi();
+    const user = userEvent.setup();
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: { writeText },
+    });
+    render(
+      <AppProviders>
+        <ServerModsPanel
+          server={{
+            ...server,
+            mods: ["947033", "962796"],
+            disabledMods: ["962796"],
+            modMetadataCache: { "947033": awesomeDetail, "962796": mapModDetail },
+          }}
+          onServerUpdated={vi.fn()}
+        />
+      </AppProviders>,
+    );
+
+    await user.click(screen.getByRole("checkbox", { name: "Select mod Svartalfheim Premium" }));
+    await user.click(screen.getByRole("checkbox", { name: "Select mod Awesome Spyglass!" }));
+    await user.click(await screen.findByRole("button", { name: "IDs" }));
+    const copySelected = await screen.findByRole("menuitem", { name: /Copy selected/i });
+    expect(copySelected).toBeEnabled();
+    await user.click(copySelected);
+    await waitFor(() => {
+      expect(writeText).toHaveBeenCalledWith("947033,962796");
+    });
   });
 });
