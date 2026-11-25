@@ -103,19 +103,25 @@ Workspace → **Mods** has two views (`SegmentedControl`):
 6. **Remove** drops the ID from `mods` / `disabledMods` / `passiveMods` and clears
    its cache entry (confirm dialog). Row context also offers **Copy Project ID**
    and **Copy CurseForge URL** (#634).
-7. **Open local folder** (row icon, context menu, and detail drawer) opens every
-   matching `{projectId}_{fileId}` directory under both ASA `Mods/83374` trees in
-   File Explorer (`mods:open-local-folder`). Disabled until
+7. **Open local folder** (row **More actions** kebab, context menu, and detail
+   drawer) opens every matching `{projectId}_{fileId}` directory under both ASA
+   `Mods/83374` trees in File Explorer (`mods:open-local-folder`). Disabled until
    `mods:list-local-presence` finds folders for that Project ID. YARK never
    downloads mod bytes (#702).
-8. **Clear downloaded files** (row broom icon, context menu, and detail drawer)
-   deletes those local folders after confirm so the next Start lets ASA fetch
-   them again (`mods:redownload-local-files`). It does **not** download now —
-   only clears disk. Disabled when no local folders exist, or while this server
-   or another profile on the same install is active/ops-locked. Presence
-   refreshes after Stop and after Clear. The Project ID stays on the list (#702).
+8. **Clear downloaded files** (kebab, context menu, and detail drawer) deletes
+   those local folders after confirm so the next Start lets ASA fetch them again
+   (`mods:redownload-local-files`). It does **not** download now — only clears
+   disk. Disabled when no local folders exist, or while this server or another
+   profile on the same install is active/ops-locked. Presence refreshes after
+   Stop and after Clear. The Project ID stays on the list (#702).
 9. Column sort is **view-only** — clear sort before drag-reorder (drag disabled
    while sorted, filtered, or while any row mutation / reorder persist is busy).
+   Without drag: row **More actions** kebab and context menu offer **Move to top /
+   up / down / bottom**, **Alt+↑/↓** on a focused row moves load order, and
+   **Apply sort as load order** writes the current column order into `mods` in
+   one patch then returns to load-order view (disabled while a filter is active).
+   The actions column keeps View details and Remove (or Add on Discover) as
+   shortcuts; kebab and right-click share the same full action list (#638).
 10. Detail drawer / Open on CurseForge uses cached metadata or
     `mods:get-by-reference`; external open is fail-closed to a validated ASA
     CurseForge mod URL (`mods:open-curseforge`). Configured mods can also be
