@@ -111,14 +111,14 @@ export function SettingsAppearanceSection(props: Props): ReactElement {
           </div>
         </div>
 
-        {props.family === "glassy" ? (
+        {(
           <div className={classes.settingRow}>
             <div className={classes.settingCopy}>
               <Text size="sm" fw={600}>
                 Background image
               </Text>
               <Text size="xs" c="dimmed" mt={2}>
-                Day or night scene behind Glassy. Off leaves a flat canvas. The glass panels stay.
+                Show the cinematic scene behind the dark interface. Off leaves a flat canvas.
               </Text>
             </div>
             <div className={classes.settingControl}>
@@ -129,7 +129,7 @@ export function SettingsAppearanceSection(props: Props): ReactElement {
               />
             </div>
           </div>
-        ) : null}
+        )}
 
         <div className={classes.settingRow}>
           <div className={classes.settingCopy}>
