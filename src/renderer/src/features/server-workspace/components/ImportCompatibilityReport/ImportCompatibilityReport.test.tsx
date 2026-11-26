@@ -82,12 +82,12 @@ ConfigOverrideItemMaxQuantity=(hello world)
     );
     const alert = await screen.findByRole("alert", { name: "Choose which values to keep" });
     expect(alert).toHaveTextContent(
-      "GameUserSettings.ini has values that differ from this server's settings in YARK. Choose which values to keep:",
+      "GameUserSettings.ini has values that differ from this server's saved profile. Choose which values to keep:",
     );
     expect(alert).toHaveTextContent("Game port in GameUserSettings.ini: 7778.");
-    expect(alert).toHaveTextContent("Game port in YARK: 7777.");
-    expect(alert).toHaveTextContent("Admin password differs between GameUserSettings.ini and YARK. Values are hidden.");
-    expect(alert).toHaveTextContent("One line in the file stays word for word. YARK doesn't read it.");
+    expect(alert).toHaveTextContent("Game port in NewGen profile: 7777.");
+    expect(alert).toHaveTextContent("Admin password differs between GameUserSettings.ini and NewGen profile. Values are hidden.");
+    expect(alert).toHaveTextContent("One line in the file stays word for word. NewGen does not interpret it.");
     expect(alert).not.toHaveTextContent("secret-admin");
     expect(alert).not.toHaveTextContent("secret-join");
     expect(alert).not.toHaveTextContent("old-secret");
@@ -101,7 +101,7 @@ ConfigOverrideItemMaxQuantity=(hello world)
     ]);
     await user.click(await screen.findByRole("button", { name: "Use file values" }));
     expect(
-      await screen.findByText(/Port 7778 is already used by Other, so YARK can't take that game port/),
+      await screen.findByText(/Port 7778 is already used by Other, so NewGen can't take that game port/),
     ).toBeVisible();
     expect(window.api.updateServer).not.toHaveBeenCalled();
   });
@@ -127,7 +127,7 @@ ConfigOverrideItemMaxQuantity=(hello world)
         <ImportCompatibilityReport server={server} servers={[server]} />
       </AppProviders>,
     );
-    await user.click(await screen.findByRole("button", { name: "Keep YARK values" }));
+    await user.click(await screen.findByRole("button", { name: "Keep profile values" }));
     expect(screen.getByRole("button", { name: "Use file values" })).toBeDisabled();
     release({ ok: true, data: server });
     await waitFor(() => {
@@ -152,9 +152,9 @@ ConfigOverrideItemMaxQuantity=(hello world)
         <ImportCompatibilityReport server={server} servers={[server]} />
       </AppProviders>,
     );
-    await user.click(await screen.findByRole("button", { name: "Keep YARK values" }));
+    await user.click(await screen.findByRole("button", { name: "Keep profile values" }));
     expect(await screen.findByText("Could not update the server")).toBeVisible();
-    expect(screen.getByRole("button", { name: "Keep YARK values" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Keep profile values" })).toBeEnabled();
     expect(screen.getByRole("button", { name: "Use file values" })).toBeEnabled();
   });
 
@@ -201,7 +201,7 @@ ConfigOverrideItemMaxQuantity=(hello world)
   it("discards the INI values by saving the current form", async () => {
     const user = setupUser();
     renderReport(matchingGus.replace("SessionName=Island", "SessionName=Old"));
-    await user.click(await screen.findByRole("button", { name: "Keep YARK values" }));
+    await user.click(await screen.findByRole("button", { name: "Keep profile values" }));
     await waitFor(() => expect(window.api.updateServer).toHaveBeenCalledTimes(1));
     expect(window.api.updateServer).toHaveBeenCalledWith(
       "srv-a",

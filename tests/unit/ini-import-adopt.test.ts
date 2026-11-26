@@ -73,7 +73,7 @@ describe("planAdoptExternalIni", () => {
     );
     expect(plan).toEqual({
       ok: false,
-      reason: "Port 7778 is already used by Other, so YARK can't take that game port.",
+      reason: "Port 7778 is already used by Other, so the NewGen profile can't use that game port.",
     });
   });
 
@@ -106,11 +106,11 @@ describe("planAdoptExternalIni", () => {
     );
     expect(plan).toEqual({
       ok: false,
-      reason: "Port 7778 is already used by Other, so YARK can't take that game port.",
+      reason: "Port 7778 is already used by Other, so the NewGen profile can't use that game port.",
     });
   });
 
-  it("keeps the YARK admin password when GameUserSettings.ini omits it", () => {
+  it("keeps the NewGen admin password when GameUserSettings.ini omits it", () => {
     const plan = planAdoptExternalIni(
       server,
       [server],
@@ -126,7 +126,7 @@ describe("planAdoptExternalIni", () => {
     expect(plan.input.adminPassword).toBe("secret-admin");
   });
 
-  it("keeps the YARK admin password when GameUserSettings.ini has only whitespace", () => {
+  it("keeps the NewGen admin password when GameUserSettings.ini has only whitespace", () => {
     const plan = planAdoptExternalIni(
       server,
       [server],
@@ -141,7 +141,7 @@ describe("planAdoptExternalIni", () => {
     expect(plan.input.adminPassword).toBe("secret-admin");
   });
 
-  it("keeps YARK game and query ports when the file leaves them blank", () => {
+  it("keeps NewGen game and query ports when the file leaves them blank", () => {
     const plan = planAdoptExternalIni(
       server,
       [server],
@@ -228,7 +228,7 @@ describe("planAdoptExternalIni", () => {
     );
     expect(plan).toEqual({
       ok: false,
-      reason: "Port 7778 is already used by Island, so YARK can't take that game port.",
+      reason: "Port 7778 is already used by Island, so the NewGen profile can't use that game port.",
     });
   });
 
@@ -284,7 +284,7 @@ describe("planAdoptExternalIni", () => {
     );
     expect(plan).toEqual({
       ok: false,
-      reason: "YARK keeps RCON on. Choose Keep YARK values to save that.",
+      reason: "NewGen keeps RCON enabled. Choose Keep profile values to save that.",
     });
   });
 });

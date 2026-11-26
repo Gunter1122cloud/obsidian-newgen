@@ -1126,7 +1126,7 @@ describe("ServerWorkspacePage", () => {
       window.dispatchEvent(new Event("focus"));
     });
 
-    const banner = await screen.findByRole("alert", { name: "INI updated outside YARK" });
+    const banner = await screen.findByRole("alert", { name: "INI updated outside NewGen" });
     expect(banner).toBeVisible();
     expect(banner).toHaveTextContent(/Click Save to merge/i);
     expect(within(banner).getByRole("button", { name: "View outside changes" })).toBeVisible();
