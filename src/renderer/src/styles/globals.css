@@ -338,3 +338,40 @@ body {
     --app-color-cryo: CanvasText !important;
   }
 }
+
+/* NewGen tactical treatment for portal-mounted surfaces. Native focus, dismissal,
+   status colors and disabled behavior remain owned by the existing components. */
+[data-mantine-color-scheme="dark"] .mantine-Notification-root,
+[data-mantine-color-scheme="dark"] .mantine-Modal-content,
+[data-mantine-color-scheme="dark"] .mantine-Drawer-content {
+  border: 1px solid #82704f;
+  background-color: #1b1e1f;
+  background-image: linear-gradient(145deg, rgba(181, 157, 109, 0.06), transparent 60%);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.48);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Modal-header,
+[data-mantine-color-scheme="dark"] .mantine-Drawer-header {
+  background-color: #252827;
+  border-bottom: 1px solid rgba(181, 157, 109, 0.3);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Menu-dropdown,
+[data-mantine-color-scheme="dark"] .mantine-Popover-dropdown {
+  background-color: #202324;
+  border-color: #6d6048;
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Notification-title {
+  color: var(--app-color-text);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Notification-description {
+  color: var(--app-color-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-app-busy-overlay] .mantine-Progress-section {
+    animation: none !important;
+  }
+}
