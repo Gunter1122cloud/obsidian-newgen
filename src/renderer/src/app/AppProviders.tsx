@@ -134,10 +134,12 @@ export function AppProviders({
   useLayoutEffect(() => {
     const root = document.documentElement;
     root.dataset.uiDensity = density;
+    root.dataset.newgenBackground = sceneBackground ? "on" : "off";
     return () => {
       delete root.dataset.uiDensity;
+      delete root.dataset.newgenBackground;
     };
-  }, [density]);
+  }, [density, sceneBackground]);
 
   const notificationsAutoClose = isRendererTest() ? false : 5000;
 
