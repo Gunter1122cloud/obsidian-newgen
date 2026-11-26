@@ -61,7 +61,7 @@
 .brandLockup {
   display: block;
   width: 100%;
-  max-width: 168px;
+  max-width: 178px;
   height: auto;
   object-fit: contain;
   border-radius: var(--app-radius-control);
@@ -102,7 +102,8 @@
 }
 
 .navLink[data-active] {
-  color: var(--app-color-text);
+  color: var(--app-color-accent-text);
+  box-shadow: inset 0 0 0 1px var(--app-color-accent-subtle);
 }
 
 .sidebar[data-icon-mode] .navLink {
