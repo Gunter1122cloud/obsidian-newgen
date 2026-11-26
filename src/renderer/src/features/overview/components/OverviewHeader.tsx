@@ -106,7 +106,9 @@ export function OverviewHeader({
             data-install-health-scan={checkingInstalls || undefined}
             aria-busy={checkingInstalls || undefined}
           >
-            {checkingInstalls ? text("Checking servers health…", "Szerverek ellenőrzése…") : text("Check Servers Health", "Szerverek ellenőrzése")}
+            {checkingInstalls
+              ? text("Checking servers health…", "Szerverek ellenőrzése…")
+              : text("Check Servers Health", "Szerverek ellenőrzése")}
           </Button>
           {checkingInstalls ? (
             <VisuallyHidden component="span" role="status" aria-live="polite">
