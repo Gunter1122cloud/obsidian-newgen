@@ -34,7 +34,10 @@ export function SettingsAppearanceSection(props: Props): ReactElement {
         {visual.text("Appearance", "Megjelenés")}
       </Title>
       <Text size="sm" c="dimmed">
-        {visual.text("Theme family, color scheme, display size and how the server workspace arranges its panels.", "Téma, színvilág, megjelenítési méret és a szerveroldal elrendezése.")}
+        {visual.text(
+          "Theme family, color scheme, display size and how the server workspace arranges its panels.",
+          "Téma, színvilág, megjelenítési méret és a szerveroldal elrendezése.",
+        )}
       </Text>
 
       <div className={classes.settingStack}>
@@ -102,7 +105,10 @@ export function SettingsAppearanceSection(props: Props): ReactElement {
               {visual.text("Display size", "Megjelenítési méret")}
             </Text>
             <Text size="xs" c="dimmed" mt={2}>
-              {visual.text("Compact fits more on screen. Comfortable uses larger type and spacing.", "A kompakt mód több adatot mutat; a kényelmes mód nagyobb betűket és térközt használ.")}
+              {visual.text(
+                "Compact fits more on screen. Comfortable uses larger type and spacing.",
+                "A kompakt mód több adatot mutat; a kényelmes mód nagyobb betűket és térközt használ.",
+              )}
             </Text>
           </div>
           <div className={classes.settingControl}>
@@ -177,7 +183,10 @@ export function SettingsAppearanceSection(props: Props): ReactElement {
               {visual.text("Background image", "Háttérkép")}
             </Text>
             <Text size="xs" c="dimmed" mt={2}>
-              {visual.text("Show the cinematic scene behind the dark interface. Off leaves a flat canvas.", "Filmszerű háttér a sötét felület mögött. Kikapcsolva egyszínű háttér.")}
+              {visual.text(
+                "Show the cinematic scene behind the dark interface. Off leaves a flat canvas.",
+                "Filmszerű háttér a sötét felület mögött. Kikapcsolva egyszínű háttér.",
+              )}
             </Text>
           </div>
           <div className={classes.settingControl}>

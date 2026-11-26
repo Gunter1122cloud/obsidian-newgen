@@ -75,7 +75,9 @@ function ManualRestartCancelButton({
       onClick={onCancel}
       data-restart-warning-cancel
     >
-      {label.length > 0 ? `${newGenLabel("Cancel restart", language)} · ${label}` : newGenLabel("Cancel restart", language)}
+      {label.length > 0
+        ? `${newGenLabel("Cancel restart", language)} · ${label}`
+        : newGenLabel("Cancel restart", language)}
     </Button>
   );
 }

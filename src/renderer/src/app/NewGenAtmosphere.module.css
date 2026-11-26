@@ -29,18 +29,32 @@
 }
 
 @keyframes drift {
-  from { transform: translateX(-7%); }
-  to { transform: translateX(7%); }
+  from {
+    transform: translateX(-7%);
+  }
+  to {
+    transform: translateX(7%);
+  }
 }
 
 @keyframes ascend {
-  from { transform: translateY(10%); opacity: 0; }
-  35% { opacity: 0.45; }
-  to { transform: translateY(-65%); opacity: 0; }
+  from {
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.45;
+  }
+  to {
+    transform: translateY(-65%);
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .atmosphere { display: none; }
+  .atmosphere {
+    display: none;
+  }
 }
 
 :global([data-newgen-background="off"]) .atmosphere,

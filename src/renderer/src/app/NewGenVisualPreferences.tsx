@@ -70,7 +70,15 @@ export function NewGenVisualPreferences({ children }: PropsWithChildren): ReactE
   }, [language, motion, sound]);
 
   const value = useMemo<VisualPreferences>(
-    () => ({ language, motion, sound, setLanguage, setMotion, setSound, text: (en, hu) => (language === "hu" ? hu : en) }),
+    () => ({
+      language,
+      motion,
+      sound,
+      setLanguage,
+      setMotion,
+      setSound,
+      text: (en, hu) => (language === "hu" ? hu : en),
+    }),
     [language, motion, sound],
   );
 

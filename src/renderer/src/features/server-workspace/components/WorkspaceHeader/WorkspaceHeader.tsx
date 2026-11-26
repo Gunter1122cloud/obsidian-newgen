@@ -51,7 +51,10 @@ export function WorkspaceHeader(props: Props): ReactElement {
   const displayStatus = props.startBusy === true && (status === "stopped" || status === "error") ? "starting" : status;
 
   return (
-    <header className={classes.header} style={cover ? ({ "--newgen-cover": `url("${cover}")` } as CSSProperties) : undefined}>
+    <header
+      className={classes.header}
+      style={cover ? ({ "--newgen-cover": `url("${cover}")` } as CSSProperties) : undefined}
+    >
       <WorkspaceHeaderIdentity props={props} status={status} displayStatus={displayStatus} version={version} />
       <WorkspaceHeaderActions props={props} status={status} />
     </header>

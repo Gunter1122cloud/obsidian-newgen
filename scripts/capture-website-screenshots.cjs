@@ -1047,7 +1047,9 @@ async function run() {
             timeout: 45_000,
           });
           if (!(await useMap.isVisible())) {
-            console.warn("WEBSITE_MAP_CATALOG_UNAVAILABLE: captured settled offline/empty state, not live catalog validation");
+            console.warn(
+              "WEBSITE_MAP_CATALOG_UNAVAILABLE: captured settled offline/empty state, not live catalog validation",
+            );
           }
           await page.waitForFunction(
             () => [...document.querySelectorAll('[role="dialog"] img')].every((image) => image.complete),
