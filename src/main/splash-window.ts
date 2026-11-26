@@ -102,7 +102,7 @@ export function createSplashWindow(options: { version: string; icon?: string; x?
     skipTaskbar: true,
     ...(options.x !== undefined && options.y !== undefined ? { x: options.x, y: options.y } : { center: true }),
     show: false,
-    title: "YARK server manager",
+    title: "Obsidian Command NewGen",
     backgroundColor: BRAND_PLATE_BACKGROUND,
     ...(options.icon !== undefined ? { icon: options.icon } : {}),
     webPreferences: {

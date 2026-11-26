@@ -109,7 +109,7 @@ if (!app.isPackaged && e2eUserData) {
 
 // Packaged installs stay single-instance (focus existing window). Unpackaged
 // (`npm run dev` / `electron .`) skips the lock so a local build can run beside
-// an installed YARK. Without `YARK_E2E_USER_DATA`, unpackaged shares the
+// an installed Obsidian. Without `YARK_E2E_USER_DATA`, unpackaged shares the
 // packaged AppData SQLite profile — concurrent writes can corrupt it; set the
 // env whenever both may be open (see docs/server-lifecycle.md / `.env.example`).
 let isPrimaryInstance = true;
@@ -119,7 +119,7 @@ if (app.isPackaged) {
     app.quit();
   } else if (process.platform === "win32") {
     // Must match electron-builder `appId` / Start Menu shortcut so Windows
-    // associates the taskbar button (and toasts) with YARK's .exe icon.
+    // associates the taskbar button (and toasts) with Obsidian's .exe icon.
     // Do not set this while unpackaged: an explicit AUMID makes Windows ignore
     // BrowserWindow `{ icon }` and fall back to electron.exe (Electron atom).
     app.setAppUserModelId("com.obsidian.newgen");
@@ -423,7 +423,7 @@ if (isPrimaryInstance) {
           try {
             launchArgs = buildLaunchArgs(profile);
           } catch {
-            // Keep the raw args; a profile YARK cannot compose must not blank diagnostics.
+            // Keep the raw args; a profile Obsidian cannot compose must not blank diagnostics.
           }
           return { serverId: profile.id, serverName: profile.name, text, launchArgs };
         }),
@@ -537,7 +537,7 @@ if (isPrimaryInstance) {
     void hostedResources.start();
     applyWindowsLoginItem(readDesktopShellPreferences(settings).startWithWindows);
 
-    // Drop leftover YARK move-staging dirs from interrupted attempts (#56).
+    // Drop leftover Obsidian move-staging dirs from interrupted attempts (#56).
     void moveInstallService.sweepStaleStaging().catch((error: unknown) => {
       console.error("Move-install staging sweep failed", error);
     });
@@ -717,7 +717,7 @@ if (isPrimaryInstance) {
           void dialog.showMessageBox(ensureMainWindow(), {
             type: "info",
             title: "Server operation in progress",
-            message: "YARK will close after the active server operation finishes.",
+            message: "Obsidian will close after the active server operation finishes.",
             detail: "Keep the application open so stop/restart backup work can complete safely.",
             buttons: ["OK"],
           });
@@ -922,7 +922,7 @@ if (isPrimaryInstance) {
           void dialog.showMessageBox(ensureMainWindow(), {
             type: "error",
             title: "Could not finish server stop",
-            message: "YARK will remain open because the active stop did not finish safely.",
+            message: "Obsidian will remain open because the active stop did not finish safely.",
             detail: error instanceof Error ? error.message : String(error),
             buttons: ["OK"],
           });
@@ -935,7 +935,7 @@ if (isPrimaryInstance) {
         return;
       }
       showNativeOsNotification({
-        title: "YARK",
+        title: "Obsidian",
         body: "Still running in the tray.",
         silent: true,
         onClick: () => {
@@ -1008,7 +1008,7 @@ if (isPrimaryInstance) {
           defaultId: 0,
           cancelId: 1,
           noLink: true,
-          title: "Quit YARK?",
+          title: "Quit Obsidian?",
           message: count === 1 ? "1 server is still running." : `${count} servers are still running.`,
           detail:
             "Stop them before quitting. To keep servers and backups running, enable Close window to tray in Settings, then close the window instead of quitting.",

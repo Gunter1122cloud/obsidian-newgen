@@ -1,8 +1,8 @@
 {
   "name": "yark-server-manager",
   "version": "0.28.0",
-  "description": "YARK server manager — local ARK Survival Ascended dedicated server manager for Windows",
-  "homepage": "https://getyark.com",
+  "description": "Obsidian Command NewGen — local ARK Survival Ascended dedicated server manager for Windows",
+  "homepage": "https://github.com/Gunter1122cloud/obsidian-newgen",
   "main": "out/main/index.js",
   "author": "gabomarin26",
   "license": "GPL-3.0-only",
