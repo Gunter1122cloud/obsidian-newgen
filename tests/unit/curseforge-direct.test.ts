@@ -10,9 +10,9 @@ function fixture(fetchImpl: typeof fetch): ModsService {
 
 describe("local CurseForge API", () => {
   it("searches only ASA at the official endpoint without forwarding credentials to redirects", async () => {
-    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(
-      Response.json({ data: [asa, { ...asa, id: 43, gameId: 1 }], pagination: { totalCount: 2 } }),
-    );
+    const fetchImpl = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(Response.json({ data: [asa, { ...asa, id: 43, gameId: 1 }], pagination: { totalCount: 2 } }));
     const page = await fixture(fetchImpl).search("example");
     expect(page.items.map((item) => item.id)).toEqual(["42"]);
     expect(fetchImpl).toHaveBeenCalledWith(

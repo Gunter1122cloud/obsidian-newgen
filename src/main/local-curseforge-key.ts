@@ -28,15 +28,21 @@ async function readLocalKey(): Promise<string | null> {
     "finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr); $secret.Dispose() }",
   ].join("; ");
   try {
-    const { stdout } = await execFileAsync(powershell, ["-NoLogo", "-NoProfile", "-NonInteractive", "-Command", command], {
-      env: { ...process.env, OBSIDIAN_KEY_FILE: file },
-      windowsHide: true,
-      timeout: 10_000,
-      maxBuffer: 4096,
-    });
+    const { stdout } = await execFileAsync(
+      powershell,
+      ["-NoLogo", "-NoProfile", "-NonInteractive", "-Command", command],
+      {
+        env: { ...process.env, OBSIDIAN_KEY_FILE: file },
+        windowsHide: true,
+        timeout: 10_000,
+        maxBuffer: 4096,
+      },
+    );
     return stdout.trim() || null;
   } catch {
     // Never surface subprocess output, command details or the credential in application logs.
-    throw new Error("Could not read the local CurseForge credential. Run the local key setup again and restart NewGen.");
+    throw new Error(
+      "Could not read the local CurseForge credential. Run the local key setup again and restart NewGen.",
+    );
   }
 }

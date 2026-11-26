@@ -124,7 +124,9 @@ async function search(fetchImpl: typeof fetch, key: string, url: URL): Promise<M
   const payload = await request(fetchImpl, key, `/v1/mods/search?${params}`);
   const pagination = row(payload.pagination);
   return {
-    items: rows(payload.data).filter(isAsa).map((mod) => toMetadata(mod)),
+    items: rows(payload.data)
+      .filter(isAsa)
+      .map((mod) => toMetadata(mod)),
     pagination: {
       index: number(pagination.index),
       pageSize: number(pagination.pageSize),

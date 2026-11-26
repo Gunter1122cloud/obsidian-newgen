@@ -519,7 +519,9 @@ if (isPrimaryInstance) {
       join(userData, "move-install-staging.json"),
       join(userData, "move-install-pending-cleanup.json"),
     );
-    const modsService = new ModsService({ directApiKey: app.isPackaged ? createLocalCurseForgeKeyReader() : undefined });
+    const modsService = new ModsService({
+      directApiKey: app.isPackaged ? createLocalCurseForgeKeyReader() : undefined,
+    });
 
     // Unify RCON traffic on the persistent session (stop / ListPlayers / console).
     processManager.setRconExecutor((serverId, command) =>
