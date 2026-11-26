@@ -159,3 +159,29 @@
     color-mix(in srgb, var(--app-color-surface-control-hover) 78%, var(--ark-gray-1)) 100%
   );
 }
+
+/* INI categories become labelled equipment trays with one restrained brass index rail. */
+:global([data-mantine-color-scheme="dark"]) .sectionHeader,
+:global([data-mantine-color-scheme="dark"]) .sectionHeaderStatic {
+  background-color: rgba(17, 19, 19, 0.94);
+  background-image:
+    linear-gradient(100deg, rgba(31, 29, 24, 0.78), rgba(13, 15, 16, 0.92)),
+    url("../../../assets/newgen/rusty-iron-02.webp");
+  background-size: cover, cover;
+  background-position: center;
+  border-left: 3px solid rgba(190, 158, 96, 0.72);
+  border-bottom-color: rgba(190, 158, 96, 0.26);
+}
+
+:global([data-mantine-color-scheme="dark"]) .sectionHeader:hover {
+  background-image:
+    linear-gradient(100deg, rgba(53, 43, 27, 0.76), rgba(17, 19, 19, 0.92)),
+    url("../../../assets/newgen/rusty-iron-02.webp");
+}
+
+:global([data-mantine-color-scheme="dark"]) .subsectionHeader {
+  border-left: 2px solid rgba(190, 158, 96, 0.34);
+  border-bottom-color: rgba(190, 158, 96, 0.16);
+  background-image: linear-gradient(90deg, rgba(190, 158, 96, 0.065), transparent 58%);
+}
+

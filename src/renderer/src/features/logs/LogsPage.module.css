@@ -428,3 +428,29 @@
     flex: 0 0 auto;
   }
 }
+
+/* Event and update lists: individual entries sit on a low-contrast iron plate. */
+:global([data-mantine-color-scheme="dark"]) .eventList,
+:global([data-mantine-color-scheme="dark"]) .updateList {
+  border-color: rgba(190, 158, 96, 0.3);
+  background-color: rgba(9, 11, 12, 0.9);
+  background-image:
+    linear-gradient(145deg, rgba(15, 17, 18, 0.88), rgba(8, 10, 11, 0.94)),
+    url("../../assets/newgen/rusty-iron-02.webp");
+  background-size: cover, cover;
+  background-position: center;
+}
+
+:global([data-mantine-color-scheme="dark"]) .eventRow,
+:global([data-mantine-color-scheme="dark"]) .detailsMeta,
+:global([data-mantine-color-scheme="dark"]) .updateRow {
+  border-color: rgba(190, 158, 96, 0.22);
+  background-color: rgba(14, 16, 17, 0.9);
+  background-image: linear-gradient(145deg, rgba(24, 25, 24, 0.76), rgba(9, 11, 12, 0.9));
+}
+
+:global([data-mantine-color-scheme="dark"]) .updateRowActive {
+  border-color: rgba(205, 169, 99, 0.56);
+  background-image: linear-gradient(100deg, rgba(190, 158, 96, 0.18), rgba(9, 11, 12, 0.9));
+}
+

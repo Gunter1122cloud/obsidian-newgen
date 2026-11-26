@@ -143,3 +143,32 @@
 .previewRaw {
   color: var(--app-color-muted);
 }
+
+/* Launch options read as equipment toggles on a dark command plate. */
+:global([data-mantine-color-scheme="dark"]) .optionRow {
+  border-color: rgba(190, 158, 96, 0.22);
+  background-color: rgba(12, 14, 15, 0.9);
+  background-image:
+    linear-gradient(145deg, rgba(20, 22, 22, 0.82), rgba(9, 11, 12, 0.92)),
+    url("../../../../assets/newgen/rusty-iron-02.webp");
+  background-size: cover, cover;
+  background-position: center, center;
+}
+
+:global([data-mantine-color-scheme="dark"]) .optionRow:hover {
+  border-color: rgba(205, 169, 99, 0.48);
+}
+
+:global([data-mantine-color-scheme="dark"]) .optionRowCaution {
+  border-color: rgba(205, 169, 99, 0.58);
+  background-image: linear-gradient(145deg, rgba(83, 62, 28, 0.35), rgba(16, 17, 16, 0.92));
+}
+
+:global([data-mantine-color-scheme="dark"]) .previewCode {
+  padding: var(--app-space-sm);
+  border: 1px solid rgba(190, 158, 96, 0.22);
+  border-left: 3px solid rgba(205, 169, 99, 0.78);
+  border-radius: var(--app-radius-sm);
+  background: rgba(4, 6, 7, 0.82);
+}
+

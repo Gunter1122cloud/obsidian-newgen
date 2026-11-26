@@ -604,3 +604,29 @@
     overflow: hidden;
   }
 }
+
+/* Mod inventory: dark iron table well and a clear brass edge around the work area. */
+:global([data-mantine-color-scheme="dark"]) .tableViewport {
+  border-color: rgba(190, 158, 96, 0.3);
+  background-color: rgba(9, 11, 12, 0.88);
+  background-image:
+    linear-gradient(145deg, rgba(14, 16, 17, 0.84), rgba(7, 9, 10, 0.92)),
+    url("../../../../assets/newgen/rusty-iron-02.webp");
+  background-size: cover, cover;
+  background-position: center, center;
+}
+
+:global([data-mantine-color-scheme="dark"]) .sectionTop {
+  padding-bottom: var(--app-space-sm);
+  border-bottom: 1px solid rgba(190, 158, 96, 0.22);
+}
+
+:global([data-mantine-color-scheme="dark"]) .modsTable :global(thead),
+:global([data-mantine-color-scheme="dark"]) .modsTable :global(thead th),
+:global([data-mantine-color-scheme="dark"]) .modsTable :global(.mantine-datatable-header),
+:global([data-mantine-color-scheme="dark"]) .modsTable :global(.mantine-Table-th) {
+  background-image: linear-gradient(180deg, rgba(47, 40, 27, 0.96), rgba(19, 20, 19, 0.98));
+  border-bottom-color: rgba(190, 158, 96, 0.3);
+  color: #e6d5b2;
+}
+
