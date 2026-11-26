@@ -654,7 +654,9 @@
   :global([data-overview-page]) .card:hover {
     transform: translateY(-2px);
     border-color: rgba(199, 164, 92, 0.76);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), inset 0 1px rgba(245, 221, 174, 0.08);
+    box-shadow:
+      0 12px 30px rgba(0, 0, 0, 0.5),
+      inset 0 1px rgba(245, 221, 174, 0.08);
   }
 }
 
@@ -691,7 +693,6 @@
   background-repeat: no-repeat;
   background-blend-mode: normal, soft-light;
 }
-
 
 /* The card's metal is visible as material, not as a bright wallpaper. */
 :global([data-mantine-color-scheme="dark"]) :global([data-overview-page]) .card {

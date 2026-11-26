@@ -62,7 +62,6 @@
   display: none;
 }
 
-
 /* A single slow light pass gives the background depth without competing with controls. */
 .sweep {
   position: absolute;
@@ -86,14 +85,29 @@
 }
 
 @keyframes tacticalSweep {
-  0%, 12% { transform: translate3d(-10%, 0, 0) skewX(-16deg); opacity: 0; }
-  28% { opacity: 0.45; }
-  58% { opacity: 0.22; }
-  84%, 100% { transform: translate3d(430%, 0, 0) skewX(-16deg); opacity: 0; }
+  0%,
+  12% {
+    transform: translate3d(-10%, 0, 0) skewX(-16deg);
+    opacity: 0;
+  }
+  28% {
+    opacity: 0.45;
+  }
+  58% {
+    opacity: 0.22;
+  }
+  84%,
+  100% {
+    transform: translate3d(430%, 0, 0) skewX(-16deg);
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sweep { display: none; animation: none; }
+  .sweep {
+    display: none;
+    animation: none;
+  }
 }
 
 :global([data-newgen-motion="off"]) .sweep {
