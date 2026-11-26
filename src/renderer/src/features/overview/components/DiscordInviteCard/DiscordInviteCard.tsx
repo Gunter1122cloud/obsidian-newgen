@@ -30,7 +30,7 @@ export function DiscordInviteCard(): ReactElement | null {
             </AccentIconTile>
             <div className={classes.copy}>
               <Text id="discord-invite-title" size="sm" fw={600} truncate>
-                Join the YARK Discord
+                Join the Untamed Kingdom Discord
               </Text>
               <Text size="xs" c="dimmed">
                 Get help, share ARK server tips, and stay up to date.

@@ -142,16 +142,19 @@
       }
     ],
     "win": {
-      "target": "nsis",
+      "target": ["nsis", "portable"],
       "icon": "icon.ico"
     },
-    "artifactName": "Obsidian-NewGen-Setup-${version}.${ext}",
     "nsis": {
+      "artifactName": "Obsidian-NewGen-Setup-${version}.${ext}",
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "license": "LICENSE"
+    },
+    "portable": {
+      "artifactName": "Obsidian-NewGen-Portable-${version}.${ext}"
     },
     "electronFuses": {
       "runAsNode": false,

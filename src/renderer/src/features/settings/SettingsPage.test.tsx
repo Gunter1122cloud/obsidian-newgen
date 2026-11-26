@@ -102,7 +102,7 @@ function stubSettingsApi(overrides: Record<string, unknown> = {}): void {
         percent: null,
         error: null,
         isPackaged: true,
-        releasePageUrl: "https://github.com/gabomarin/yark/releases",
+        releasePageUrl: "https://github.com/Gunter1122cloud/obsidian-newgen/releases",
         releaseNotesUrl: null,
         installBlockedReason: "not-ready",
         installBlockedMessage: "Download the update before restarting to install.",
@@ -117,7 +117,7 @@ function stubSettingsApi(overrides: Record<string, unknown> = {}): void {
         percent: null,
         error: null,
         isPackaged: true,
-        releasePageUrl: "https://github.com/gabomarin/yark/releases",
+        releasePageUrl: "https://github.com/Gunter1122cloud/obsidian-newgen/releases",
         releaseNotesUrl: null,
         installBlockedReason: "not-ready",
         installBlockedMessage: "Download the update before restarting to install.",
@@ -837,8 +837,8 @@ describe("SettingsPage", () => {
         percent: null,
         error: null,
         isPackaged: true,
-        releasePageUrl: "https://github.com/gabomarin/yark/releases",
-        releaseNotesUrl: "https://github.com/gabomarin/yark/releases/tag/v0.2.0",
+        releasePageUrl: "https://github.com/Gunter1122cloud/obsidian-newgen/releases",
+        releaseNotesUrl: "https://github.com/Gunter1122cloud/obsidian-newgen/releases/tag/v0.2.0",
         installBlockedReason: "not-ready",
         installBlockedMessage: "Download the update before restarting to install.",
       },
@@ -902,11 +902,11 @@ describe("SettingsPage", () => {
     await openCategory(user, "About");
 
     const github = screen.getByRole("link", { name: /^GitHub$/i });
-    expect(github).toHaveAttribute("href", "https://github.com/gabomarin/yark");
+    expect(github).toHaveAttribute("href", "https://github.com/Gunter1122cloud/obsidian-newgen");
     expect(github).toHaveAttribute("target", "_blank");
 
     const discord = screen.getByRole("link", { name: /^Discord$/i });
-    expect(discord).toHaveAttribute("href", "https://discord.gg/DQ8nes63w7");
+    expect(discord).toHaveAttribute("href", "https://discord.gg/kRZrgyegr");
     expect(discord).toHaveAttribute("target", "_blank");
   });
 
@@ -917,7 +917,7 @@ describe("SettingsPage", () => {
     await openCategory(user, "About");
 
     const link = screen.getByRole("link", { name: /View on GitHub/i });
-    expect(link).toHaveAttribute("href", "https://github.com/gabomarin/yark/blob/main/THIRD_PARTY_NOTICES.md");
+    expect(link).toHaveAttribute("href", "https://github.com/Gunter1122cloud/obsidian-newgen/blob/main/THIRD_PARTY_NOTICES.md");
     expect(link).toHaveAttribute("target", "_blank");
   });
 });

@@ -46,7 +46,7 @@ function buildAutoStartSummaryRows(
       return {
         server,
         state: "armed" as const,
-        detail: "Will start on next YARK launch",
+        detail: "Will start on next Obsidian launch",
       };
     })
     .sort((a, b) => a.server.name.localeCompare(b.server.name));
@@ -87,7 +87,7 @@ export function SettingsAutoStartSection(props: Props): ReactElement {
         <EmptyState
           icon={<Play size={22} />}
           title="No servers opted in"
-          description="Open a server → Server tab → Auto-start with YARK."
+          description="Open a server → Server tab → Auto-start with Obsidian."
         />
       ) : (
         <Stack gap="sm" className={withAppSurface(appRaisedSurfaceClass, classes.autoStartList)}>
