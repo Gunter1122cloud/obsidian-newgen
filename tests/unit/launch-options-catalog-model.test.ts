@@ -36,7 +36,9 @@ describe("launchOptionsCatalogModel (#381)", () => {
     expect(yarkManagedLaunchCopy("port")).toBe(
       "NewGen already manages this from Server settings. Do not add it in Extra arguments.",
     );
-    expect(yarkManagedLaunchCopy("mods")).toBe("NewGen already manages this from Mods. Do not add it in Extra arguments.");
+    expect(yarkManagedLaunchCopy("mods")).toBe(
+      "NewGen already manages this from Mods. Do not add it in Extra arguments.",
+    );
 
     for (const id of YARK_OWNED_CATALOG_IDS) {
       const entry = lookupLaunchOptionById(id);
