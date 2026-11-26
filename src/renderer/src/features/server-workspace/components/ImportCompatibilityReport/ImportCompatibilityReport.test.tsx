@@ -86,7 +86,9 @@ ConfigOverrideItemMaxQuantity=(hello world)
     );
     expect(alert).toHaveTextContent("Game port in GameUserSettings.ini: 7778.");
     expect(alert).toHaveTextContent("Game port in NewGen profile: 7777.");
-    expect(alert).toHaveTextContent("Admin password differs between GameUserSettings.ini and NewGen profile. Values are hidden.");
+    expect(alert).toHaveTextContent(
+      "Admin password differs between GameUserSettings.ini and NewGen profile. Values are hidden.",
+    );
     expect(alert).toHaveTextContent("One line in the file stays word for word. NewGen does not interpret it.");
     expect(alert).not.toHaveTextContent("secret-admin");
     expect(alert).not.toHaveTextContent("secret-join");

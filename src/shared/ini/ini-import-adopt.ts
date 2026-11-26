@@ -64,7 +64,9 @@ function portClashReason(
     const used = new Set([other.gamePort, other.queryPort, other.rconPort]);
     for (const left of mine) {
       if (!used.has(left.port)) continue;
-      lines.push(`Port ${left.port} is already used by ${other.name}, so the NewGen profile can't use that ${left.kind} port.`);
+      lines.push(
+        `Port ${left.port} is already used by ${other.name}, so the NewGen profile can't use that ${left.kind} port.`,
+      );
     }
   }
   return lines.join(" ");
