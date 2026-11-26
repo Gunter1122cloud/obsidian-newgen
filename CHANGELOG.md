@@ -9,6 +9,10 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
+### Added
+
+- Obsidian Command NewGen Windows release integrity checks for the Setup, Portable, update manifest and SHA-256 checksums.
+
 ### Changed
 
 - Dependencies: Mantine and mantine-datatable **9.8**, Electron **43.8.13**, React **19.3**, plus electron-builder/updater and tooling patches (knip, Playwright, Prettier, TypeScript-ESLint). Theme sets **cursorType pointer** so Button/ActionIcon keep the hand cursor after Mantine 9.8 stopped hardcoding it on UnstyledButton.
