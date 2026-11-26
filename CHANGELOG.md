@@ -11,6 +11,8 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ### Added
 
+- Introduce Obsidian Command's independent black-and-gold desktop identity, crystal logo and splash, while preserving the existing server list, live metrics, and original UI actions.
+
 - Opt-in private Discord control API for host-local map status and lifecycle actions, with strict role/channel authorization, read-only service identity, TLS credentials, and replay protection. Disabled by default until explicitly configured.
 
 ### Changed

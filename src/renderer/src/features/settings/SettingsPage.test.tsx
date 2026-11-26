@@ -917,7 +917,10 @@ describe("SettingsPage", () => {
     await openCategory(user, "About");
 
     const link = screen.getByRole("link", { name: /View on GitHub/i });
-    expect(link).toHaveAttribute("href", "https://github.com/Gunter1122cloud/obsidian-newgen/blob/main/THIRD_PARTY_NOTICES.md");
+    expect(link).toHaveAttribute(
+      "href",
+      "https://github.com/Gunter1122cloud/obsidian-newgen/blob/main/THIRD_PARTY_NOTICES.md",
+    );
     expect(link).toHaveAttribute("target", "_blank");
   });
 });

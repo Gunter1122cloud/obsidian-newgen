@@ -209,8 +209,7 @@
   overflow: hidden;
   background-color: var(--app-shell-main-bg);
   background-image:
-    radial-gradient(ellipse at 95% 0%, var(--app-color-accent-subtle) 0%, transparent 48%),
-    var(--app-shell-atmosphere);
+    radial-gradient(ellipse at 95% 0%, var(--app-color-accent-subtle) 0%, transparent 48%), var(--app-shell-atmosphere);
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto;
