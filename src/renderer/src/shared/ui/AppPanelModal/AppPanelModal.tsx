@@ -1,3 +1,5 @@
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
+import { newGenLabel } from "@app/newGenLabels";
 import type { ReactElement, ReactNode } from "react";
 import { Modal, Text } from "@mantine/core";
 import classes from "./AppPanelModal.module.css";
@@ -56,6 +58,7 @@ interface Props {
  * dialogs stop inventing their own chrome — see #PUX-004.
  */
 export function AppPanelModal(props: Props): ReactElement {
+  const { language } = useNewGenVisualPreferences();
   const {
     opened,
     onClose,
@@ -113,7 +116,7 @@ export function AppPanelModal(props: Props): ReactElement {
         <Modal.Header>
           <div className={classes.headerTop}>
             <div>
-              <Modal.Title>{title}</Modal.Title>
+              <Modal.Title>{typeof title === "string" ? newGenLabel(title, language) : title}</Modal.Title>
               {meta === undefined || meta === null || meta === "" ? null : (
                 <Text size="xs" className={classes.meta}>
                   {meta}
@@ -122,7 +125,7 @@ export function AppPanelModal(props: Props): ReactElement {
             </div>
             {withCloseButton === false ? null : (
               /* Not "Close": several dialogs have their own "Close" action button. */
-              <Modal.CloseButton aria-label="Close dialog" />
+              <Modal.CloseButton aria-label={newGenLabel("Close dialog", language)} />
             )}
           </div>
           {headerExtra !== undefined && <div className={classes.headerExtra}>{headerExtra}</div>}

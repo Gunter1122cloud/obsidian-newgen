@@ -1,3 +1,5 @@
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
+import { newGenLabel } from "@app/newGenLabels";
 import type { ReactElement } from "react";
 import type { ServerStatus } from "@shared/types";
 import { StatusWord, type StatusWordTone } from "@ui/StatusWord/StatusWord";
@@ -39,7 +41,8 @@ export function ServerRuntimeStatusBadge({
   className,
   appearance = "label",
 }: Props): ReactElement {
-  const text = label ?? serverRuntimeStatusLabel(status);
+  const { language } = useNewGenVisualPreferences();
+  const text = newGenLabel(label ?? serverRuntimeStatusLabel(status), language);
   const tone = toneFromColorOverride(color) ?? serverRuntimeStatusTone(status);
 
   return (

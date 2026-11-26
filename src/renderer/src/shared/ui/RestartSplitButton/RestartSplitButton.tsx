@@ -1,3 +1,5 @@
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
+import { newGenLabel } from "@app/newGenLabels";
 import type { ReactElement } from "react";
 import { ArrowsClockwise, CaretDown, Warning, X } from "@phosphor-icons/react";
 import { Button, Menu } from "@mantine/core";
@@ -61,6 +63,7 @@ function ManualRestartCancelButton({
   remaining: number | null;
   onCancel: () => void;
 }): ReactElement {
+  const { language } = useNewGenVisualPreferences();
   const label = remaining === null ? "" : formatRestartCountdown(remaining);
 
   return (
@@ -72,7 +75,7 @@ function ManualRestartCancelButton({
       onClick={onCancel}
       data-restart-warning-cancel
     >
-      {label.length > 0 ? `Cancel restart · ${label}` : "Cancel restart"}
+      {label.length > 0 ? `${newGenLabel("Cancel restart", language)} · ${label}` : newGenLabel("Cancel restart", language)}
     </Button>
   );
 }
@@ -87,6 +90,7 @@ function RestartNowButton({
   size: NonNullable<Props["size"]>;
   restartBusy: boolean;
 }): ReactElement {
+  const { language } = useNewGenVisualPreferences();
   return (
     <Button
       size={size}
@@ -98,7 +102,7 @@ function RestartNowButton({
       title={title}
       data-restart-action
     >
-      {restartBusy ? "Restarting…" : "Restart now"}
+      {newGenLabel(restartBusy ? "Restarting…" : "Restart now", language)}
     </Button>
   );
 }
@@ -114,6 +118,7 @@ function RestartWarningMenu({
   size: NonNullable<Props["size"]>;
   restartBusy: boolean;
 }): ReactElement {
+  const { language } = useNewGenVisualPreferences();
   const warningDisabled = !canRestartWithWarning;
 
   return (
@@ -123,7 +128,7 @@ function RestartWarningMenu({
           size={size}
           variant="default"
           px="xs"
-          aria-label="More restart options"
+          aria-label={newGenLabel("More restart options", language)}
           disabled={restartBusy || !canRestartNow}
           title={title ?? (warningDisabled ? "Server must be running and not busy" : undefined)}
           data-restart-menu-target
@@ -139,7 +144,7 @@ function RestartWarningMenu({
           onClick={onRestartWithWarning}
           data-restart-with-warning
         >
-          Restart with player warning
+          {newGenLabel("Restart with player warning", language)}
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

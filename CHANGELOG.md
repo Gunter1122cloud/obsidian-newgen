@@ -11,6 +11,8 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ### Added
 
+- Extend Hungarian UI localization to shared page headings, workspace tabs, settings navigation, server status, metadata and common dialog controls.
+
 - Bundle original tactical map illustrations, optimized user-provided texture and CC0 particles, optional interface sounds, animated atmosphere and workspace hero treatment.
 
 - Tactical NewGen dashboard with responsive map cards, shared backdrop and optional background artwork, animated startup and busy overlays, and consistent modal and notification styling. Server engine and runtime actions are unchanged.

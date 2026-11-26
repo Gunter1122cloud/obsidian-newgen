@@ -1,3 +1,5 @@
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
+import { newGenLabel } from "@app/newGenLabels";
 import { Stack } from "@mantine/core";
 import type { PropsWithChildren, ReactNode, ReactElement } from "react";
 import classes from "./PageScaffold.module.css";
@@ -25,13 +27,15 @@ export function PageScaffold({
   showHeader = true,
   children,
 }: Props): ReactElement {
+  const { language } = useNewGenVisualPreferences();
+  const localizedTitle = newGenLabel(title, language);
   return (
     <Stack
       gap={edgeToEdge ? 0 : "lg"}
       className={classes.page}
       data-fill-viewport={fillViewport || undefined}
       data-edge-to-edge={edgeToEdge || undefined}
-      aria-label={showHeader ? undefined : title}
+      aria-label={showHeader ? undefined : localizedTitle}
       /* `aria-label` needs a role to be announced; without the header this root is the
        * page's landmark instead. */
       role={showHeader ? undefined : "region"}
@@ -39,7 +43,7 @@ export function PageScaffold({
       {showHeader ? (
         <header className={classes.header}>
           <div className={classes.heading}>
-            <h1>{title}</h1>
+            <h1>{localizedTitle}</h1>
             {subtitle !== undefined && <p>{subtitle}</p>}
           </div>
           {actions !== undefined && <div className={classes.actions}>{actions}</div>}

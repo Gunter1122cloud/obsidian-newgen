@@ -26,7 +26,8 @@ export function NewGenAudio(): ReactElement | null {
     };
 
     const click = (event: MouseEvent) => {
-      const button = event.target instanceof Element ? event.target.closest("button, [role=button], [role=menuitem]") : null;
+      const button =
+        event.target instanceof Element ? event.target.closest("button, [role=button], [role=menuitem]") : null;
       if (button && !button.matches(":disabled, [aria-disabled=true], [data-disabled]")) play(clickSound);
     };
 

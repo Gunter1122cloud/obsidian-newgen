@@ -1,10 +1,6 @@
 import { createHash } from "node:crypto";
 import { describe, expect, it, vi } from "vitest";
-import {
-  authorizeDiscordControl,
-  dispatchDiscordControl,
-  validDiscordControlSettings,
-} from "../src/main/discord-control";
+import { authorizeDiscordControl, dispatchDiscordControl, validDiscordControlSettings } from "../src/main/discord-control";
 import type { InstanceService } from "../src/backend/domains/instances/instance-service";
 
 const guild = "100000000000000001";

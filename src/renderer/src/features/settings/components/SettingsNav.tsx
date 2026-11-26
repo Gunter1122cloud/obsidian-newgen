@@ -1,3 +1,5 @@
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
+import { newGenLabel } from "@app/newGenLabels";
 import type { ReactElement } from "react";
 import { CloudArrowDown, DiscordLogo, FileText, GearSix, HardDrives, Info, PaintBrush } from "@phosphor-icons/react";
 import { NavLink, Stack } from "@mantine/core";
@@ -21,8 +23,9 @@ interface Props {
 }
 
 export function SettingsNav(props: Props): ReactElement {
+  const { language } = useNewGenVisualPreferences();
   return (
-    <nav aria-label="Settings categories" className={classes.navList}>
+    <nav aria-label={newGenLabel("Settings categories", language)} className={classes.navList}>
       <Stack gap={4} className={classes.navRow}>
         {SETTINGS_CATEGORIES.map((item) => {
           const Icon = CATEGORY_ICONS[item.id];
@@ -33,7 +36,7 @@ export function SettingsNav(props: Props): ReactElement {
               component="button"
               type="button"
               active={active}
-              label={item.label}
+              label={newGenLabel(item.label, language)}
               aria-label={item.label}
               leftSection={<Icon size={16} weight={active ? "fill" : "regular"} />}
               className={navSelectedClassName(classes.navLink)}

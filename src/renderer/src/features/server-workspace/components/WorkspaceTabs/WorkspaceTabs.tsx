@@ -1,3 +1,5 @@
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
+import { newGenLabel } from "@app/newGenLabels";
 import { Tabs } from "@mantine/core";
 import { importChoiceIdentity } from "@shared/ini/ini-import-adopt";
 import type { ServerInstallationInfo, ServerProfile, ServerRuntimeInfo } from "@shared/types";
@@ -37,7 +39,8 @@ const ServerAsaApiPanel = lazy(async () => {
 });
 
 function WorkspacePanelLoading(): ReactElement {
-  return <div className={classes.panelLoading}>Loading workspace panel…</div>;
+  const { language } = useNewGenVisualPreferences();
+  return <div className={classes.panelLoading}>{newGenLabel("Loading workspace panel…", language)}</div>;
 }
 
 interface Props {
