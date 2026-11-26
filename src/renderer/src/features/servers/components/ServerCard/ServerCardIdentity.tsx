@@ -25,7 +25,12 @@ export function ServerCardIdentity(props: Props): ReactElement {
       data-open-settings
       data-newgen-cover={cover !== null || undefined}
     >
-      {cover !== null && <img className={classes.cover} src={cover} alt="" draggable={false} />}
+      {cover !== null && (
+        <>
+          <img className={classes.cover} src={cover} alt="" draggable={false} />
+          <span className={classes.coverVeil} aria-hidden="true" />
+        </>
+      )}
       <Group gap={compact ? "xs" : "sm"} align="center" wrap="nowrap" className={classes.identity}>
         <MapArtThumb
           mapId={server.map}
