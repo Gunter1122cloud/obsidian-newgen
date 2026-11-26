@@ -9,7 +9,7 @@ export function SetupWizardWelcomeStep(): ReactElement {
       layout="stacked"
       titleOrder="h3"
       icon={<HardDrives size={28} />}
-      title="Welcome to YARK"
+      title="Welcome to Obsidian"
       description="A server manager for ARK: Survival Ascended dedicated servers on this PC."
     >
       <Text size="sm" c="dimmed">

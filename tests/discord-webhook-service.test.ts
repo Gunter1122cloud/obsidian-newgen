@@ -23,7 +23,7 @@ describe("DiscordWebhookService", () => {
       embeds: Array<{ title: string; description: string }>;
     };
     expect(body.allowed_mentions.parse).toEqual([]);
-    expect(body.embeds[0]?.title).toBe("YARK connection test");
+    expect(body.embeds[0]?.title).toBe("Obsidian connection test");
     expect(body.embeds[0]?.description).toBe("Discord notifications are configured correctly.");
   });
 

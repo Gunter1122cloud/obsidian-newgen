@@ -27,7 +27,9 @@ export function AppBusyOverlay({ content }: Props): ReactElement {
     >
       <div className={classes.panel}>
         <Stack gap="sm" align="center">
-          <Loader size="md" color="blue" />
+          <div className={classes.radar} aria-hidden="true">
+            <Loader size="md" color="blue" />
+          </div>
           <Text id="app-busy-overlay-title" size="sm" fw={600} ta="center">
             {content.title}
           </Text>
@@ -37,8 +39,8 @@ export function AppBusyOverlay({ content }: Props): ReactElement {
           <Progress
             className={classes.progress}
             value={content.percent ?? 12}
-            animated
-            striped
+            animated={content.percent == null}
+            striped={content.percent == null}
             size="sm"
             radius="xl"
             aria-label={label}

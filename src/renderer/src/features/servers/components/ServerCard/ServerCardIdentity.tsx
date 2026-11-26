@@ -3,6 +3,7 @@ import { Group, Text, UnstyledButton } from "@mantine/core";
 import { CaretRight } from "@phosphor-icons/react";
 import type { ServerProfile } from "@shared/types";
 import { MapArtThumb } from "@ui/MapArtThumb/MapArtThumb";
+import { resolveNewGenCover } from "@ui/MapArtThumb/newGenCover";
 import classes from "./ServerCard.module.css";
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 
 export function ServerCardIdentity(props: Props): ReactElement {
   const { server, compact, openLabel, onOpenWorkspace } = props;
+  const cover = resolveNewGenCover(server.map);
 
   return (
     <UnstyledButton
@@ -21,7 +23,9 @@ export function ServerCardIdentity(props: Props): ReactElement {
       onClick={onOpenWorkspace}
       aria-label={openLabel}
       data-open-settings
+      data-newgen-cover={cover !== null || undefined}
     >
+      {cover !== null && <img className={classes.cover} src={cover} alt="" draggable={false} />}
       <Group gap={compact ? "xs" : "sm"} align="center" wrap="nowrap" className={classes.identity}>
         <MapArtThumb
           mapId={server.map}

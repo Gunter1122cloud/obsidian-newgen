@@ -43,7 +43,7 @@ export class DiscordWebhookService {
 
   async test(webhookUrl: string, description?: string): Promise<void> {
     await this.deliver(webhookUrl, {
-      title: "YARK connection test",
+      title: "Obsidian connection test",
       description: description ?? "Discord notifications are configured correctly.",
       color: 0x5865f2,
     });
@@ -156,7 +156,7 @@ export class DiscordWebhookService {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          username: "YARK",
+          username: "Obsidian Command NewGen",
           allowed_mentions: { parse: [] },
           embeds: [{ ...embed, timestamp: new Date(this.now()).toISOString() }],
         }),

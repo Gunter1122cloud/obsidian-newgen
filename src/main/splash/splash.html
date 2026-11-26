@@ -6,11 +6,11 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'none'; style-src 'unsafe-inline';"
     />
-    <title>YARK server manager</title>
+    <title>Obsidian Command NewGen</title>
     <style>
       :root {
-        --bg: #0d1526;
-        --cyan: #90b5ff;
+        --bg: #17130e;
+        --cyan: #e5c37d;
         --ink: #f4f7fb;
         --muted: #b4c2d8;
       }
@@ -36,8 +36,10 @@
         display: grid;
         place-items: center;
         background:
-          radial-gradient(ellipse 70% 55% at 50% 28%, rgba(77, 124, 220, 0.22), transparent 62%),
-          radial-gradient(ellipse 50% 40% at 50% 100%, rgba(14, 28, 58, 0.9), transparent 70%),
+          repeating-linear-gradient(0deg, transparent 0 39px, rgba(229, 195, 125, 0.05) 39px 40px),
+          repeating-linear-gradient(90deg, transparent 0 39px, rgba(229, 195, 125, 0.05) 39px 40px),
+          radial-gradient(ellipse 70% 55% at 50% 28%, rgba(180, 133, 55, 0.22), transparent 62%),
+          radial-gradient(ellipse 50% 40% at 50% 100%, rgba(32, 23, 12, 0.9), transparent 70%),
           var(--bg);
       }
 
@@ -88,6 +90,74 @@
         }
       }
 
+      .stage {
+        position: relative;
+        isolation: isolate;
+      }
+
+      .stage::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        width: 340px;
+        height: 340px;
+        top: 2px;
+        left: 50%;
+        margin-left: -170px;
+        border: 1px dashed rgba(229, 195, 125, 0.27);
+        border-radius: 50%;
+        animation: tactical-orbit 28s linear infinite;
+      }
+
+      .mark {
+        animation: tactical-arrival 700ms ease-out both;
+      }
+
+      .loading-track {
+        width: min(240px, 72vw);
+        height: 3px;
+        margin-top: 18px;
+        overflow: hidden;
+        background: rgba(229, 195, 125, 0.16);
+      }
+
+      .loading-track::after {
+        display: block;
+        width: 36%;
+        height: 100%;
+        content: "";
+        background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+        animation: tactical-sweep 1.7s ease-in-out infinite;
+      }
+
+      @keyframes tactical-orbit {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes tactical-arrival {
+        from {
+          opacity: 0;
+          transform: scale(0.94);
+        }
+
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @keyframes tactical-sweep {
+        from {
+          transform: translateX(-100%);
+        }
+
+        to {
+          transform: translateX(380%);
+        }
+      }
+
       .meta {
         margin: 8px 0 0;
         color: var(--muted);
@@ -130,6 +200,17 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
+        .stage::before,
+        .mark,
+        .loading-track::after {
+          animation: none !important;
+        }
+
+        .loading-track::after {
+          width: 100%;
+          opacity: 0.45;
+        }
+
         .dot {
           animation: none !important;
           opacity: 1 !important;
@@ -143,12 +224,13 @@
     </style>
   </head>
   <body>
-    <main class="stage" aria-label="YARK server manager is starting">
+    <main class="stage" aria-label="Obsidian Command NewGen is starting">
       <div class="mark">__YARK_SPLASH_SVG__</div>
       <p class="meta" id="version">__YARK_VERSION__</p>
       <p class="status" aria-live="polite">
         Starting<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
       </p>
+      <div class="loading-track" aria-hidden="true"></div>
     </main>
   </body>
 </html>

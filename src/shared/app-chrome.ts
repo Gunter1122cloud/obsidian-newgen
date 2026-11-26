@@ -16,7 +16,7 @@ import { DEFAULT_THEME_SCHEME, parseAppearanceSettings, type ThemeScheme } from 
  */
 
 /** Navy behind the brand lockup - the splash document and the sidebar plate. */
-export const BRAND_PLATE_BACKGROUND = "#0d1526";
+export const BRAND_PLATE_BACKGROUND = "#17130e";
 
 /*
  * Crash-screen literals. The boundary renders when the providers themselves are what threw, so
@@ -25,12 +25,12 @@ export const BRAND_PLATE_BACKGROUND = "#0d1526";
  * change has one place to update and `app-chrome.test.ts` can fail if they drift from the
  * rendered ramp instead of relying on someone noticing.
  */
-export const ERROR_SCREEN_BACKGROUND = "#010306";
-export const ERROR_SCREEN_TEXT = "#e6effd";
-export const ERROR_SCREEN_MUTED = "#aabedb";
+export const ERROR_SCREEN_BACKGROUND = "#080706";
+export const ERROR_SCREEN_TEXT = "#f1eadd";
+export const ERROR_SCREEN_MUTED = "#c5b9a4";
 
 const BOOTSTRAP_BACKGROUNDS: Record<ThemeScheme, string> = {
-  dark: "#010306",
+  dark: "#080706",
   light: "#dce0e6",
 };
 

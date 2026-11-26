@@ -15,9 +15,9 @@ export function QuitYarkModal(props: Props): ReactElement {
       opened={props.opened}
       onClose={props.onClose}
       onConfirm={props.onConfirm}
-      title="Quit YARK?"
+      title="Quit Obsidian?"
       meta="Closes the server manager on this PC"
-      confirmLabel="Quit YARK"
+      confirmLabel="Quit Obsidian"
       contentProps={{ "data-yark-quit-modal": "" }}
       titleProps={{ "data-yark-quit-modal-title": "" }}
       confirmProps={{ "data-yark-quit-confirm": "" }}

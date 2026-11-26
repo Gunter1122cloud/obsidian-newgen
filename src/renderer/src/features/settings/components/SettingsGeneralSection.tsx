@@ -35,7 +35,7 @@ export function SettingsGeneralSection(props: Props): ReactElement {
               Close window to tray
             </Text>
             <Text size="xs" c="dimmed" mt={2}>
-              Closing the window hides YARK in the tray. Use the tray icon or Quit to show it again or exit.
+              Closing the window hides Obsidian in the tray. Use the tray icon or Quit to show it again or exit.
             </Text>
           </div>
           <div className={classes.settingControl}>
@@ -109,10 +109,10 @@ export function SettingsGeneralSection(props: Props): ReactElement {
           <div className={classes.settingGroupChild}>
             <div className={classes.settingCopy}>
               <Text size="sm" fw={600}>
-                YARK updates
+                Obsidian updates
               </Text>
               <Text size="xs" c="dimmed" mt={2}>
-                When a new YARK version is available or ready to install.
+                When a new Obsidian version is available or ready to install.
               </Text>
             </div>
             <div className={classes.settingControl}>
@@ -120,7 +120,7 @@ export function SettingsGeneralSection(props: Props): ReactElement {
                 checked={props.osNotifyYarkUpdate}
                 disabled={!props.desktopShellReady || !props.osNotifyEnabled}
                 onChange={(event) => props.onOsNotifyYarkUpdateChange(event.currentTarget.checked)}
-                aria-label="Alert on YARK updates"
+                aria-label="Alert on Obsidian updates"
               />
             </div>
           </div>
@@ -132,7 +132,7 @@ export function SettingsGeneralSection(props: Props): ReactElement {
                   Hide to tray
                 </Text>
                 <Text size="xs" c="dimmed" mt={2}>
-                  Reminder that YARK is still running after you close the window.
+                  Reminder that Obsidian is still running after you close the window.
                 </Text>
               </div>
               <div className={classes.settingControl}>
@@ -153,7 +153,7 @@ export function SettingsGeneralSection(props: Props): ReactElement {
               Start with Windows
             </Text>
             <Text size="xs" c="dimmed" mt={2}>
-              Open YARK at Windows sign-in. Does not start dedicated servers.
+              Open Obsidian at Windows sign-in. Does not start dedicated servers.
             </Text>
           </div>
           <div className={classes.settingControl}>
@@ -161,7 +161,7 @@ export function SettingsGeneralSection(props: Props): ReactElement {
               checked={props.startWithWindows}
               disabled={!props.desktopShellReady}
               onChange={(event) => props.onStartWithWindowsChange(event.currentTarget.checked)}
-              aria-label="Start YARK with Windows"
+              aria-label="Start Obsidian with Windows"
             />
           </div>
         </div>

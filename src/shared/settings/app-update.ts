@@ -1,7 +1,7 @@
-/** YARK desktop self-update status (distinct from ASA/SteamCMD updates). */
+/** Obsidian desktop self-update status (distinct from ASA/SteamCMD updates). */
 
-const YARK_GITHUB_OWNER = "gabomarin";
-const YARK_GITHUB_REPO = "yark";
+const YARK_GITHUB_OWNER = "Gunter1122cloud";
+const YARK_GITHUB_REPO = "obsidian-newgen";
 export const YARK_RELEASES_URL = `https://github.com/${YARK_GITHUB_OWNER}/${YARK_GITHUB_REPO}/releases`;
 /** List endpoint — `/releases/latest` 404s while every published tag is a GitHub prerelease (0.x). */
 export const YARK_RELEASES_API = `https://api.github.com/repos/${YARK_GITHUB_OWNER}/${YARK_GITHUB_REPO}/releases`;
@@ -14,7 +14,7 @@ export interface GithubReleaseRef {
 }
 
 /**
- * While YARK is still `0.x`, GitHub marks every release as prerelease (release workflow).
+ * While Obsidian is still `0.x`, GitHub marks every release as prerelease (release workflow).
  * Accept those until the installed app is `1.0.0+`, then require non-prerelease only.
  */
 export function allowsPrereleaseUpdates(currentVersion: string): boolean {
@@ -164,7 +164,7 @@ export function installBlockMessage(reason: AppUpdateInstallBlockReason | null):
     case "not-ready":
       return "Download the update before restarting to install.";
     case "servers-running":
-      return "Stop all ARK servers before installing a YARK update.";
+      return "Stop all ARK servers before installing a Obsidian update.";
     case "critical-job":
       return "Wait for SteamCMD or backup jobs to finish before installing.";
     case "operation-in-progress":
@@ -254,7 +254,7 @@ export function operatorFacingAppUpdateError(error: unknown): string {
   const raw = error instanceof Error ? error.message : String(error);
   const firstLine = (raw.split(/\r?\n/)[0] ?? raw).trim();
   if (firstLine.length === 0) {
-    return "YARK update check failed.";
+    return "Obsidian update check failed.";
   }
   return firstLine.length > 200 ? `${firstLine.slice(0, 197)}...` : firstLine;
 }

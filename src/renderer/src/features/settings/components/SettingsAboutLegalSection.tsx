@@ -15,7 +15,8 @@ export function SettingsAboutLegalSection(): ReactElement {
         Third-party notices
       </Title>
       <Text size="sm" c="dimmed">
-        Credits for default INI templates, launch-options catalog copy, map artwork, and trademarks used in YARK.
+        Obsidian Command NewGen is a GPL-3.0-only fork of YARK by gabomarin and contributors. Original copyright,
+        license and third-party notices are retained.
       </Text>
       <Group gap="xs" align="center">
         <Anchor

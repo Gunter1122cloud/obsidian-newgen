@@ -8,7 +8,7 @@ afterEach(() => {
   cleanup();
 });
 
-describe("Sidebar YARK version update affordance", () => {
+describe("Sidebar Obsidian version update affordance", () => {
   it("marks Hosted Resources when diagnostics need attention", async () => {
     const user = userEvent.setup();
     render(
@@ -52,7 +52,7 @@ describe("Sidebar YARK version update affordance", () => {
     );
 
     const button = screen.getByRole("button", {
-      name: /what's new in yark v0\.5\.2/i,
+      name: /what's new in obsidian v0\.5\.2/i,
     });
     expect(button).toHaveAttribute("data-yark-app-version");
     await user.click(button);
@@ -107,7 +107,7 @@ describe("Sidebar YARK version update affordance", () => {
     );
 
     const updateButton = screen.getByRole("button", {
-      name: /yark update available, version 0\.6\.0/i,
+      name: /obsidian update available, version 0\.6\.0/i,
     });
     expect(updateButton).toHaveAttribute("data-yark-update-version");
     expect(updateButton.querySelector("svg")).not.toBeNull();
@@ -115,7 +115,7 @@ describe("Sidebar YARK version update affordance", () => {
     expect(onYarkUpdateClick).toHaveBeenCalledTimes(1);
     expect(onWhatsNewClick).not.toHaveBeenCalled();
 
-    await user.click(screen.getByRole("button", { name: /what's new in yark v0\.5\.2/i }));
+    await user.click(screen.getByRole("button", { name: /what's new in obsidian v0\.5\.2/i }));
     expect(onWhatsNewClick).toHaveBeenCalledTimes(1);
     expect(onYarkUpdateClick).toHaveBeenCalledTimes(1);
   });
@@ -209,12 +209,12 @@ describe("Sidebar YARK version update affordance", () => {
       </AppProviders>,
     );
 
-    await user.hover(screen.getByAltText("YARK server manager"));
+    await user.hover(screen.getByAltText("Obsidian Command NewGen"));
     expect(await screen.findByRole("tooltip", { name: /Quick jump · Ctrl\+K/i })).toBeInTheDocument();
   });
 });
 
-describe("Sidebar Quit YARK (#532)", () => {
+describe("Sidebar Quit Obsidian (#532)", () => {
   afterEach(() => {
     cleanup();
   });
@@ -238,7 +238,7 @@ describe("Sidebar Quit YARK (#532)", () => {
       </AppProviders>,
     );
 
-    const quitButton = screen.getByRole("button", { name: "Quit YARK" });
+    const quitButton = screen.getByRole("button", { name: "Quit Obsidian" });
     expect(quitButton).toHaveAttribute("data-yark-quit");
 
     await user.hover(quitButton);
@@ -254,7 +254,7 @@ describe("Sidebar Quit YARK (#532)", () => {
     const dialog = await screen.findByRole("dialog");
     expect(dialog).toHaveAttribute("data-yark-quit-modal");
     expect(dialog).toHaveTextContent(/stopped safely first/i);
-    await user.click(within(dialog).getByRole("button", { name: "Quit YARK" }));
+    await user.click(within(dialog).getByRole("button", { name: "Quit Obsidian" }));
     expect(quitApp).toHaveBeenCalledTimes(1);
   });
 
@@ -277,7 +277,7 @@ describe("Sidebar Quit YARK (#532)", () => {
       </AppProviders>,
     );
 
-    await user.click(screen.getByRole("button", { name: "Quit YARK" }));
+    await user.click(screen.getByRole("button", { name: "Quit Obsidian" }));
     const dialog = await screen.findByRole("dialog");
     await user.click(within(dialog).getByRole("button", { name: "Cancel" }));
     expect(quitApp).not.toHaveBeenCalled();
@@ -303,6 +303,6 @@ describe("Sidebar Quit YARK (#532)", () => {
       </AppProviders>,
     );
 
-    expect(screen.getByRole("button", { name: "Quit YARK" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Quit Obsidian" })).toBeInTheDocument();
   });
 });

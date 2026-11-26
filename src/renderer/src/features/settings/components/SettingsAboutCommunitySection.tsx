@@ -11,7 +11,7 @@ export function SettingsAboutCommunitySection(): ReactElement {
         Community
       </Title>
       <Text size="sm" c="dimmed">
-        Source, issues, and operator chat for YARK.
+        NewGen source and issues, plus the Untamed Kingdom server community.
       </Text>
       <Group gap="sm" align="center" mt="xs">
         <Button

@@ -16,6 +16,12 @@ import {
 } from "../src/shared/settings/app-update";
 
 describe("app-update helpers", () => {
+  it("uses the NewGen release channel, not the upstream YARK release channel", () => {
+    expect(createIdleAppUpdateStatus("0.28.0", true).releasePageUrl).toBe(
+      "https://github.com/Gunter1122cloud/obsidian-newgen/releases",
+    );
+  });
+
   it("strips optional v prefix", () => {
     expect(stripVersionPrefix("v1.2.3")).toBe("1.2.3");
     expect(stripVersionPrefix("1.2.3")).toBe("1.2.3");

@@ -33,7 +33,7 @@ export interface AppUpdateSafetyGate {
 type StatusListener = (status: AppUpdateStatus) => void;
 
 /**
- * YARK desktop self-update via electron-updater + GitHub Releases (#165).
+ * Obsidian desktop self-update via electron-updater + GitHub Releases (#165).
  * Never auto-downloads; install only after explicit operator action + safety gates.
  */
 export class AppUpdateService {
@@ -71,7 +71,7 @@ export class AppUpdateService {
       // Do not wipe a finished/in-progress download with the startup check.
       if (isAppUpdateInFlight(this.status.phase)) return;
       void this.checkForUpdate({ quiet: true }).catch((error: unknown) => {
-        console.error("Quiet YARK update check failed", error);
+        console.error("Quiet Obsidian update check failed", error);
       });
     }, delayMs);
     this.startupTimer.unref();
@@ -145,7 +145,7 @@ export class AppUpdateService {
 
     if (isTransientAppUpdateFeedError(error)) {
       if (quiet) {
-        console.warn("Quiet YARK update check: update feed not ready yet", error);
+        console.warn("Quiet Obsidian update check: update feed not ready yet", error);
         this.emit({
           ...this.status,
           phase: restorePhaseAfterQuietFeedFailure(phaseBeforeCheck),
@@ -161,11 +161,11 @@ export class AppUpdateService {
           await this.checkViaGitHubApi();
           return this.getStatus();
         } catch (fallbackError: unknown) {
-          console.warn("YARK update feed missing; GitHub API fallback also failed", fallbackError);
+          console.warn("Obsidian update feed missing; GitHub API fallback also failed", fallbackError);
         }
       }
 
-      console.warn("YARK update feed not ready; showing short operator copy", error);
+      console.warn("Obsidian update feed not ready; showing short operator copy", error);
       this.emit({
         ...this.status,
         phase: "error",
@@ -175,7 +175,7 @@ export class AppUpdateService {
       return this.getStatus();
     }
 
-    console.error("YARK update check failed", error);
+    console.error("Obsidian update check failed", error);
     this.emit({
       ...this.status,
       phase: "error",
@@ -191,7 +191,7 @@ export class AppUpdateService {
     }
     if (this.status.phase !== "available" && this.status.phase !== "ready") {
       if (this.status.phase !== "downloading") {
-        throw new Error("Check for a YARK update before downloading.");
+        throw new Error("Check for a Obsidian update before downloading.");
       }
     }
 
@@ -216,7 +216,7 @@ export class AppUpdateService {
       }
       return this.getStatus();
     } catch (error: unknown) {
-      console.error("YARK update download failed", error);
+      console.error("Obsidian update download failed", error);
       const message = operatorFacingAppUpdateError(error);
       this.emit({
         ...this.status,
@@ -327,10 +327,10 @@ export class AppUpdateService {
         return;
       }
       if (!isAppUpdateInFlight(this.status.phase) && isTransientAppUpdateFeedError(error)) {
-        console.warn("YARK updater: transient feed error ignored", error);
+        console.warn("Obsidian updater: transient feed error ignored", error);
         return;
       }
-      console.error("YARK updater error", error);
+      console.error("Obsidian updater error", error);
       this.emit({
         ...this.status,
         phase: "error",
@@ -377,7 +377,7 @@ export class AppUpdateService {
     const response = await fetch(`${YARK_RELEASES_API}?per_page=20`, {
       headers: {
         Accept: "application/vnd.github+json",
-        "User-Agent": `YARK-server-manager/${this.currentVersion}`,
+        "User-Agent": `Obsidian-server-manager/${this.currentVersion}`,
       },
     });
     if (!response.ok) {

@@ -12,7 +12,7 @@ export interface AppTrayOptions {
 }
 
 /**
- * Create (or replace) the Windows/Linux system tray icon for YARK.
+ * Create (or replace) the Windows/Linux system tray icon for Obsidian.
  * Returns null when no usable icon file exists.
  */
 export function createAppTray(options: AppTrayOptions): Tray | null {
@@ -26,7 +26,7 @@ export function createAppTray(options: AppTrayOptions): Tray | null {
   }
 
   const tray = new Tray(image);
-  tray.setToolTip("YARK");
+  tray.setToolTip("Obsidian");
   applyTrayContextMenu(tray, options);
   tray.on("double-click", () => options.onShow());
   tray.on("click", () => options.onShow());
@@ -37,7 +37,7 @@ export function applyTrayContextMenu(tray: Tray, options: AppTrayOptions): void 
   tray.setContextMenu(
     Menu.buildFromTemplate([
       {
-        label: "Show YARK",
+        label: "Show Obsidian",
         click: () => options.onShow(),
       },
       { type: "separator" },
@@ -47,7 +47,7 @@ export function applyTrayContextMenu(tray: Tray, options: AppTrayOptions): void 
       },
       { type: "separator" },
       {
-        label: "Quit YARK",
+        label: "Quit Obsidian",
         click: () => options.onQuit(),
       },
     ]),

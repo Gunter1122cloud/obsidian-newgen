@@ -9,6 +9,16 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
+### Added
+
+- Extend Hungarian UI localization to shared page headings, workspace tabs, settings navigation, server status, metadata and common dialog controls.
+
+- Bundle original tactical map illustrations, optimized user-provided texture and CC0 particles, optional interface sounds, animated atmosphere and workspace hero treatment.
+
+- Tactical NewGen dashboard with responsive map cards, shared backdrop and optional background artwork, animated startup and busy overlays, and consistent modal and notification styling. Server engine and runtime actions are unchanged.
+
+- Obsidian Command NewGen Windows release integrity checks for the Setup, Portable, update manifest and SHA-256 checksums.
+
 ### Changed
 
 - Dependencies: Mantine and mantine-datatable **9.8**, Electron **43.8.13**, React **19.3**, plus electron-builder/updater and tooling patches (knip, Playwright, Prettier, TypeScript-ESLint). Theme sets **cursorType pointer** so Button/ActionIcon keep the hand cursor after Mantine 9.8 stopped hardcoding it on UnstyledButton.

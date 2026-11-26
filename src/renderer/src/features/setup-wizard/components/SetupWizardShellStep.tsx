@@ -26,7 +26,7 @@ export function SetupWizardShellStep(props: Props): ReactElement {
       <div>
         <Title order={4}>Windows shell</Title>
         <Text size="xs" c="dimmed" mt={2}>
-          How YARK sits on this PC. Changes apply right away.
+          How Obsidian sits on this PC. Changes apply right away.
         </Text>
       </div>
 
@@ -37,7 +37,7 @@ export function SetupWizardShellStep(props: Props): ReactElement {
           </Text>
           <Text size="xs" c="dimmed" mt={2}>
             Opens the ARK dedicated-server console window when a server starts, including Start, Restart, and Auto-start
-            with YARK.
+            with Obsidian.
           </Text>
         </div>
         <div className={classes.settingControl}>
@@ -55,7 +55,7 @@ export function SetupWizardShellStep(props: Props): ReactElement {
             Start with Windows
           </Text>
           <Text size="xs" c="dimmed" mt={2}>
-            Open YARK when you sign in. Dedicated servers start only if you enable auto-start on each one.
+            Open Obsidian when you sign in. Dedicated servers start only if you enable auto-start on each one.
           </Text>
         </div>
         <div className={classes.settingControl}>
@@ -63,7 +63,7 @@ export function SetupWizardShellStep(props: Props): ReactElement {
             checked={desktopShell.startWithWindows}
             disabled={!desktopShell.desktopShellReady}
             onChange={(event) => desktopShell.onStartWithWindowsChange(event.currentTarget.checked)}
-            aria-label="Start YARK with Windows"
+            aria-label="Start Obsidian with Windows"
           />
         </div>
       </div>
@@ -74,7 +74,7 @@ export function SetupWizardShellStep(props: Props): ReactElement {
             Close window to tray
           </Text>
           <Text size="xs" c="dimmed" mt={2}>
-            The close button hides YARK in the tray. Servers keep running until you quit from the tray menu or the
+            The close button hides Obsidian in the tray. Servers keep running until you quit from the tray menu or the
             sidebar Quit control.
           </Text>
         </div>

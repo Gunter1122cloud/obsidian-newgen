@@ -1,8 +1,8 @@
 {
   "name": "yark-server-manager",
   "version": "0.28.0",
-  "description": "YARK server manager — local ARK Survival Ascended dedicated server manager for Windows",
-  "homepage": "https://getyark.com",
+  "description": "Obsidian Command NewGen — local ARK Survival Ascended dedicated server manager for Windows",
+  "homepage": "https://github.com/Gunter1122cloud/obsidian-newgen",
   "main": "out/main/index.js",
   "author": "gabomarin26",
   "license": "GPL-3.0-only",
@@ -125,8 +125,8 @@
     "vitest": "^3.0.5"
   },
   "build": {
-    "appId": "com.yark.servermanager",
-    "productName": "YARK server manager",
+    "appId": "com.obsidian.newgen",
+    "productName": "Obsidian Command NewGen",
     "asar": true,
     "directories": {
       "buildResources": "build",
@@ -142,16 +142,22 @@
       }
     ],
     "win": {
-      "target": "nsis",
+      "target": [
+        "nsis",
+        "portable"
+      ],
       "icon": "icon.ico"
     },
-    "artifactName": "YARK-server-manager-Setup-${version}.${ext}",
     "nsis": {
+      "artifactName": "Obsidian-NewGen-Setup-${version}.${ext}",
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "license": "LICENSE"
+    },
+    "portable": {
+      "artifactName": "Obsidian-NewGen-Portable-${version}.${ext}"
     },
     "electronFuses": {
       "runAsNode": false,
@@ -166,8 +172,8 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "gabomarin",
-        "repo": "yark"
+        "owner": "Gunter1122cloud",
+        "repo": "obsidian-newgen"
       }
     ]
   }

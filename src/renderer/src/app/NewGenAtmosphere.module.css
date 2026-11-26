@@ -1,0 +1,63 @@
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.3;
+}
+
+.smoke {
+  position: absolute;
+  inset: 45% -15% -35%;
+  background: url("../assets/newgen/smoke.webp") center / 65% 100% no-repeat;
+  opacity: 0.14;
+  filter: blur(20px);
+  animation: drift 30s ease-in-out infinite alternate;
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+  background-image: url("../assets/newgen/particle.webp");
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  background-position: 78% 76%;
+  filter: drop-shadow(0 0 3px #b48537);
+  opacity: 0.45;
+  animation: ascend 13s linear infinite;
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-7%);
+  }
+  to {
+    transform: translateX(7%);
+  }
+}
+
+@keyframes ascend {
+  from {
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.45;
+  }
+  to {
+    transform: translateY(-65%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atmosphere {
+    display: none;
+  }
+}
+
+:global([data-newgen-background="off"]) .atmosphere,
+:global([data-mantine-color-scheme="light"]) .atmosphere {
+  display: none;
+}

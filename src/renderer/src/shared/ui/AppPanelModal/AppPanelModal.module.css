@@ -78,3 +78,19 @@
 .footer[data-align="between"] {
   justify-content: space-between;
 }
+
+:global([data-mantine-color-scheme="dark"]) .content {
+  border-color: #82704f;
+  border-radius: 6px;
+  background: linear-gradient(160deg, #242726, #151718);
+  box-shadow: 0 20px 64px rgba(0, 0, 0, 0.6);
+}
+
+:global([data-mantine-color-scheme="dark"]) .header {
+  background: linear-gradient(110deg, #2a2d2c, #181b1c);
+  border-bottom-color: rgba(181, 157, 109, 0.35);
+}
+
+:global([data-mantine-color-scheme="dark"]) .body {
+  background: transparent;
+}

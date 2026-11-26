@@ -92,7 +92,7 @@ export function SettingsYarkUpdateSection(props: Props): ReactElement {
         try {
           const result = await window.api.checkForAppUpdate();
           if (!result.ok) {
-            setActionError(result.error ?? "Could not check for YARK updates");
+            setActionError(result.error ?? "Could not check for Obsidian updates");
             setStatus((prev) => {
               if (prev.phase === "downloading" || prev.phase === "ready") {
                 return prev;
@@ -100,14 +100,14 @@ export function SettingsYarkUpdateSection(props: Props): ReactElement {
               return {
                 ...prev,
                 phase: "error",
-                error: result.error ?? "Could not check for YARK updates",
+                error: result.error ?? "Could not check for Obsidian updates",
               };
             });
             return;
           }
           setStatus(result.data);
         } catch (cause) {
-          const message = actionFailureMessage(cause, "Could not check for YARK updates");
+          const message = actionFailureMessage(cause, "Could not check for Obsidian updates");
           setActionError(message);
           setStatus((prev) => {
             if (prev.phase === "downloading" || prev.phase === "ready") {
@@ -136,12 +136,12 @@ export function SettingsYarkUpdateSection(props: Props): ReactElement {
         try {
           const result = await window.api.downloadAppUpdate();
           if (!result.ok) {
-            setActionError(result.error ?? "Could not download the YARK update");
+            setActionError(result.error ?? "Could not download the Obsidian update");
             return;
           }
           setStatus(result.data);
         } catch (cause) {
-          setActionError(actionFailureMessage(cause, "Could not download the YARK update"));
+          setActionError(actionFailureMessage(cause, "Could not download the Obsidian update"));
         }
       },
       () => {
@@ -158,10 +158,10 @@ export function SettingsYarkUpdateSection(props: Props): ReactElement {
         try {
           const result = await window.api.installAppUpdate();
           if (!result.ok) {
-            setActionError(result.error ?? "Could not install the YARK update");
+            setActionError(result.error ?? "Could not install the Obsidian update");
           }
         } catch (cause) {
-          setActionError(actionFailureMessage(cause, "Could not install the YARK update"));
+          setActionError(actionFailureMessage(cause, "Could not install the Obsidian update"));
         }
       },
       () => {
@@ -190,7 +190,7 @@ export function SettingsYarkUpdateSection(props: Props): ReactElement {
       <Group justify="space-between" align="center" gap="sm" wrap="wrap">
         <Group gap="xs" align="baseline" wrap="wrap" className={classes.settingCopy}>
           <Title order={3} size="h4" id="settings-yark-updates">
-            YARK updates
+            Obsidian updates
           </Title>
           <Text size="xs" c="dimmed" data-yark-update-status>
             v{props.appVersion} · {statusLabel(status)}

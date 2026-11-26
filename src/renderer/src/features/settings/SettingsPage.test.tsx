@@ -102,7 +102,7 @@ function stubSettingsApi(overrides: Record<string, unknown> = {}): void {
         percent: null,
         error: null,
         isPackaged: true,
-        releasePageUrl: "https://github.com/gabomarin/yark/releases",
+        releasePageUrl: "https://github.com/Gunter1122cloud/obsidian-newgen/releases",
         releaseNotesUrl: null,
         installBlockedReason: "not-ready",
         installBlockedMessage: "Download the update before restarting to install.",
@@ -117,7 +117,7 @@ function stubSettingsApi(overrides: Record<string, unknown> = {}): void {
         percent: null,
         error: null,
         isPackaged: true,
-        releasePageUrl: "https://github.com/gabomarin/yark/releases",
+        releasePageUrl: "https://github.com/Gunter1122cloud/obsidian-newgen/releases",
         releaseNotesUrl: null,
         installBlockedReason: "not-ready",
         installBlockedMessage: "Download the update before restarting to install.",
@@ -257,12 +257,12 @@ describe("SettingsPage", () => {
     expect(screen.getByText("Desktop alerts")).toBeInTheDocument();
     expect(screen.getByText("Server crash")).toBeInTheDocument();
     expect(screen.getByText("Installs and updates")).toBeInTheDocument();
-    expect(screen.getByText("YARK updates")).toBeInTheDocument();
+    expect(screen.getByText("Obsidian updates")).toBeInTheDocument();
     expect(screen.getByText("Hide to tray")).toBeInTheDocument();
     expect(screen.queryByText("On quit with active servers")).not.toBeInTheDocument();
     expect(screen.queryByText("Show server console on start")).not.toBeInTheDocument();
     expect(document.querySelector(STEAMCMD_PATH_SELECTOR)).toBeNull();
-    expect(screen.queryByText(/YARK server manager · v0.1.0/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Obsidian Command NewGen · v0.1.0/i)).not.toBeInTheDocument();
 
     const user = userEvent.setup();
     await openCategory(user, "SteamCMD");
@@ -422,14 +422,14 @@ describe("SettingsPage", () => {
     expect(screen.getByRole("radio", { name: "Breeze Dark" })).toBeInTheDocument();
   });
 
-  it("shows the background image switch only for Glassy", async () => {
+  it("shows the background image switch for Fluent and Glassy", async () => {
     const user = userEvent.setup();
     const onBackgroundImageChange = vi.fn();
     stubSettingsApi();
 
     const view = renderSettings({ family: "fluent", backgroundImage: true, onBackgroundImageChange });
     await openCategory(user, "Appearance");
-    expect(screen.queryByRole("switch", { name: "Background image" })).not.toBeInTheDocument();
+    expect(screen.getByRole("switch", { name: "Background image" })).toBeChecked();
 
     view.rerender(
       <AppProviders>
@@ -541,7 +541,7 @@ describe("SettingsPage", () => {
     expect(screen.getByRole("switch", { name: "Desktop alerts" })).not.toBeChecked();
     expect(screen.getByRole("switch", { name: "Alert on server crash" })).toBeDisabled();
     expect(screen.getByRole("switch", { name: "Alert on installs and updates" })).toBeDisabled();
-    expect(screen.getByRole("switch", { name: "Alert on YARK updates" })).toBeDisabled();
+    expect(screen.getByRole("switch", { name: "Alert on Obsidian updates" })).toBeDisabled();
     expect(screen.getByRole("switch", { name: "Alert when hiding to tray" })).toBeDisabled();
   });
 
@@ -572,7 +572,7 @@ describe("SettingsPage", () => {
     expect(screen.queryByText("Hide to tray")).not.toBeInTheDocument();
     expect(screen.getByText("Server crash")).toBeInTheDocument();
     expect(screen.getByText("Installs and updates")).toBeInTheDocument();
-    expect(screen.getByText("YARK updates")).toBeInTheDocument();
+    expect(screen.getByText("Obsidian updates")).toBeInTheDocument();
   });
 
   it("expands caches and supports open/clear actions", async () => {
@@ -826,7 +826,7 @@ describe("SettingsPage", () => {
     });
   });
 
-  it("checks for YARK updates and shows an available status", async () => {
+  it("checks for Obsidian updates and shows an available status", async () => {
     const user = userEvent.setup();
     const checkForAppUpdate = vi.fn().mockResolvedValue({
       ok: true,
@@ -837,8 +837,8 @@ describe("SettingsPage", () => {
         percent: null,
         error: null,
         isPackaged: true,
-        releasePageUrl: "https://github.com/gabomarin/yark/releases",
-        releaseNotesUrl: "https://github.com/gabomarin/yark/releases/tag/v0.2.0",
+        releasePageUrl: "https://github.com/Gunter1122cloud/obsidian-newgen/releases",
+        releaseNotesUrl: "https://github.com/Gunter1122cloud/obsidian-newgen/releases/tag/v0.2.0",
         installBlockedReason: "not-ready",
         installBlockedMessage: "Download the update before restarting to install.",
       },
@@ -851,7 +851,7 @@ describe("SettingsPage", () => {
     await waitFor(() => {
       expect(window.api.getAppUpdateStatus).toHaveBeenCalled();
     });
-    expect(screen.getByText("YARK updates")).toBeInTheDocument();
+    expect(screen.getByText("Obsidian updates")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /Check now/i }));
     await waitFor(() => {
       expect(checkForAppUpdate).toHaveBeenCalled();
@@ -859,7 +859,7 @@ describe("SettingsPage", () => {
     });
   });
 
-  it("opens the in-app What's new changelog from YARK updates (#290)", async () => {
+  it("opens the in-app What's new changelog from Obsidian updates (#290)", async () => {
     const user = userEvent.setup();
     stubSettingsApi();
     renderSettings({ appVersion: "0.11.0" });
@@ -902,11 +902,11 @@ describe("SettingsPage", () => {
     await openCategory(user, "About");
 
     const github = screen.getByRole("link", { name: /^GitHub$/i });
-    expect(github).toHaveAttribute("href", "https://github.com/gabomarin/yark");
+    expect(github).toHaveAttribute("href", "https://github.com/Gunter1122cloud/obsidian-newgen");
     expect(github).toHaveAttribute("target", "_blank");
 
     const discord = screen.getByRole("link", { name: /^Discord$/i });
-    expect(discord).toHaveAttribute("href", "https://discord.gg/DQ8nes63w7");
+    expect(discord).toHaveAttribute("href", "https://discord.gg/kRZrgyegr");
     expect(discord).toHaveAttribute("target", "_blank");
   });
 
@@ -917,7 +917,10 @@ describe("SettingsPage", () => {
     await openCategory(user, "About");
 
     const link = screen.getByRole("link", { name: /View on GitHub/i });
-    expect(link).toHaveAttribute("href", "https://github.com/gabomarin/yark/blob/main/THIRD_PARTY_NOTICES.md");
+    expect(link).toHaveAttribute(
+      "href",
+      "https://github.com/Gunter1122cloud/obsidian-newgen/blob/main/THIRD_PARTY_NOTICES.md",
+    );
     expect(link).toHaveAttribute("target", "_blank");
   });
 });

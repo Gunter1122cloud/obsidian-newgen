@@ -15,7 +15,9 @@
   justify-content: space-between;
   gap: var(--app-space-md);
   flex-wrap: wrap;
-  margin-bottom: var(--app-space-lg);
+  margin-bottom: var(--app-space-md);
+  padding-bottom: var(--app-space-sm);
+  border-bottom: 1px solid var(--app-color-border-subtle);
 }
 
 .fleetReadouts {
@@ -63,7 +65,7 @@
   min-width: 0;
   min-height: 0;
   padding: var(--app-overview-stage-pad);
-  border: var(--app-overview-stage-border);
+  border: 1px solid var(--app-color-border-subtle);
   border-radius: var(--app-collection-radius);
   background: var(--app-overview-stage-bg);
 }
@@ -289,4 +291,27 @@
   .serverSkeletonMeta {
     display: none;
   }
+}
+
+/* Tactical command deck: cards wrap with the available content width. */
+.serverGrid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 14px;
+}
+
+.serverGrid > :global([data-server-card]) + :global([data-server-card]) {
+  border-top-width: 1px;
+}
+
+:global([data-mantine-color-scheme="dark"]) .serverSection {
+  padding: 14px;
+  border: 1px solid rgba(181, 157, 109, 0.22);
+  border-radius: 6px;
+  background: rgba(12, 14, 15, 0.46);
+}
+
+:global([data-mantine-color-scheme="dark"]) .recentSection {
+  border-color: rgba(181, 157, 109, 0.3);
+  border-radius: 6px;
+  background: linear-gradient(150deg, rgba(34, 35, 33, 0.93), rgba(15, 17, 18, 0.93));
 }

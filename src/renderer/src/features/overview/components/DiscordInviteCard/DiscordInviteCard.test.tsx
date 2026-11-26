@@ -21,11 +21,11 @@ describe("DiscordInviteCard (#567)", () => {
   it("shows the promo card on Overview until dismissed", () => {
     renderCard();
 
-    expect(screen.getByText("Join the YARK Discord")).toBeInTheDocument();
+    expect(screen.getByText("Join the Untamed Kingdom Discord")).toBeInTheDocument();
     expect(screen.getByText("Get help, share ARK server tips, and stay up to date.")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Open Discord" })).toHaveAttribute("href", "https://discord.gg/DQ8nes63w7");
+    expect(screen.getByRole("link", { name: "Open Discord" })).toHaveAttribute("href", "https://discord.gg/kRZrgyegr");
     expect(screen.getByRole("button", { name: "Dismiss Discord invite" })).toBeInTheDocument();
-    expect(screen.getByRole("complementary")).toHaveAccessibleName("Join the YARK Discord");
+    expect(screen.getByRole("complementary")).toHaveAccessibleName("Join the Untamed Kingdom Discord");
   });
 
   it("hides the card and persists the dismissal on close", async () => {
@@ -34,7 +34,7 @@ describe("DiscordInviteCard (#567)", () => {
 
     await user.click(screen.getByRole("button", { name: "Dismiss Discord invite" }));
 
-    expect(screen.queryByText("Join the YARK Discord")).not.toBeInTheDocument();
+    expect(screen.queryByText("Join the Untamed Kingdom Discord")).not.toBeInTheDocument();
     expect(window.localStorage.getItem(DISCORD_INVITE_DISMISSED_STORAGE_KEY)).toBe(JSON.stringify(true));
   });
 
@@ -44,7 +44,7 @@ describe("DiscordInviteCard (#567)", () => {
 
     await user.click(screen.getByRole("link", { name: "Open Discord" }));
 
-    expect(screen.queryByText("Join the YARK Discord")).not.toBeInTheDocument();
+    expect(screen.queryByText("Join the Untamed Kingdom Discord")).not.toBeInTheDocument();
     expect(window.localStorage.getItem(DISCORD_INVITE_DISMISSED_STORAGE_KEY)).toBe(JSON.stringify(true));
   });
 
@@ -53,7 +53,7 @@ describe("DiscordInviteCard (#567)", () => {
 
     renderCard();
 
-    expect(screen.queryByText("Join the YARK Discord")).not.toBeInTheDocument();
+    expect(screen.queryByText("Join the Untamed Kingdom Discord")).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Open Discord" })).not.toBeInTheDocument();
   });
 });

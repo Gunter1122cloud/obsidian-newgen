@@ -25,11 +25,12 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { useUiDensity } from "@app/AppProviders";
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
 import type { OfficialNetworkStatus } from "@shared/types";
 import type { HostedResourcesHealth } from "@features/hosted-resources/model/hostedResourcesHealth";
 import { navSelectedClassName } from "@ui/NavSelected/navSelectedClassName";
 import { Fragment } from "react";
-import yarkLogo from "../../assets/brand/yark-logo.png";
+import obsidianLogo from "../../assets/brand/obsidian-logo.svg";
 import { QuitYarkModal } from "./QuitYarkModal";
 import classes from "./Sidebar.module.css";
 
@@ -60,7 +61,7 @@ const NAV_ITEMS: NavItem[] = [
 
 /** Operator-facing hover copy for sidebar Quit (#532). */
 export const QUIT_YARK_TOOLTIP =
-  "Stops servers safely and closes YARK. Close the window to keep them running in the tray.";
+  "Stops servers safely and closes Obsidian. Close the window to keep them running in the tray.";
 
 interface Props {
   route: Route;
@@ -97,6 +98,16 @@ function officialVersionTooltip(version: string | null, networkStatus: OfficialN
 
 export function Sidebar(props: Props): ReactElement {
   const density = useUiDensity();
+  const { text } = useNewGenVisualPreferences();
+  const labels: Record<Route, string> = {
+    overview: "Szerverek",
+    clusters: "Klaszterek",
+    downloads: "Letöltések",
+    backups: "Mentések",
+    logs: "Naplók",
+    hostedResources: "Erőforrások",
+    settings: "Beállítások",
+  };
   const compact = density === "compact";
   const iconMode = props.iconMode === true;
   const [quitOpened, setQuitOpened] = useState(false);
@@ -160,7 +171,7 @@ export function Sidebar(props: Props): ReactElement {
       <div className={classes.brandRow}>
         <Tooltip label="Quick jump · Ctrl+K" position="right" withArrow openDelay={200}>
           <div className={classes.brand}>
-            <img src={yarkLogo} alt="YARK server manager" className={classes.brandLockup} draggable={false} />
+            <img src={obsidianLogo} alt="Obsidian Command NewGen" className={classes.brandLockup} draggable={false} />
           </div>
         </Tooltip>
       </div>
@@ -181,7 +192,8 @@ export function Sidebar(props: Props): ReactElement {
               Experimental
             </Badge>
           ) : undefined;
-          const itemTooltip = item.id === "hostedResources" ? hostedResourcesHealthLabel : item.label;
+          const itemTooltip =
+            item.id === "hostedResources" ? hostedResourcesHealthLabel : text(item.label, labels[item.id]);
           const icon = (
             <Icon
               size={navIconSize}
@@ -194,8 +206,8 @@ export function Sidebar(props: Props): ReactElement {
               component="button"
               type="button"
               active={active}
-              label={iconMode ? undefined : item.label}
-              aria-label={item.label}
+              label={iconMode ? undefined : text(item.label, labels[item.id])}
+              aria-label={text(item.label, labels[item.id])}
               leftSection={
                 // Icon rail wraps the whole link in a tooltip below; nesting another here
                 // would stack two tooltips on the same hover.
@@ -304,7 +316,7 @@ export function Sidebar(props: Props): ReactElement {
                 <UnstyledButton
                   className={classes.appVersionUpdateIconBtn}
                   onClick={props.onYarkUpdateClick}
-                  aria-label={`YARK update available, version ${props.yarkUpdateAvailableVersion}`}
+                  aria-label={`Obsidian update available, version ${props.yarkUpdateAvailableVersion}`}
                   data-yark-update-version
                 >
                   <ArrowCircleUp
@@ -317,11 +329,11 @@ export function Sidebar(props: Props): ReactElement {
               </Tooltip>
             )}
             {props.onWhatsNewClick !== undefined ? (
-              <Tooltip label={`YARK v${props.appVersion} – What's new`} position="right" withArrow>
+              <Tooltip label={`Obsidian v${props.appVersion} – What's new`} position="right" withArrow>
                 <UnstyledButton
                   className={updateAvailable ? classes.appVersionLabelUpdate : classes.appVersionLabelRail}
                   onClick={props.onWhatsNewClick}
-                  aria-label={`What's new in YARK v${props.appVersion}`}
+                  aria-label={`What's new in Obsidian v${props.appVersion}`}
                   data-yark-app-version
                 >
                   {versionLabel}
@@ -337,7 +349,7 @@ export function Sidebar(props: Props): ReactElement {
           <Group gap={5} wrap="nowrap" justify="center" className={classes.appVersionRow}>
             {updateAvailable && props.onYarkUpdateClick !== undefined && (
               <Tooltip
-                label={`YARK update available (v${props.yarkUpdateAvailableVersion}) – open Settings to update`}
+                label={`Obsidian update available (v${props.yarkUpdateAvailableVersion}) – open Settings to update`}
                 multiline
                 w={220}
                 position="right"
@@ -345,7 +357,7 @@ export function Sidebar(props: Props): ReactElement {
                 <UnstyledButton
                   className={classes.appVersionUpdateIconBtn}
                   onClick={props.onYarkUpdateClick}
-                  aria-label={`YARK update available, version ${props.yarkUpdateAvailableVersion}`}
+                  aria-label={`Obsidian update available, version ${props.yarkUpdateAvailableVersion}`}
                   data-yark-update-version
                 >
                   <ArrowCircleUp
@@ -362,7 +374,7 @@ export function Sidebar(props: Props): ReactElement {
                 <UnstyledButton
                   className={updateAvailable ? classes.appVersionLabelUpdate : classes.appVersionLabel}
                   onClick={props.onWhatsNewClick}
-                  aria-label={`What's new in YARK v${props.appVersion}`}
+                  aria-label={`What's new in Obsidian v${props.appVersion}`}
                   data-yark-app-version
                 >
                   {versionLabel}
@@ -382,7 +394,7 @@ export function Sidebar(props: Props): ReactElement {
               <ActionIcon
                 variant="subtle"
                 size={steamCmdIconSize}
-                aria-label="Quit YARK"
+                aria-label="Quit Obsidian"
                 className={classes.quitIcon}
                 data-yark-quit
                 onClick={() => {
@@ -404,7 +416,7 @@ export function Sidebar(props: Props): ReactElement {
                   setQuitOpened(true);
                 }}
               >
-                Quit YARK
+                Quit Obsidian
               </Button>
             )}
           </Tooltip>

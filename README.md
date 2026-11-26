@@ -1,3 +1,13 @@
+# Obsidian Command NewGen
+
+Independent Windows ARK: Survival Ascended server manager based on the original YARK 0.28.0 source. This fork retains its GPL-3.0-only license, original authorship and third-party notices. See [LICENSE](LICENSE), [original project](https://github.com/gabomarin/yark), and [NewGen releases](https://github.com/Gunter1122cloud/obsidian-newgen/releases).
+
+Development preview: do not replace a working production manager before Windows CI, installer and migration validation.
+
+---
+
+## Upstream documentation and attribution
+
 <p align="center">
   <img src="website/public/assets/yark-logo.png" width="180" alt="YARK server manager logo">
 </p>
