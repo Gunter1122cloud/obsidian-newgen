@@ -11,6 +11,8 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ### Added
 
+- Tactical NewGen dashboard with responsive map cards, shared backdrop and optional background artwork, animated startup and busy overlays, and consistent modal and notification styling. Server engine and runtime actions are unchanged.
+
 - Obsidian Command NewGen Windows release integrity checks for the Setup, Portable, update manifest and SHA-256 checksums.
 
 ### Changed
