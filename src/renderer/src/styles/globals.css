@@ -375,3 +375,18 @@ body {
     animation: none !important;
   }
 }
+
+/* The renderer preference never changes server tasks or operation timing. */
+:root[data-newgen-motion="off"] {
+  --app-motion-fast: 0.01ms !important;
+  --app-motion-base: 0.01ms !important;
+  --app-motion-slow: 0.01ms !important;
+}
+
+[data-newgen-motion="off"] [data-app-busy-overlay] *,
+[data-newgen-motion="off"] [data-app-busy-overlay] *::before,
+[data-newgen-motion="off"] [data-overview-page] [data-server-card],
+[data-newgen-motion="off"] .mantine-Notification-root {
+  animation: none !important;
+  transition-duration: 0.01ms !important;
+}
