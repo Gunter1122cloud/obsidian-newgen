@@ -10,7 +10,7 @@ describe("yarkUpdateOperatorToast", () => {
       availableVersion: "0.8.1",
     };
     expect(yarkUpdateToastDedupeKey(status)).toBe("available:0.8.1");
-    expect(yarkUpdateToastCopy(status)?.title).toBe("YARK update available");
+    expect(yarkUpdateToastCopy(status)?.title).toBe("Obsidian update available");
   });
 
   it("toasts when download is ready to install", () => {
@@ -20,7 +20,7 @@ describe("yarkUpdateOperatorToast", () => {
       availableVersion: "0.8.1",
     };
     expect(yarkUpdateToastDedupeKey(status)).toBe("ready:0.8.1");
-    expect(yarkUpdateToastCopy(status)?.title).toBe("YARK update ready to install");
+    expect(yarkUpdateToastCopy(status)?.title).toBe("Obsidian update ready to install");
   });
 
   it("skips idle, checking, up-to-date, and errors", () => {
