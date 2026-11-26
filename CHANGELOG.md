@@ -9,6 +9,10 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
+### Added
+
+- Introduce Obsidian Command's independent black-and-gold desktop identity, crystal logo and splash, while preserving the existing server list, live metrics, and original UI actions.
+
 ### Changed
 
 - Dependencies: Mantine and mantine-datatable **9.8**, Electron **43.8.13**, React **19.3**, plus electron-builder/updater and tooling patches (knip, Playwright, Prettier, TypeScript-ESLint). Theme sets **cursorType pointer** so Button/ActionIcon keep the hand cursor after Mantine 9.8 stopped hardcoding it on UnstyledButton.
