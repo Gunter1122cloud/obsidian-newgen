@@ -92,7 +92,9 @@ describe("ServerLaunchPanel", () => {
     await user.click(screen.getByRole("button", { name: /NewGen-managed filter/i }));
 
     expect(
-      await screen.findAllByText(/NewGen already manages this from Server settings\. Do not add it in Extra arguments\./),
+      await screen.findAllByText(
+        /NewGen already manages this from Server settings\. Do not add it in Extra arguments\./,
+      ),
     ).not.toHaveLength(0);
     expect(
       screen.getByText(/NewGen already manages this from Mods\. Do not add it in Extra arguments\./),

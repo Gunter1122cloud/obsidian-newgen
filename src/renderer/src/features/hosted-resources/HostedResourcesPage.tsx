@@ -94,7 +94,8 @@ export function HostedResourcesPage({ onOpenReference = () => undefined }: Props
               {headerAlert?.message ?? (
                 <>
                   Copy a resource URL and paste it into the server setting that uses it, such as{" "}
-                  <code>AdminListURL</code> in RCON → Admins. Keep Obsidian Command running while ASA needs to refresh the URL.
+                  <code>AdminListURL</code> in RCON → Admins. Keep Obsidian Command running while ASA needs to refresh
+                  the URL.
                 </>
               )}
             </AppAlert>
