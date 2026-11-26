@@ -79,7 +79,7 @@ const DEMO_MOD_IDS = envOr("WEBSITE_DEMO_MOD_IDS", "947033,928793,940975")
   .split(",")
   .map((id) => id.trim())
   .filter(Boolean);
-const DEMO_CLUSTER_ID = envOr("WEBSITE_DEMO_CLUSTER_ID", "yark");
+const DEMO_CLUSTER_ID = envOr("WEBSITE_DEMO_CLUSTER_ID", "untamed-kingdom-demo");
 const DEMO_CLUSTER_DIR = envOr("WEBSITE_DEMO_CLUSTER_DIR", path.join(DEMO_INSTALL_ROOT, "Cluster"));
 
 /** Extra fleet members for overview + Clusters screenshots (isolated profile only). */
@@ -775,7 +775,7 @@ async function captureDownloadsPage(page, outDir) {
       const scrub = (value) =>
         value
           .replace(
-            /[A-Z]:\\Users\\[^\\]+\\AppData\\Local\\Temp\\yark-website-steamcmd-[^\\\s]+\\steamcmd\.exe/gi,
+            /[A-Z]:\\Users\\[^\\]+\\AppData\\Local\\Temp\\newgen-website-steamcmd-[^\\\s]+\\steamcmd\.exe/gi,
             "C:\\steamcmd\\steamcmd.exe",
           )
           .replace(/Users\\[^\\]+/gi, "Users\\You")
@@ -784,7 +784,7 @@ async function captureDownloadsPage(page, outDir) {
       const nodes = [];
       while (walker.nextNode()) nodes.push(walker.currentNode);
       for (const node of nodes) {
-        if (node.nodeValue && /Users[/\\]|yark-website-steamcmd/i.test(node.nodeValue)) {
+        if (node.nodeValue && /Users[/\\]|newgen-website-steamcmd/i.test(node.nodeValue)) {
           node.nodeValue = scrub(node.nodeValue);
         }
       }
@@ -808,7 +808,7 @@ async function launchIsolatedApp(userData, extraEnv = {}) {
 }
 
 async function captureDownloadsGallery(userData, outDir) {
-  const stubDir = fs.mkdtempSync(path.join(os.tmpdir(), "yark-website-steamcmd-"));
+  const stubDir = fs.mkdtempSync(path.join(os.tmpdir(), "newgen-website-steamcmd-"));
   const stub = compileHangingSteamCmdStub(stubDir);
   seedDownloadsJobs(userData, stub);
   const app = await launchIsolatedApp(userData, { STEAMCMD_PATH: stub });
@@ -854,7 +854,7 @@ async function run() {
   fs.mkdirSync(DEMO_CLUSTER_DIR, { recursive: true });
 
   const only = (process.env.WEBSITE_SCREENSHOT_ONLY ?? "").trim().toLowerCase();
-  const userData = fs.mkdtempSync(path.join(os.tmpdir(), "yark-website-shots-"));
+  const userData = fs.mkdtempSync(path.join(os.tmpdir(), "newgen-website-shots-"));
   console.log(`WEBSITE_SCREENSHOTS_DIR=${outDir}`);
   console.log(`WEBSITE_SCREENSHOTS_USER_DATA=${userData}`);
   console.log(`WEBSITE_DEMO_INSTALL_ROOT=${DEMO_INSTALL_ROOT}`);
