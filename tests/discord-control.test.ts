@@ -1,6 +1,10 @@
 import { createHash } from "node:crypto";
 import { describe, expect, it, vi } from "vitest";
-import { authorizeDiscordControl, dispatchDiscordControl, validDiscordControlSettings } from "../src/main/discord-control";
+import {
+  authorizeDiscordControl,
+  dispatchDiscordControl,
+  validDiscordControlSettings,
+} from "../src/main/discord-control";
 import type { InstanceService } from "../src/backend/domains/instances/instance-service";
 
 const guild = "100000000000000001";
@@ -26,8 +30,16 @@ const config = {
   keyPath: process.platform === "win32" ? "C:\\local\\key.pem" : "/local/key.pem",
 };
 const request = {
-  requestId: id, credential, guildId: guild, channelId: control, userId: user,
-  roleIds: [admin], sentUtc: new Date(now).toISOString(), kind: "execute", action: "restart", mapIds: [id],
+  requestId: id,
+  credential,
+  guildId: guild,
+  channelId: control,
+  userId: user,
+  roleIds: [admin],
+  sentUtc: new Date(now).toISOString(),
+  kind: "execute",
+  action: "restart",
+  mapIds: [id],
 };
 
 function fixture() {
@@ -53,7 +65,9 @@ describe("NewGen Discord control", () => {
     expect(authorizeDiscordControl(config, { ...request, roleIds: [] }, now)).toBe(false);
     expect(authorizeDiscordControl(config, { ...request, channelId: status }, now)).toBe(false);
     expect(authorizeDiscordControl(config, request, now + 61000)).toBe(false);
-    expect(authorizeDiscordControl(config, { ...request, userId: service, channelId: status, kind: "status" }, now)).toBe(true);
+    expect(
+      authorizeDiscordControl(config, { ...request, userId: service, channelId: status, kind: "status" }, now),
+    ).toBe(true);
     expect(authorizeDiscordControl(config, { ...request, userId: service, channelId: status }, now)).toBe(false);
   });
 
@@ -68,12 +82,21 @@ describe("NewGen Discord control", () => {
   it("allows only fixed RCON commands for a tracked running server", async () => {
     const { handlers, instances } = fixture();
     for (const action of ["save", "wipe"]) {
-      expect(await dispatchDiscordControl(instances, { ...request, action }, "host", () => true, () => true)).toMatchObject({ ok: true });
+      expect(
+        await dispatchDiscordControl(instances, { ...request, action }, "host", () => true, () => true),
+      ).toMatchObject({ ok: true });
     }
-    expect(handlers.sendRcon.mock.calls).toEqual([[id, "SaveWorld"], [id, "DestroyWildDinos"]]);
-    expect(await dispatchDiscordControl(instances, { ...request, action: "rcon" }, "host", () => true, () => true)).toMatchObject({ ok: false });
+    expect(handlers.sendRcon.mock.calls).toEqual([
+      [id, "SaveWorld"],
+      [id, "DestroyWildDinos"],
+    ]);
+    expect(
+      await dispatchDiscordControl(instances, { ...request, action: "rcon" }, "host", () => true, () => true),
+    ).toMatchObject({ ok: false });
     handlers.statuses.mockReturnValue([]);
-    expect(await dispatchDiscordControl(instances, { ...request, action: "wipe" }, "host", () => true, () => true)).toMatchObject({ ok: false });
+    expect(
+      await dispatchDiscordControl(instances, { ...request, action: "wipe" }, "host", () => true, () => true),
+    ).toMatchObject({ ok: false });
     expect(handlers.sendRcon).toHaveBeenCalledTimes(2);
   });
 });

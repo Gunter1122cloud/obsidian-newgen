@@ -114,36 +114,48 @@ export async function dispatchDiscordControl(
     const states = new Map(instances.statuses().map((s) => [s.serverId, s]));
     const now = Date.now();
     const resources = await queryWindowsProcessResources(
-      [...states.values()].flatMap((state) => state.processLive && state.pid !== null ? [state.pid] : []),
+      [...states.values()].flatMap((state) => (state.processLive && state.pid !== null ? [state.pid] : [])),
     );
     const nextMetrics = new Map<number, Metric>();
-    const maps = await Promise.all(profiles.map(async (p) => {
-      const state = states.get(p.id);
-      const pid = state?.processLive ? state.pid : null;
-      const sample = pid == null ? undefined : resources.get(pid);
-      const prior = pid == null ? undefined : priorMetrics.get(pid);
-      const cpu = sample && prior && prior.startedAt === state?.startedAt
-        ? cpuPercentFromDeltas({ prevCpuSeconds: prior.cpuSeconds, nextCpuSeconds: sample.cpuSeconds, prevAtMs: prior.atMs, nextAtMs: now })
-        : null;
-      if (pid != null && sample && state) nextMetrics.set(pid, { cpuSeconds: sample.cpuSeconds, atMs: now, startedAt: state.startedAt });
-      const disk = await statfs(p.installDir).catch(() => null);
-      return {
-        mapId: p.id,
-        mapName: p.name,
-        running: state?.status === "running" && state.processLive,
-        confirmedStopped: false,
-        status: state?.processLive ? state.status : "unknown",
-        pid,
-        uptimeSeconds: state?.processLive && state.startedAt ? Math.max(0, Math.floor((now - Date.parse(state.startedAt)) / 1000)) : null,
-        playerCount: null,
-        memoryMiB: sample ? Math.round(sample.workingSetBytes / 1048576) : null,
-        cpuPercent: cpu == null ? null : cpu / Math.max(1, cpus().length),
-        freeBytes: disk ? disk.bavail * disk.bsize : null,
-        totalBytes: disk ? disk.blocks * disk.bsize : null,
-        storeV1: p.extraArgs.some((arg) => /^-usestore$/i.test(arg)),
-        useApi: p.useAsaApi,
-      };
-    }));
+    const maps = await Promise.all(
+      profiles.map(async (p) => {
+        const state = states.get(p.id);
+        const pid = state?.processLive ? state.pid : null;
+        const sample = pid == null ? undefined : resources.get(pid);
+        const prior = pid == null ? undefined : priorMetrics.get(pid);
+        const cpu =
+          sample && prior && prior.startedAt === state?.startedAt
+            ? cpuPercentFromDeltas({
+                prevCpuSeconds: prior.cpuSeconds,
+                nextCpuSeconds: sample.cpuSeconds,
+                prevAtMs: prior.atMs,
+                nextAtMs: now,
+              })
+            : null;
+        if (pid != null && sample && state)
+          nextMetrics.set(pid, { cpuSeconds: sample.cpuSeconds, atMs: now, startedAt: state.startedAt });
+        const disk = await statfs(p.installDir).catch(() => null);
+        return {
+          mapId: p.id,
+          mapName: p.name,
+          running: state?.status === "running" && state.processLive,
+          confirmedStopped: false,
+          status: state?.processLive ? state.status : "unknown",
+          pid,
+          uptimeSeconds:
+            state?.processLive && state.startedAt
+              ? Math.max(0, Math.floor((now - Date.parse(state.startedAt)) / 1000))
+              : null,
+          playerCount: null,
+          memoryMiB: sample ? Math.round(sample.workingSetBytes / 1048576) : null,
+          cpuPercent: cpu == null ? null : cpu / Math.max(1, cpus().length),
+          freeBytes: disk ? disk.bavail * disk.bsize : null,
+          totalBytes: disk ? disk.blocks * disk.bsize : null,
+          storeV1: p.extraArgs.some((arg) => /^-usestore$/i.test(arg)),
+          useApi: p.useAsaApi,
+        };
+      }),
+    );
     priorMetrics.clear();
     for (const [pid, sample] of nextMetrics) priorMetrics.set(pid, sample);
     return ok({
