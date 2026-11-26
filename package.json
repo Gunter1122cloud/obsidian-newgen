@@ -125,8 +125,8 @@
     "vitest": "^3.0.5"
   },
   "build": {
-    "appId": "com.yark.servermanager",
-    "productName": "YARK server manager",
+    "appId": "com.obsidian.newgen",
+    "productName": "Obsidian Command NewGen",
     "asar": true,
     "directories": {
       "buildResources": "build",
@@ -145,7 +145,7 @@
       "target": "nsis",
       "icon": "icon.ico"
     },
-    "artifactName": "YARK-server-manager-Setup-${version}.${ext}",
+    "artifactName": "Obsidian-NewGen-Setup-${version}.${ext}",
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
@@ -166,8 +166,8 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "gabomarin",
-        "repo": "yark"
+        "owner": "Gunter1122cloud",
+        "repo": "obsidian-newgen"
       }
     ]
   }
