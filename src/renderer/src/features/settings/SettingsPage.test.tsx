@@ -257,12 +257,12 @@ describe("SettingsPage", () => {
     expect(screen.getByText("Desktop alerts")).toBeInTheDocument();
     expect(screen.getByText("Server crash")).toBeInTheDocument();
     expect(screen.getByText("Installs and updates")).toBeInTheDocument();
-    expect(screen.getByText("YARK updates")).toBeInTheDocument();
+    expect(screen.getByText("Obsidian updates")).toBeInTheDocument();
     expect(screen.getByText("Hide to tray")).toBeInTheDocument();
     expect(screen.queryByText("On quit with active servers")).not.toBeInTheDocument();
     expect(screen.queryByText("Show server console on start")).not.toBeInTheDocument();
     expect(document.querySelector(STEAMCMD_PATH_SELECTOR)).toBeNull();
-    expect(screen.queryByText(/YARK server manager · v0.1.0/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Obsidian Command NewGen · v0.1.0/i)).not.toBeInTheDocument();
 
     const user = userEvent.setup();
     await openCategory(user, "SteamCMD");
@@ -541,7 +541,7 @@ describe("SettingsPage", () => {
     expect(screen.getByRole("switch", { name: "Desktop alerts" })).not.toBeChecked();
     expect(screen.getByRole("switch", { name: "Alert on server crash" })).toBeDisabled();
     expect(screen.getByRole("switch", { name: "Alert on installs and updates" })).toBeDisabled();
-    expect(screen.getByRole("switch", { name: "Alert on YARK updates" })).toBeDisabled();
+    expect(screen.getByRole("switch", { name: "Alert on Obsidian updates" })).toBeDisabled();
     expect(screen.getByRole("switch", { name: "Alert when hiding to tray" })).toBeDisabled();
   });
 
@@ -572,7 +572,7 @@ describe("SettingsPage", () => {
     expect(screen.queryByText("Hide to tray")).not.toBeInTheDocument();
     expect(screen.getByText("Server crash")).toBeInTheDocument();
     expect(screen.getByText("Installs and updates")).toBeInTheDocument();
-    expect(screen.getByText("YARK updates")).toBeInTheDocument();
+    expect(screen.getByText("Obsidian updates")).toBeInTheDocument();
   });
 
   it("expands caches and supports open/clear actions", async () => {
@@ -826,7 +826,7 @@ describe("SettingsPage", () => {
     });
   });
 
-  it("checks for YARK updates and shows an available status", async () => {
+  it("checks for Obsidian updates and shows an available status", async () => {
     const user = userEvent.setup();
     const checkForAppUpdate = vi.fn().mockResolvedValue({
       ok: true,
@@ -851,7 +851,7 @@ describe("SettingsPage", () => {
     await waitFor(() => {
       expect(window.api.getAppUpdateStatus).toHaveBeenCalled();
     });
-    expect(screen.getByText("YARK updates")).toBeInTheDocument();
+    expect(screen.getByText("Obsidian updates")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /Check now/i }));
     await waitFor(() => {
       expect(checkForAppUpdate).toHaveBeenCalled();
@@ -859,7 +859,7 @@ describe("SettingsPage", () => {
     });
   });
 
-  it("opens the in-app What's new changelog from YARK updates (#290)", async () => {
+  it("opens the in-app What's new changelog from Obsidian updates (#290)", async () => {
     const user = userEvent.setup();
     stubSettingsApi();
     renderSettings({ appVersion: "0.11.0" });

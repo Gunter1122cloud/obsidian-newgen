@@ -121,7 +121,7 @@ describe("SetupWizard", () => {
       </AppProviders>,
     );
 
-    expect(screen.getByText("Welcome to YARK")).toBeInTheDocument();
+    expect(screen.getByText("Welcome to Obsidian")).toBeInTheDocument();
     expect(screen.getByText(/server manager for ARK: Survival Ascended/i)).toBeInTheDocument();
     expect(screen.getByText(/save as you go/i)).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /skip setup/i }));
@@ -169,7 +169,7 @@ describe("SetupWizard", () => {
     expect(overlay).toBeTruthy();
     await user.click(overlay!);
     expect(onSkip).not.toHaveBeenCalled();
-    expect(screen.getByText("Welcome to YARK")).toBeInTheDocument();
+    expect(screen.getByText("Welcome to Obsidian")).toBeInTheDocument();
   });
 
   it("does not skip first-run on Escape (#476)", async () => {
@@ -210,11 +210,11 @@ describe("SetupWizard", () => {
       </AppProviders>,
     );
 
-    expect(screen.getByRole("dialog", { name: "Set up YARK" })).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Set up Obsidian" })).toBeInTheDocument();
     await user.keyboard("{Escape}");
     expect(onSkip).not.toHaveBeenCalled();
     expect(onDismiss).not.toHaveBeenCalled();
-    expect(screen.getByRole("dialog", { name: "Set up YARK" })).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Set up Obsidian" })).toBeInTheDocument();
   });
 
   it("lets Continue proceed on Paths while SteamCMD is busy", async () => {
@@ -307,7 +307,7 @@ describe("SetupWizard", () => {
       }),
     );
     expect(onOpenNativeTerminalOnStartChange).toHaveBeenCalledWith(true);
-    await user.click(screen.getByRole("switch", { name: /start yark with windows/i }));
+    await user.click(screen.getByRole("switch", { name: /start obsidian with windows/i }));
     expect(onStartWithWindowsChange).toHaveBeenCalledWith(true);
   });
 
@@ -539,7 +539,7 @@ describe("SetupWizard", () => {
     );
 
     expect(screen.getByText("Setup assistant – paths and Windows")).toBeInTheDocument();
-    expect(screen.queryByText("Welcome to YARK")).not.toBeInTheDocument();
+    expect(screen.queryByText("Welcome to Obsidian")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /^continue$/i }));
     await user.click(screen.getByRole("button", { name: /^finish$/i }));
     expect(onPathsShellDone).toHaveBeenCalledTimes(1);

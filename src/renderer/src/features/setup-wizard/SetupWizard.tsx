@@ -165,7 +165,7 @@ export function SetupWizard(props: Props): ReactElement {
     <AppPanelModal
       opened={props.opened}
       onClose={handleDismiss}
-      title={props.mode === "first-run" ? "Set up YARK" : "Setup assistant – paths and Windows"}
+      title={props.mode === "first-run" ? "Set up Obsidian" : "Setup assistant – paths and Windows"}
       size="lg"
       closeOnClickOutside={false}
       closeOnEscape={false}

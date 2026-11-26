@@ -207,7 +207,7 @@ export function SettingsDiscordSection(): ReactElement {
           Discord
         </Title>
         <Text size="xs" c="dimmed" mt={2}>
-          Fleet alerts to one Discord webhook while YARK is running.
+          Fleet alerts to one Discord webhook while Obsidian is running.
         </Text>
       </div>
 
