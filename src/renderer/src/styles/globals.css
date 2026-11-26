@@ -461,7 +461,7 @@ body {
 [data-mantine-color-scheme="dark"] .mantine-Modal-content,
 [data-mantine-color-scheme="dark"] .mantine-Drawer-content {
   background-image:
-    linear-gradient(145deg, rgba(19, 22, 22, 0.96), rgba(10, 12, 13, 0.95)), url("../assets/newgen/rusty-iron-02.webp");
+    linear-gradient(145deg, rgba(19, 22, 22, 0.82), rgba(10, 12, 13, 0.88)), url("../assets/newgen/rusty-iron-02.webp");
   background-size: cover, cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -476,4 +476,19 @@ body {
 
 :root[data-newgen-motion="off"] .mantine-Notification-root {
   animation: none !important;
+}
+
+/* NewGen alerts keep their semantic icon/text tone but sit on the command-deck material. */
+[data-mantine-color-scheme="dark"] .mantine-Alert-root {
+  background-color: rgba(12, 14, 15, 0.84);
+  background-image:
+    linear-gradient(135deg, rgba(20, 22, 22, 0.76), rgba(8, 10, 11, 0.84)), url("../assets/newgen/rusty-iron-02.webp");
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  background-blend-mode: normal, soft-light;
+  border-color: rgba(190, 158, 96, 0.4);
+  border-left-width: 3px;
+  border-left-color: rgba(205, 169, 99, 0.78);
+  box-shadow: inset 0 1px rgba(245, 221, 174, 0.045);
 }

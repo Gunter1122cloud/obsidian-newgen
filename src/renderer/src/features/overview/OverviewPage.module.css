@@ -296,7 +296,7 @@
 /* Tactical command deck: cards wrap with the available content width. */
 .serverGrid {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  gap: 14px;
+  gap: 16px;
 }
 
 .serverGrid > :global([data-server-card]) + :global([data-server-card]) {
@@ -306,7 +306,7 @@
 :global([data-mantine-color-scheme="dark"]) .serverSection {
   padding: 14px;
   border: 1px solid rgba(181, 157, 109, 0.22);
-  border-radius: 6px;
+  border-radius: 8px;
   background: rgba(12, 14, 15, 0.46);
 }
 
@@ -320,12 +320,14 @@
 :global([data-mantine-color-scheme="dark"]) .serverSection {
   border-color: rgba(181, 157, 109, 0.34);
   background-image:
-    linear-gradient(145deg, rgba(11, 13, 14, 0.68), rgba(10, 12, 13, 0.8)),
+    linear-gradient(145deg, rgba(11, 13, 14, 0.56), rgba(10, 12, 13, 0.68)),
+    linear-gradient(rgba(190, 158, 96, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(190, 158, 96, 0.035) 1px, transparent 1px),
     url("../../assets/newgen/rusty-iron-02.webp");
-  background-size: cover, cover;
-  background-position: center, center;
-  background-repeat: no-repeat;
-  background-blend-mode: normal, soft-light;
+  background-size: cover, 44px 44px, 44px 44px, cover;
+  background-position: center, center, center, center;
+  background-repeat: no-repeat, repeat, repeat, no-repeat;
+  background-blend-mode: normal, normal, normal, soft-light;
   box-shadow:
     inset 0 1px rgba(245, 221, 174, 0.05),
     0 12px 32px rgba(0, 0, 0, 0.16);
@@ -334,7 +336,8 @@
 :global([data-mantine-color-scheme="dark"]) .recentSection {
   border-color: rgba(181, 157, 109, 0.34);
   background-image:
-    linear-gradient(145deg, rgba(16, 18, 18, 0.82), rgba(9, 11, 12, 0.88)), url("../../assets/newgen/rusty-iron.webp");
+    linear-gradient(145deg, rgba(16, 18, 18, 0.7), rgba(9, 11, 12, 0.8)),
+    url("../../assets/newgen/rusty-iron.webp");
   background-size: cover, cover;
   background-position: center, center;
   background-repeat: no-repeat;
