@@ -22,3 +22,8 @@ declare module "*.jpeg" {
   const src: string;
   export default src;
 }
+
+declare module "*.wav?url" {
+  const src: string;
+  export default src;
+}

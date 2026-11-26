@@ -1037,11 +1037,18 @@ async function run() {
             el.click();
           });
           await page.getByRole("dialog").waitFor({ state: "visible", timeout: 10000 });
-          // The map catalog fetch is asynchronous; do not capture the modal's transient loader.
-          await page.getByRole("button", { name: "Use map" }).first().waitFor({
+          // Gallery screenshots must show a settled state. The live CurseForge catalog can be
+          // unavailable on a CI runner; record that actual UI state instead of a transient loader.
+          const useMap = page.getByRole("button", { name: "Use map" }).first();
+          const unavailable = page.getByText("CurseForge Maps category unavailable", { exact: false });
+          const empty = page.getByText("No map mods match that query.", { exact: true });
+          await useMap.or(unavailable).or(empty).first().waitFor({
             state: "visible",
-            timeout: 30_000,
+            timeout: 45_000,
           });
+          if (!(await useMap.isVisible())) {
+            console.warn("WEBSITE_MAP_CATALOG_UNAVAILABLE: captured settled offline/empty state, not live catalog validation");
+          }
           await page.waitForFunction(
             () => [...document.querySelectorAll('[role="dialog"] img')].every((image) => image.complete),
             undefined,
