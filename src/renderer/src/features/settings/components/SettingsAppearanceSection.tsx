@@ -40,8 +40,15 @@ export function SettingsAppearanceSection(props: Props): ReactElement {
       <div className={classes.settingStack}>
         <div className={classes.settingRow}>
           <div className={classes.settingCopy}>
-            <Text size="sm" fw={600}>{visual.text("Interface language (preview)", "Felület nyelve (előnézet)")}</Text>
-            <Text size="xs" c="dimmed" mt={2}>{visual.text("Navigation and dashboard translation; other pages remain English.", "Navigáció és áttekintés fordítása; a többi oldal egyelőre angol.")}</Text>
+            <Text size="sm" fw={600}>
+              {visual.text("Interface language (preview)", "Felület nyelve (előnézet)")}
+            </Text>
+            <Text size="xs" c="dimmed" mt={2}>
+              {visual.text(
+                "Navigation and dashboard translation; other pages remain English.",
+                "Navigáció és áttekintés fordítása; a többi oldal egyelőre angol.",
+              )}
+            </Text>
           </div>
           <div className={classes.settingControl}>
             <SegmentedControl
@@ -50,17 +57,26 @@ export function SettingsAppearanceSection(props: Props): ReactElement {
               onChange={(value) => {
                 if (value === "en" || value === "hu") visual.setLanguage(value);
               }}
-              data={[{ label: "English", value: "en" }, { label: "Magyar", value: "hu" }]}
+              data={[
+                { label: "English", value: "en" },
+                { label: "Magyar", value: "hu" },
+              ]}
               aria-label="Interface language"
             />
           </div>
         </div>
         <div className={classes.settingRow}>
           <div className={classes.settingCopy}>
-            <Text size="sm" fw={600}>{visual.text("Interface animations", "Felületi animációk")}</Text>
+            <Text size="sm" fw={600}>
+              {visual.text("Interface animations", "Felületi animációk")}
+            </Text>
           </div>
           <div className={classes.settingControl}>
-            <Switch checked={visual.motion} onChange={(event) => visual.setMotion(event.currentTarget.checked)} aria-label="Interface animations" />
+            <Switch
+              checked={visual.motion}
+              onChange={(event) => visual.setMotion(event.currentTarget.checked)}
+              aria-label="Interface animations"
+            />
           </div>
         </div>
         <div className={classes.settingRow}>
