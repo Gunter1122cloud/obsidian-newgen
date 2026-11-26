@@ -26,3 +26,29 @@
   color: var(--app-color-muted);
   margin-bottom: 2px;
 }
+
+/* Right-side telemetry rail, visually docked to the workspace rather than floating grey. */
+:global([data-mantine-color-scheme="dark"]) .panel {
+  background-color: rgba(10, 12, 13, 0.88);
+  background-image:
+    linear-gradient(180deg, rgba(12, 14, 15, 0.88), rgba(8, 10, 11, 0.9)),
+    url("../../../../assets/newgen/rusty-iron-02.webp");
+  background-size: cover, cover;
+  background-position: center;
+  border-left-color: rgba(190, 158, 96, 0.3);
+}
+
+:global([data-mantine-color-scheme="dark"]) .card:global(.mantine-Card-root) {
+  border-color: rgba(190, 158, 96, 0.26);
+  background-color: rgba(14, 16, 17, 0.9);
+  background-image:
+    linear-gradient(145deg, rgba(19, 21, 21, 0.88), rgba(8, 10, 11, 0.92)),
+    url("../../../../assets/newgen/rusty-iron.webp");
+  background-size: cover, cover;
+  background-position: center;
+}
+
+:global([data-mantine-color-scheme="dark"]) .widgetTitle {
+  color: #d8bd83;
+}
+
