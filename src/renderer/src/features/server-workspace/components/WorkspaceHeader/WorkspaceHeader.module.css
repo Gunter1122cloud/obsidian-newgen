@@ -54,3 +54,12 @@
     align-items: flex-start;
   }
 }
+
+:global([data-mantine-color-scheme="dark"]) .header {
+  background: linear-gradient(105deg, rgba(38, 41, 40, 0.96), rgba(17, 20, 21, 0.9));
+  border-bottom: 1px solid rgba(181, 157, 109, 0.32);
+}
+
+:global([data-mantine-color-scheme="dark"]) .identity {
+  padding-block: 4px;
+}
