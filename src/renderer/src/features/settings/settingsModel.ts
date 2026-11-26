@@ -287,7 +287,7 @@ export function isPathUnderParent(parent: string, child: string | null): boolean
 }
 
 /**
- * Note for About → Bundled SteamCMD when YARK is not using that folder.
+ * Note for About → Bundled SteamCMD when Obsidian Command is not using that folder.
  * Null when the active steamcmd.exe lives there.
  */
 export function bundledSteamCmdUnusedNote(bundledDir: string, steamCmdExePath: string | null): string | null {
@@ -295,7 +295,7 @@ export function bundledSteamCmdUnusedNote(bundledDir: string, steamCmdExePath: s
     return null;
   }
   if (steamCmdExePath != null && steamCmdExePath.trim().length > 0) {
-    return "Not in use. YARK is using the SteamCMD you chose in Settings → SteamCMD.";
+    return "Not in use. Obsidian Command is using the SteamCMD you chose in Settings → SteamCMD.";
   }
   return "Empty until you use Install SteamCMD.";
 }

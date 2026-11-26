@@ -87,7 +87,7 @@ export function ServerLaunchPanel(props: Props): ReactElement {
     <AppSurfaceCard tone="flat" fill padding={0} radius={0} className={classes.panel} data-testid="server-launch-panel">
       <WorkspaceSectionHeader
         title="Launch options"
-        subtitle="Hover a flag for its description. Map, port, and cluster stay YARK-owned. Platform defaults to ALL unless set here."
+        subtitle="Hover a flag for its description. NewGen manages map, port, and cluster. Platform defaults to ALL unless set here."
         actions={
           <Button size={inputSize} variant="default" onClick={() => setCatalogOpen(true)}>
             Browse ASA catalog
@@ -113,7 +113,7 @@ export function ServerLaunchPanel(props: Props): ReactElement {
                   </Text>
                 ))}
                 <Text size="xs" c="dimmed">
-                  Fix Map / Mods before Start. YARK blocks launch until the map mod is linked and enabled.
+                  Fix Map / Mods before Start. NewGen blocks launch until the map mod is linked and enabled.
                 </Text>
               </Stack>
             </AppAlert>

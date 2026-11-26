@@ -21,7 +21,7 @@ export function catalogStatusLabel(status: CatalogStatusFilter | "unsupported"):
     case "uncertain":
       return "Uncertain";
     case "yarkOwned":
-      return "YARK-owned";
+      return "NewGen-managed";
   }
 }
 
@@ -45,11 +45,11 @@ export function catalogStatusFilterTooltip(filter: CatalogStatusFilter): string 
     case "uncertain":
       return "The wiki is not sure these work on ASA. They stay here for reference, not on the Launch tab.";
     case "yarkOwned":
-      return "YARK already fills these in from Server settings, Mods, or cluster. Do not add them again in Extra arguments.";
+      return "NewGen already manages these values through Server settings, Mods, or cluster. Do not add them again in Extra arguments.";
   }
 }
 
-/** Operator-facing surface that already owns a YARK-composed launch token. */
+/** Operator-facing surface that already manages this launch token. */
 export type YarkManagedSurface = "Server settings" | "Mods" | "GameUserSettings (GUS) INI" | "Game INI" | "Launch";
 
 export const YARK_OWNED_CATALOG_IDS = [
@@ -81,7 +81,7 @@ function isYarkOwnedCatalogId(id: string): id is YarkOwnedCatalogId {
 export function yarkManagedSurfaceForCatalogId(id: string): YarkManagedSurface {
   if (!isYarkOwnedCatalogId(id)) {
     throw new Error(
-      `YARK-owned catalog id "${id}" has no managed-surface mapping; add it to YARK_MANAGED_SURFACE_BY_ID.`,
+      `NewGen-managed catalog id "${id}" has no managed-surface mapping; add it to the managed-surface map.`,
     );
   }
   return YARK_MANAGED_SURFACE_BY_ID[id];
@@ -107,7 +107,7 @@ export function catalogBrowseSecondary(
   return null;
 }
 
-/** Internal YARK-owned notes stay out of the browse UI; Managed copy covers them. */
+/** Internal manager-owned notes stay out of the browse UI; Managed copy covers them. */
 export function shouldShowCatalogNotes(entry: Pick<AsaLaunchOptionEntry, "status" | "notes">): boolean {
   if (entry.status === "yarkOwned") return false;
   return Boolean(entry.notes?.trim());

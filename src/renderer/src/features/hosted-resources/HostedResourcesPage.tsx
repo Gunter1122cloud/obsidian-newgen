@@ -94,7 +94,7 @@ export function HostedResourcesPage({ onOpenReference = () => undefined }: Props
               {headerAlert?.message ?? (
                 <>
                   Copy a resource URL and paste it into the server setting that uses it, such as{" "}
-                  <code>AdminListURL</code> in RCON → Admins. Keep YARK running while ASA needs to refresh the URL.
+                  <code>AdminListURL</code> in RCON → Admins. Keep Obsidian Command running while ASA needs to refresh the URL.
                 </>
               )}
             </AppAlert>
@@ -104,7 +104,7 @@ export function HostedResourcesPage({ onOpenReference = () => undefined }: Props
               <Stack gap="xs">
                 <Text fw={600}>Unresolved Hosted Resource references</Text>
                 <Text size="sm" c="dimmed">
-                  These settings still contain a YARK URL, but the resource was deleted. Open each setting to remove the
+                  These settings still contain a hosted-resource URL, but the resource was deleted. Open each setting to remove the
                   stale URL or choose a replacement.
                 </Text>
                 {missingReferences.map((reference) => (
@@ -124,7 +124,7 @@ export function HostedResourcesPage({ onOpenReference = () => undefined }: Props
             </AppSurfaceCard>
           )}
           <DismissibleHint storageKey={EXPERIMENTAL_HINT_STORAGE_KEY} title="Experimental">
-            This host binds to 127.0.0.1 only. URLs stop working when YARK exits, and a stale URL must not be trusted
+            This host binds to 127.0.0.1 only. URLs stop working when Obsidian Command exits, and a stale URL must not be trusted
             after a port change or if another process owns the port.
           </DismissibleHint>
 
