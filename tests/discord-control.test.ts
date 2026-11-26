@@ -1,10 +1,7 @@
 import { createHash } from "node:crypto";
 import { describe, expect, it, vi } from "vitest";
-import {
-  authorizeDiscordControl,
-  dispatchDiscordControl,
-  validDiscordControlSettings,
-} from "../src/main/discord-control";
+import { authorizeDiscordControl, validDiscordControlSettings } from "../src/main/discord-control";
+import { dispatchDiscordControl } from "../src/main/discord-control";
 import type { InstanceService } from "../src/backend/domains/instances/instance-service";
 
 const guild = "100000000000000001";
@@ -88,10 +85,8 @@ describe("NewGen Discord control", () => {
     for (const action of ["save", "wipe"]) {
       expect(await execute(action)).toMatchObject({ ok: true });
     }
-    expect(handlers.sendRcon.mock.calls).toEqual([
-      [id, "SaveWorld"],
-      [id, "DestroyWildDinos"],
-    ]);
+    expect(handlers.sendRcon).toHaveBeenNthCalledWith(1, id, "SaveWorld");
+    expect(handlers.sendRcon).toHaveBeenNthCalledWith(2, id, "DestroyWildDinos");
     expect(await execute("rcon")).toMatchObject({ ok: false });
     handlers.statuses.mockReturnValue([]);
     expect(await execute("wipe")).toMatchObject({ ok: false });
