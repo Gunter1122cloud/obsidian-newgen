@@ -201,9 +201,12 @@
   background-image:
     linear-gradient(145deg, rgba(12, 14, 15, 0.64), rgba(8, 10, 11, 0.78)),
     linear-gradient(rgba(190, 158, 96, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(190, 158, 96, 0.03) 1px, transparent 1px),
-    url("../../assets/newgen/rusty-iron.webp");
-  background-size: cover, 44px 44px, 44px 44px, cover;
+    linear-gradient(90deg, rgba(190, 158, 96, 0.03) 1px, transparent 1px), url("../../assets/newgen/rusty-iron.webp");
+  background-size:
+    cover,
+    44px 44px,
+    44px 44px,
+    cover;
   background-position: center, center, center, center;
   background-repeat: no-repeat, repeat, repeat, no-repeat;
   background-blend-mode: normal, normal, normal, soft-light;

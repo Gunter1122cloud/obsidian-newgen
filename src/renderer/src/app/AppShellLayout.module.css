@@ -298,7 +298,11 @@
     linear-gradient(rgba(190, 158, 96, 0.028) 1px, transparent 1px),
     linear-gradient(90deg, rgba(190, 158, 96, 0.028) 1px, transparent 1px),
     linear-gradient(155deg, rgba(10, 12, 13, 0.12), rgba(10, 12, 13, 0.3));
-  background-size: auto, 52px 52px, 52px 52px, auto;
+  background-size:
+    auto,
+    52px 52px,
+    52px 52px,
+    auto;
 }
 
 :global([data-mantine-color-scheme="dark"]) .navbar {
