@@ -6,7 +6,7 @@
 const METADATA_SERVICE_NOT_CONFIGURED_CODE = "METADATA_SERVICE_NOT_CONFIGURED";
 
 export const METADATA_SERVICE_NOT_CONFIGURED_MESSAGE =
-  "Mod metadata service is not configured. Official YARK releases embed the proxy URL at build time; local/dev builds can set YARK_CURSEFORGE_PROXY_URL. Existing mod IDs still launch; search and metadata refresh need an endpoint.";
+  "Mod metadata service is not configured. Configure a local CurseForge key or an authorized proxy. Existing mod IDs still launch; search and metadata refresh require credentials.";
 
 export function isMetadataServiceNotConfiguredMessage(message: string | null | undefined): boolean {
   if (message == null || message.length === 0) return false;

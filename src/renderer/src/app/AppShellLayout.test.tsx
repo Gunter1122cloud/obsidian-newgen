@@ -23,7 +23,7 @@ describe("AppShellLayout", () => {
     );
 
     // Vite/Vitest resolves `*.png` imports to a URL string (see env.d.ts); no fileMock needed.
-    const brand = screen.getByAltText("YARK server manager");
+    const brand = screen.getByAltText("Obsidian Command NewGen");
     expect(brand).toBeInTheDocument();
     expect(brand).toHaveAttribute("src", expect.stringMatching(/\S/));
     expect(screen.getByText("page-body")).toBeInTheDocument();

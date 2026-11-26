@@ -15,6 +15,8 @@ import {
 import type { ThemeSelection, WorkspacePanelsId } from "@shared/settings/appearance";
 import { RowActionMenuProvider } from "@ui/RowActionMenu/RowActionMenuProvider";
 import { isRendererTest } from "@renderer/shared/isRendererTest";
+import { NewGenVisualPreferences } from "./NewGenVisualPreferences";
+import { NewGenAudio } from "./NewGenAudio";
 
 const UiDensityContext = createContext<UiDensity>("compact");
 const ShellSceneContext = createContext(false);
@@ -134,10 +136,12 @@ export function AppProviders({
   useLayoutEffect(() => {
     const root = document.documentElement;
     root.dataset.uiDensity = density;
+    root.dataset.newgenBackground = sceneBackground ? "on" : "off";
     return () => {
       delete root.dataset.uiDensity;
+      delete root.dataset.newgenBackground;
     };
-  }, [density]);
+  }, [density, sceneBackground]);
 
   const notificationsAutoClose = isRendererTest() ? false : 5000;
 
@@ -167,8 +171,11 @@ export function AppProviders({
                 labels={{ confirm: "Confirm", cancel: "Cancel" }}
               >
                 <RowActionMenuProvider>
-                  <Notifications position="bottom-right" autoClose={notificationsAutoClose} />
-                  {children}
+                  <NewGenVisualPreferences>
+                    <NewGenAudio />
+                    <Notifications position="bottom-right" autoClose={notificationsAutoClose} />
+                    {children}
+                  </NewGenVisualPreferences>
                 </RowActionMenuProvider>
               </ModalsProvider>
             </DatesProvider>

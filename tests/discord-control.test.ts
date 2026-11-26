@@ -43,13 +43,13 @@ const request = {
 };
 
 function fixture() {
+  const profile = { id, name: "Island", installDir: ".", extraArgs: ["-usestore"], useAsaApi: true };
   const handlers = {
-    list: vi.fn().mockReturnValue([{ id, name: "Island", installDir: ".", extraArgs: ["-usestore"], useAsaApi: true }]),
+    list: vi.fn().mockReturnValue([profile]),
     statuses: vi.fn().mockReturnValue([{ serverId: id, status: "running", processLive: true, pid: 10 }]),
     start: vi.fn().mockResolvedValue(undefined),
     stop: vi.fn().mockResolvedValue(undefined),
     restart: vi.fn().mockResolvedValue(undefined),
-    listPlayers: vi.fn().mockResolvedValue([{ playerId: "player-1" }]),
     sendRcon: vi.fn().mockResolvedValue(""),
     execRcon: vi.fn().mockResolvedValue("No Players Connected"),
   };
@@ -66,73 +66,39 @@ describe("NewGen Discord control", () => {
     expect(authorizeDiscordControl(config, { ...request, roleIds: [] }, now)).toBe(false);
     expect(authorizeDiscordControl(config, { ...request, channelId: status }, now)).toBe(false);
     expect(authorizeDiscordControl(config, request, now + 61000)).toBe(false);
-    expect(
-      authorizeDiscordControl(config, { ...request, userId: service, channelId: status, kind: "status" }, now),
-    ).toBe(true);
-    expect(authorizeDiscordControl(config, { ...request, userId: service, channelId: status }, now)).toBe(false);
-  });
-
-  it("returns a read-only live player count for running maps", async () => {
-    const { handlers, instances } = fixture();
-    const result = await dispatchDiscordControl(
-      instances,
-      { ...request, userId: service, channelId: status, roleIds: [], kind: "status", action: undefined },
-      "host",
-      () => true,
-      () => true,
-    );
-    expect(result).toMatchObject({ ok: true, maps: [{ mapId: id, playerCount: 1 }] });
-    expect(handlers.listPlayers).toHaveBeenCalledExactlyOnceWith(id);
-    expect(handlers.start).not.toHaveBeenCalled();
-    expect(handlers.stop).not.toHaveBeenCalled();
-    expect(handlers.restart).not.toHaveBeenCalled();
-    expect(handlers.sendRcon).not.toHaveBeenCalled();
+    const serviceRequest = { ...request, userId: service, channelId: status };
+    expect(authorizeDiscordControl(config, { ...serviceRequest, kind: "status" }, now)).toBe(true);
+    expect(authorizeDiscordControl(config, serviceRequest, now)).toBe(false);
   });
 
   it("dispatches the original lifecycle only once, with no external approval", async () => {
     const { handlers, instances } = fixture();
     const claim = vi.fn().mockReturnValueOnce(true).mockReturnValueOnce(false);
-    expect(await dispatchDiscordControl(instances, request, "host", claim, () => true)).toMatchObject({ ok: true });
-    expect(await dispatchDiscordControl(instances, request, "host", claim, () => true)).toMatchObject({ ok: false });
+    const execute = () => dispatchDiscordControl(instances, request, "host", claim, () => true);
+    expect(await execute()).toMatchObject({ ok: true });
+    expect(await execute()).toMatchObject({ ok: false });
     expect(handlers.restart).toHaveBeenCalledExactlyOnceWith(id);
   });
 
   it("allows only fixed RCON commands for a tracked running server", async () => {
     const { handlers, instances } = fixture();
+    const execute = (action: string) => {
+      return dispatchDiscordControl(
+        instances,
+        { ...request, action },
+        "host",
+        () => true,
+        () => true,
+      );
+    };
     for (const action of ["save", "wipe"]) {
-      expect(
-        await dispatchDiscordControl(
-          instances,
-          { ...request, action },
-          "host",
-          () => true,
-          () => true,
-        ),
-      ).toMatchObject({ ok: true });
+      expect(await execute(action)).toMatchObject({ ok: true });
     }
-    expect(handlers.sendRcon.mock.calls).toEqual([
-      [id, "SaveWorld"],
-      [id, "DestroyWildDinos"],
-    ]);
-    expect(
-      await dispatchDiscordControl(
-        instances,
-        { ...request, action: "rcon" },
-        "host",
-        () => true,
-        () => true,
-      ),
-    ).toMatchObject({ ok: false });
+    expect(handlers.sendRcon).toHaveBeenNthCalledWith(1, id, "SaveWorld");
+    expect(handlers.sendRcon).toHaveBeenNthCalledWith(2, id, "DestroyWildDinos");
+    expect(await execute("rcon")).toMatchObject({ ok: false });
     handlers.statuses.mockReturnValue([]);
-    expect(
-      await dispatchDiscordControl(
-        instances,
-        { ...request, action: "wipe" },
-        "host",
-        () => true,
-        () => true,
-      ),
-    ).toMatchObject({ ok: false });
+    expect(await execute("wipe")).toMatchObject({ ok: false });
     expect(handlers.sendRcon).toHaveBeenCalledTimes(2);
   });
 });

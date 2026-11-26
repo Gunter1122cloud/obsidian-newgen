@@ -1,4 +1,5 @@
 import type { ReactElement } from "react";
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
 import { Info } from "@phosphor-icons/react";
 import { ActionIcon } from "@mantine/core";
 import { AppMetricCard } from "@ui/AppMetricCard/AppMetricCard";
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export function OverviewFleetMetrics(props: Props): ReactElement {
+  const { text } = useNewGenVisualPreferences();
   const setFilter = (next: OverviewFleetFilter) => {
     props.onFleetFilter(toggleOverviewFleetFilter(props.fleetFilter, next));
   };
@@ -24,7 +26,7 @@ export function OverviewFleetMetrics(props: Props): ReactElement {
     <div className={classes.strip} data-overview-fleet-metrics>
       <div className={classes.cell}>
         <AppMetricCard
-          label="Running"
+          label={text("Running", "Fut")}
           value={String(props.stats.runningCount)}
           active={props.fleetFilter === "running"}
           onClick={() => setFilter("running")}
@@ -32,7 +34,7 @@ export function OverviewFleetMetrics(props: Props): ReactElement {
       </div>
       <div className={classes.cell}>
         <AppMetricCard
-          label="Stopped"
+          label={text("Stopped", "Leállítva")}
           value={String(props.stats.stoppedCount)}
           active={props.fleetFilter === "stopped"}
           onClick={() => setFilter("stopped")}
@@ -40,7 +42,7 @@ export function OverviewFleetMetrics(props: Props): ReactElement {
       </div>
       <div className={classes.cell}>
         <AppMetricCard
-          label="Needs attention"
+          label={text("Needs attention", "Figyelmet igényel")}
           value={String(props.stats.attentionCount)}
           tone="warning"
           active={props.fleetFilter === "attention"}
@@ -65,7 +67,7 @@ export function OverviewFleetMetrics(props: Props): ReactElement {
       </div>
       <div className={classes.cell}>
         <AppMetricCard
-          label="Updates available"
+          label={text("Updates available", "Frissítés elérhető")}
           value={String(props.stats.updatesCount)}
           tone="warning"
           active={props.fleetFilter === "updates"}

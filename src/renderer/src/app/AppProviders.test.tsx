@@ -17,15 +17,18 @@ describe("AppProviders", () => {
 
     expect(screen.getByText("provider-ready")).toBeInTheDocument();
     expect(document.documentElement).toHaveAttribute("data-ui-density", "compact");
+    expect(document.documentElement).toHaveAttribute("data-newgen-background", "on");
 
     rerender(
-      <AppProviders density="comfortable">
+      <AppProviders density="comfortable" sceneBackground={false}>
         <Probe />
       </AppProviders>,
     );
     expect(document.documentElement).toHaveAttribute("data-ui-density", "comfortable");
+    expect(document.documentElement).toHaveAttribute("data-newgen-background", "off");
 
     unmount();
     expect(document.documentElement).not.toHaveAttribute("data-ui-density");
+    expect(document.documentElement).not.toHaveAttribute("data-newgen-background");
   });
 });

@@ -1,3 +1,5 @@
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
+import { newGenLabel } from "@app/newGenLabels";
 import type { ReactElement, ReactNode } from "react";
 import { Group } from "@mantine/core";
 import classes from "./AppPageHeader.module.css";
@@ -17,6 +19,7 @@ interface Props {
  * One implementation for every page — do not re-declare a `.pageTitle` per feature.
  */
 export function AppPageHeader(props: Props): ReactElement {
+  const { language } = useNewGenVisualPreferences();
   return (
     <Group
       component="header"
@@ -27,7 +30,7 @@ export function AppPageHeader(props: Props): ReactElement {
       className={[classes.header, props.className].filter(Boolean).join(" ")}
     >
       <div>
-        <h1 className={classes.title}>{props.title}</h1>
+        <h1 className={classes.title}>{newGenLabel(props.title, language)}</h1>
         {props.subtitle !== undefined && <p className={classes.subtitle}>{props.subtitle}</p>}
       </div>
       {props.actions !== undefined && <Group gap="sm">{props.actions}</Group>}

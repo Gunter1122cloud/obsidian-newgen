@@ -25,6 +25,7 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { useUiDensity } from "@app/AppProviders";
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
 import type { OfficialNetworkStatus } from "@shared/types";
 import type { HostedResourcesHealth } from "@features/hosted-resources/model/hostedResourcesHealth";
 import { navSelectedClassName } from "@ui/NavSelected/navSelectedClassName";
@@ -97,6 +98,16 @@ function officialVersionTooltip(version: string | null, networkStatus: OfficialN
 
 export function Sidebar(props: Props): ReactElement {
   const density = useUiDensity();
+  const { text } = useNewGenVisualPreferences();
+  const labels: Record<Route, string> = {
+    overview: "Szerverek",
+    clusters: "Klaszterek",
+    downloads: "Letöltések",
+    backups: "Mentések",
+    logs: "Naplók",
+    hostedResources: "Erőforrások",
+    settings: "Beállítások",
+  };
   const compact = density === "compact";
   const iconMode = props.iconMode === true;
   const [quitOpened, setQuitOpened] = useState(false);
@@ -181,7 +192,8 @@ export function Sidebar(props: Props): ReactElement {
               Experimental
             </Badge>
           ) : undefined;
-          const itemTooltip = item.id === "hostedResources" ? hostedResourcesHealthLabel : item.label;
+          const itemTooltip =
+            item.id === "hostedResources" ? hostedResourcesHealthLabel : text(item.label, labels[item.id]);
           const icon = (
             <Icon
               size={navIconSize}
@@ -194,8 +206,8 @@ export function Sidebar(props: Props): ReactElement {
               component="button"
               type="button"
               active={active}
-              label={iconMode ? undefined : item.label}
-              aria-label={item.label}
+              label={iconMode ? undefined : text(item.label, labels[item.id])}
+              aria-label={text(item.label, labels[item.id])}
               leftSection={
                 // Icon rail wraps the whole link in a tooltip below; nesting another here
                 // would stack two tooltips on the same hover.

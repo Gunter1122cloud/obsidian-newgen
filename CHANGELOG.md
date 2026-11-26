@@ -11,9 +11,15 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ### Added
 
-- Introduce Obsidian Command's independent black-and-gold desktop identity, crystal logo and splash, while preserving the existing server list, live metrics, and original UI actions.
+- Independent GitHub release packaging and optional direct CurseForge metadata access with a Windows user-encrypted local API key that survives app updates.
 
-- Opt-in private Discord control API for host-local map status and lifecycle actions, with strict role/channel authorization, read-only service identity, TLS credentials, and replay protection. Disabled by default until explicitly configured.
+- Extend Hungarian UI localization to shared page headings, workspace tabs, settings navigation, server status, metadata and common dialog controls.
+
+- Bundle original tactical map illustrations, optimized user-provided texture and CC0 particles, optional interface sounds, animated atmosphere and workspace hero treatment.
+
+- Tactical NewGen dashboard with responsive map cards, shared backdrop and optional background artwork, animated startup and busy overlays, and consistent modal and notification styling. Server engine and runtime actions are unchanged.
+
+- Obsidian Command NewGen Windows release integrity checks for the Setup, Portable, update manifest and SHA-256 checksums.
 
 ### Changed
 

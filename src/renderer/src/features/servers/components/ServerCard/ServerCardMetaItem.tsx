@@ -1,3 +1,5 @@
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
+import { newGenLabel } from "@app/newGenLabels";
 import type { ReactElement } from "react";
 import { WarningCircle } from "@phosphor-icons/react";
 import { Text, Tooltip, type MantineColor } from "@mantine/core";
@@ -52,6 +54,7 @@ export function ServerCardMetaItem({
   hint = null,
   tooltip = null,
 }: Props): ReactElement {
+  const { language } = useNewGenVisualPreferences();
   const valueTone = tone === "warn" ? "attention" : tone;
   const hasHint = hint != null && hint.length > 0;
   const valueText = (
@@ -85,7 +88,7 @@ export function ServerCardMetaItem({
       data-meta-hint={hasHint ? "true" : undefined}
     >
       <Text c="dimmed" display="block" fz="xs">
-        {label}
+        {newGenLabel(label, language)}
       </Text>
       {hasHint ? (
         <Tooltip label={hint} multiline maw={260} withArrow events={{ hover: true, focus: false, touch: true }}>

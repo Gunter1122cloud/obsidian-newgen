@@ -422,14 +422,14 @@ describe("SettingsPage", () => {
     expect(screen.getByRole("radio", { name: "Breeze Dark" })).toBeInTheDocument();
   });
 
-  it("shows the background image switch only for Glassy", async () => {
+  it("shows the background image switch for Fluent and Glassy", async () => {
     const user = userEvent.setup();
     const onBackgroundImageChange = vi.fn();
     stubSettingsApi();
 
     const view = renderSettings({ family: "fluent", backgroundImage: true, onBackgroundImageChange });
     await openCategory(user, "Appearance");
-    expect(screen.queryByRole("switch", { name: "Background image" })).not.toBeInTheDocument();
+    expect(screen.getByRole("switch", { name: "Background image" })).toBeChecked();
 
     view.rerender(
       <AppProviders>

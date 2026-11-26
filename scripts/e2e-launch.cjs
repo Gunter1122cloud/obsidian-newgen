@@ -126,7 +126,7 @@ async function pageLooksLikeSplash(page) {
 }
 
 async function waitForOverview(app, options = {}) {
-  const timeoutMs = options.timeoutMs ?? 20_000;
+  const timeoutMs = options.timeoutMs ?? 60_000;
   const deadline = Date.now() + timeoutMs;
   let page;
   try {

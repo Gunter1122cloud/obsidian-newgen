@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3840" height="2160" viewBox="0 0 1920 1080">
+  <defs>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" fill="none" stroke="#b48537" stroke-opacity=".14" stroke-width=".7"/>
+    </pattern>
+    <radialGradient id="glow"><stop stop-color="#574627"/><stop offset="1" stop-color="#080b0c"/></radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
+  <g fill="none" stroke="#b48537" stroke-opacity=".25" stroke-width="1">
+    <path d="M40 120V40H120M1800 40h80v80M40 960v80h80M1800 1040h80v-80"/>
+    <circle cx="1600" cy="270" r="95"/><circle cx="1600" cy="270" r="165"/>
+    <path d="M1600 75v390M1405 270h390"/>
+  </g>
+</svg>

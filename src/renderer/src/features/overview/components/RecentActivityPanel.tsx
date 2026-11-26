@@ -1,3 +1,5 @@
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
+import { newGenLabel } from "@app/newGenLabels";
 import type { ReactElement } from "react";
 import { ArrowRight } from "@phosphor-icons/react";
 import { Button, Group, Skeleton, Text, Timeline, Title, VisuallyHidden } from "@mantine/core";
@@ -17,6 +19,7 @@ function severityTimelineColor(severity: AppEvent["severity"]): string {
 }
 
 export function RecentActivityPanel({ events, loading, onViewAll }: Props): ReactElement {
+  const { language } = useNewGenVisualPreferences();
   const relevantEvents = events.filter((event) => event.type !== "rcon_command").slice(0, 5);
 
   return (
@@ -24,20 +27,20 @@ export function RecentActivityPanel({ events, loading, onViewAll }: Props): Reac
       <Group justify="space-between" align="center" gap="sm">
         <div>
           <Title order={3} id="recent-activity-title" className={classes.recentTitle}>
-            Recent activity
+            {newGenLabel("Recent activity", language)}
           </Title>
           <Text c="dimmed" size="sm">
-            Relevant manager changes and operations.
+            {newGenLabel("Relevant manager changes and operations.", language)}
           </Text>
         </div>
         <Button variant="subtle" rightSection={<ArrowRight size={14} />} onClick={onViewAll}>
-          View logs
+          {newGenLabel("View logs", language)}
         </Button>
       </Group>
 
       {loading ? (
         <div role="status" aria-live="polite">
-          <VisuallyHidden>Loading recent activity</VisuallyHidden>
+          <VisuallyHidden>{newGenLabel("Loading recent activity", language)}</VisuallyHidden>
           <Timeline active={-1} bulletSize={8} lineWidth={2} className={classes.recentTimeline}>
             {[0, 1, 2].map((item) => (
               <Timeline.Item
@@ -53,7 +56,7 @@ export function RecentActivityPanel({ events, loading, onViewAll }: Props): Reac
         </div>
       ) : relevantEvents.length === 0 ? (
         <Text c="dimmed" size="sm" className={classes.recentEmpty}>
-          No relevant operational activity yet.
+          {newGenLabel("No relevant operational activity yet.", language)}
         </Text>
       ) : (
         <Timeline active={relevantEvents.length} bulletSize={8} lineWidth={2} className={classes.recentTimeline}>

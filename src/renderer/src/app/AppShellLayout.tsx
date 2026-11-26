@@ -10,6 +10,7 @@ import type { OfficialNetworkStatus } from "@shared/types";
 import type { HostedResourcesHealth } from "@features/hosted-resources/model/hostedResourcesHealth";
 import type { PropsWithChildren, ReactElement, ReactNode } from "react";
 import classes from "./AppShellLayout.module.css";
+import { NewGenAtmosphere } from "./NewGenAtmosphere";
 
 interface Props extends PropsWithChildren {
   route: Route;
@@ -64,6 +65,7 @@ export function AppShellLayout({ children, ...props }: Props): ReactElement {
           <div className={classes.sceneVeil} aria-hidden="true" />
         </div>
       ) : null}
+      <NewGenAtmosphere enabled={true} />
       <AppShell.Navbar>
         <Sidebar
           {...shellProps}

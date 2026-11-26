@@ -17,6 +17,7 @@ import type {
   ServerProfileInput,
 } from "@shared/types";
 import { MOCK_MOD_CATALOG, MOCK_MOD_CATEGORIES, buildPlaceholderMetadata } from "./mock-mod-catalog";
+import { fetchDirectCurseForge } from "./curseforge-direct";
 
 export interface ModsServiceOptions {
   /**
@@ -32,6 +33,8 @@ export interface ModsServiceOptions {
   useMockCatalog?: boolean;
   /** Override build-injected official URL (tests). */
   buildDefaultUrl?: string;
+  /** Local credential provider, main process only; never passed to the renderer. */
+  directApiKey?: () => Promise<string | null>;
 }
 
 interface WorkerErrorBody {
@@ -47,19 +50,20 @@ interface WorkerSuccessBody<T> {
 type WorkerEnvelope<T> = WorkerSuccessBody<T> | WorkerErrorBody;
 
 /**
- * Resolves ASA mod metadata via the CurseForge proxy Worker.
- * The API key never leaves Cloudflare.
+ * Resolves ASA mod metadata via an authorized proxy or a local direct API credential.
  */
 export class ModsService {
   private readonly explicitBaseUrl: string | undefined;
   private readonly fetchImpl: typeof fetch;
   private readonly useMockCatalog: boolean;
   private readonly buildDefaultUrl: string;
+  private readonly directApiKey: (() => Promise<string | null>) | undefined;
 
   constructor(options: ModsServiceOptions = {}) {
     this.explicitBaseUrl = options.baseUrl?.trim() || undefined;
     this.fetchImpl = options.fetchImpl ?? fetch;
     this.useMockCatalog = options.useMockCatalog === true;
+    this.directApiKey = options.directApiKey;
     this.buildDefaultUrl =
       options.buildDefaultUrl !== undefined ? options.buildDefaultUrl.trim() : BUILD_CURSEFORGE_PROXY_URL;
   }
@@ -303,16 +307,13 @@ export class ModsService {
     };
   }
 
-  private requireBaseUrl(): string {
+  private async fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
     const base = this.getBaseUrl();
     if (base === null) {
+      const key = await this.directApiKey?.();
+      if (key) return (await fetchDirectCurseForge(this.fetchImpl, key, path, init)) as T;
       throw new MetadataServiceNotConfiguredError();
     }
-    return base;
-  }
-
-  private async fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
-    const base = this.requireBaseUrl();
     const url = `${base}${path.startsWith("/") ? path : `/${path}`}`;
     let response: Response;
     try {
