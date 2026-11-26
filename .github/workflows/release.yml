@@ -107,15 +107,15 @@ jobs:
       - name: Test
         run: npm test
 
-      - name: Require official CurseForge proxy URL
+      - name: Validate optional CurseForge proxy URL
         shell: bash
         env:
           YARK_CURSEFORGE_PROXY_URL: ${{ vars.YARK_CURSEFORGE_PROXY_URL }}
         run: |
           set -euo pipefail
           if [ -z "${YARK_CURSEFORGE_PROXY_URL}" ]; then
-            echo "::error::Repository variable YARK_CURSEFORGE_PROXY_URL is empty. Official releases must bake a CurseForge proxy base URL (see docs/curseforge-proxy.md)."
-            exit 1
+            echo "::notice::No shared CurseForge proxy configured. The preview uses local configuration for mod metadata."
+            exit 0
           fi
           # Same rules as normalizeCurseforgeProxyUrl (https, no credentials/query/hash).
           node <<'NODE'

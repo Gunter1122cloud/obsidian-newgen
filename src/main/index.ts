@@ -38,6 +38,7 @@ import { LogRetentionScheduler } from "../backend/domains/logs/log-retention-sch
 import { UpdateService } from "../backend/domains/updates/update-service";
 import { MoveInstallService } from "../backend/domains/instances/move-install-service";
 import { ModsService } from "../backend/domains/mods/mods-service";
+import { createLocalCurseForgeKeyReader } from "./local-curseforge-key";
 import { HostedResourcesService } from "../backend/domains/hosted-resources/hosted-resources-service";
 import { HostedResourcesRepository } from "../backend/infra/db/hosted-resources-repository";
 import { gameUserSettingsIniPath } from "../backend/domains/instances/sync-profile-ini";
@@ -518,7 +519,9 @@ if (isPrimaryInstance) {
       join(userData, "move-install-staging.json"),
       join(userData, "move-install-pending-cleanup.json"),
     );
-    const modsService = new ModsService();
+    const modsService = new ModsService({
+      directApiKey: app.isPackaged ? createLocalCurseForgeKeyReader() : undefined,
+    });
 
     // Unify RCON traffic on the persistent session (stop / ListPlayers / console).
     processManager.setRconExecutor((serverId, command) =>
