@@ -99,7 +99,15 @@ function officialVersionTooltip(version: string | null, networkStatus: OfficialN
 export function Sidebar(props: Props): ReactElement {
   const density = useUiDensity();
   const { text } = useNewGenVisualPreferences();
-  const labels: Record<Route, string> = { overview: "Szerverek", clusters: "Klaszterek", downloads: "Letöltések", backups: "Mentések", logs: "Naplók", hostedResources: "Erőforrások", settings: "Beállítások" };
+  const labels: Record<Route, string> = {
+    overview: "Szerverek",
+    clusters: "Klaszterek",
+    downloads: "Letöltések",
+    backups: "Mentések",
+    logs: "Naplók",
+    hostedResources: "Erőforrások",
+    settings: "Beállítások",
+  };
   const compact = density === "compact";
   const iconMode = props.iconMode === true;
   const [quitOpened, setQuitOpened] = useState(false);
@@ -184,7 +192,8 @@ export function Sidebar(props: Props): ReactElement {
               Experimental
             </Badge>
           ) : undefined;
-          const itemTooltip = item.id === "hostedResources" ? hostedResourcesHealthLabel : text(item.label, labels[item.id]);
+          const itemTooltip =
+            item.id === "hostedResources" ? hostedResourcesHealthLabel : text(item.label, labels[item.id]);
           const icon = (
             <Icon
               size={navIconSize}
