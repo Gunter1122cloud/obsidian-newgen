@@ -102,7 +102,7 @@ const denied = (error: string) => ({ ok: false, error });
 type Metric = { cpuSeconds: number; atMs: number; startedAt: string | null };
 
 export async function dispatchDiscordControl(
-  instances: Pick<InstanceService, "list" | "statuses" | "start" | "stop" | "restart" | "sendRcon" | "execRcon">,
+  instances: Pick<InstanceService, "list" | "statuses" | "start" | "stop" | "restart" | "sendRcon" | "execRcon" | "listPlayers">,
   q: Request,
   hostId: string,
   claim: (id: string) => boolean,
@@ -135,6 +135,10 @@ export async function dispatchDiscordControl(
         if (pid != null && sample && state)
           nextMetrics.set(pid, { cpuSeconds: sample.cpuSeconds, atMs: now, startedAt: state.startedAt });
         const disk = await statfs(p.installDir).catch(() => null);
+        const playerCount =
+          state?.status === "running" && state.processLive
+            ? await instances.listPlayers(p.id).then((players) => players.length).catch(() => null)
+            : null;
         return {
           mapId: p.id,
           mapName: p.name,
@@ -146,7 +150,7 @@ export async function dispatchDiscordControl(
             state?.processLive && state.startedAt
               ? Math.max(0, Math.floor((now - Date.parse(state.startedAt)) / 1000))
               : null,
-          playerCount: null,
+          playerCount,
           memoryMiB: sample ? Math.round(sample.workingSetBytes / 1048576) : null,
           cpuPercent: cpu == null ? null : cpu / Math.max(1, cpus().length),
           freeBytes: disk ? disk.bavail * disk.bsize : null,

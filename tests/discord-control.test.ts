@@ -49,6 +49,7 @@ function fixture() {
     start: vi.fn().mockResolvedValue(undefined),
     stop: vi.fn().mockResolvedValue(undefined),
     restart: vi.fn().mockResolvedValue(undefined),
+    listPlayers: vi.fn().mockResolvedValue([{ playerId: "player-1" }]),
     sendRcon: vi.fn().mockResolvedValue(""),
     execRcon: vi.fn().mockResolvedValue("No Players Connected"),
   };
@@ -69,6 +70,23 @@ describe("NewGen Discord control", () => {
       authorizeDiscordControl(config, { ...request, userId: service, channelId: status, kind: "status" }, now),
     ).toBe(true);
     expect(authorizeDiscordControl(config, { ...request, userId: service, channelId: status }, now)).toBe(false);
+  });
+
+  it("returns a read-only live player count for running maps", async () => {
+    const { handlers, instances } = fixture();
+    const result = await dispatchDiscordControl(
+      instances,
+      { ...request, userId: service, channelId: status, roleIds: [], kind: "status", action: undefined },
+      "host",
+      () => true,
+      () => true,
+    );
+    expect(result).toMatchObject({ ok: true, maps: [{ mapId: id, playerCount: 1 }] });
+    expect(handlers.listPlayers).toHaveBeenCalledExactlyOnceWith(id);
+    expect(handlers.start).not.toHaveBeenCalled();
+    expect(handlers.stop).not.toHaveBeenCalled();
+    expect(handlers.restart).not.toHaveBeenCalled();
+    expect(handlers.sendRcon).not.toHaveBeenCalled();
   });
 
   it("dispatches the original lifecycle only once, with no external approval", async () => {
