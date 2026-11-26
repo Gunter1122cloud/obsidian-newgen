@@ -388,3 +388,28 @@
     flex-direction: column;
   }
 }
+
+/* Settings is the armory panel: consistent iron material, with brass only on structure. */
+:global([data-mantine-color-scheme="dark"]) .navCard,
+:global([data-mantine-color-scheme="dark"]) .settingStack {
+  border-color: rgba(190, 158, 96, 0.32) !important;
+  background-color: rgba(10, 12, 13, 0.9) !important;
+  background-image:
+    linear-gradient(145deg, rgba(18, 20, 20, 0.86), rgba(8, 10, 11, 0.94)),
+    url("../../assets/newgen/rusty-iron-02.webp") !important;
+  background-size: cover, cover;
+  background-position: center;
+}
+
+:global([data-mantine-color-scheme="dark"]) .settingRow,
+:global([data-mantine-color-scheme="dark"]) .settingGroup,
+:global([data-mantine-color-scheme="dark"]) .settingBlock {
+  border-color: rgba(190, 158, 96, 0.18);
+  background-color: rgba(13, 15, 16, 0.88);
+  background-image: linear-gradient(105deg, rgba(24, 25, 23, 0.62), rgba(9, 11, 12, 0.86));
+}
+
+:global([data-mantine-color-scheme="dark"]) .navTitle {
+  color: #e8d8b6;
+}
+
