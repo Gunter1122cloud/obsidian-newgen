@@ -765,7 +765,6 @@
   }
 }
 
-
 @media (prefers-reduced-motion: reduce) {
   :global([data-overview-page]) .card .cover {
     transition: none;
