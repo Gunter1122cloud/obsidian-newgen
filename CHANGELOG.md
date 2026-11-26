@@ -9,6 +9,10 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
+### Added
+
+- Opt-in private Discord control API for host-local map status and lifecycle actions, with strict role/channel authorization, read-only service identity, TLS credentials, and replay protection. Disabled by default until explicitly configured.
+
 ### Changed
 
 - Dependencies: Mantine and mantine-datatable **9.8**, Electron **43.8.13**, React **19.3**, plus electron-builder/updater and tooling patches (knip, Playwright, Prettier, TypeScript-ESLint). Theme sets **cursorType pointer** so Button/ActionIcon keep the hand cursor after Mantine 9.8 stopped hardcoding it on UnstyledButton.
