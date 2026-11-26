@@ -142,7 +142,10 @@
       }
     ],
     "win": {
-      "target": ["nsis", "portable"],
+      "target": [
+        "nsis",
+        "portable"
+      ],
       "icon": "icon.ico"
     },
     "nsis": {
