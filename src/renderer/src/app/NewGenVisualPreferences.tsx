@@ -1,4 +1,12 @@
-import { createContext, useContext, useLayoutEffect, useMemo, useState, type PropsWithChildren, type ReactElement } from "react";
+import {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useState,
+  type PropsWithChildren,
+  type ReactElement,
+} from "react";
 
 type Language = "en" | "hu";
 
@@ -39,9 +47,7 @@ export function useNewGenVisualPreferences(): VisualPreferences {
 }
 
 export function NewGenVisualPreferences({ children }: PropsWithChildren): ReactElement {
-  const [language, setLanguage] = useState<Language>(() =>
-    readPreference("newgen.language") === "hu" ? "hu" : "en",
-  );
+  const [language, setLanguage] = useState<Language>(() => (readPreference("newgen.language") === "hu" ? "hu" : "en"));
   const [motion, setMotion] = useState(() => readPreference("newgen.motion") !== "off");
 
   useLayoutEffect(() => {
