@@ -646,12 +646,15 @@
 @media (prefers-reduced-motion: no-preference) {
   :global([data-overview-page]) .card {
     transition:
-      border-color 180ms ease,
-      box-shadow 180ms ease;
+      transform 240ms cubic-bezier(0.2, 0.75, 0.25, 1),
+      border-color 240ms ease,
+      box-shadow 240ms ease;
   }
 
   :global([data-overview-page]) .card:hover {
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
+    transform: translateY(-2px);
+    border-color: rgba(199, 164, 92, 0.76);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), inset 0 1px rgba(245, 221, 174, 0.08);
   }
 }
 
@@ -681,6 +684,32 @@
 
 :global([data-mantine-color-scheme="dark"]) :global([data-overview-page]) .card {
   background-image:
-    linear-gradient(145deg, rgba(35, 39, 39, 0.94), rgba(15, 18, 19, 0.93)), url("../../../../assets/newgen/metal.webp");
-  background-repeat: no-repeat, repeat;
+    linear-gradient(145deg, rgba(25, 27, 27, 0.94), rgba(10, 12, 13, 0.96)),
+    url("../../../../assets/newgen/rusty-iron.webp");
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat;
+  background-blend-mode: normal, soft-light;
+}
+
+
+/* The card's metal is visible as material, not as a bright wallpaper. */
+:global([data-mantine-color-scheme="dark"]) :global([data-overview-page]) .card {
+  border-color: rgba(181, 157, 109, 0.3);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    inset 0 1px rgba(245, 221, 174, 0.045);
+}
+
+:global([data-mantine-color-scheme="dark"]) :global([data-overview-page]) .card::before {
+  width: 3px;
+  box-shadow: 1px 0 10px rgba(199, 164, 92, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global([data-overview-page]) .card,
+  :global([data-overview-page]) .card:hover {
+    transform: none;
+    transition: none;
+  }
 }

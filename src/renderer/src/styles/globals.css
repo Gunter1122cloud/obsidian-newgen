@@ -395,8 +395,12 @@ body {
 [data-mantine-color-scheme="dark"] .mantine-Drawer-header,
 [data-mantine-color-scheme="dark"] .mantine-Notification-root {
   background-image:
-    linear-gradient(135deg, rgba(25, 28, 29, 0.94), rgba(25, 28, 29, 0.86)), url("../assets/newgen/metal.webp");
-  background-repeat: no-repeat, repeat;
+    linear-gradient(135deg, rgba(19, 22, 22, 0.96), rgba(10, 12, 13, 0.92)),
+    url("../assets/newgen/rusty-iron-02.webp");
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat;
+  background-blend-mode: normal, soft-light;
 }
 
 :root[data-newgen-motion="off"] *,
@@ -430,4 +434,49 @@ body {
 [data-mantine-color-scheme="dark"] h2,
 [data-mantine-color-scheme="dark"] h3 {
   font-family: var(--app-font-display);
+}
+
+
+@keyframes newgenTacticalPortalEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-mantine-color-scheme="dark"] .mantine-Notification-root {
+    animation: newgenTacticalPortalEnter 280ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+  }
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Notification-root {
+  border-left: 2px solid rgba(199, 164, 92, 0.8);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-Modal-content,
+[data-mantine-color-scheme="dark"] .mantine-Drawer-content {
+  background-image:
+    linear-gradient(145deg, rgba(19, 22, 22, 0.96), rgba(10, 12, 13, 0.95)),
+    url("../assets/newgen/rusty-iron-02.webp");
+  background-size: cover, cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: normal, soft-light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-mantine-color-scheme="dark"] .mantine-Notification-root {
+    animation: none !important;
+  }
+}
+
+:root[data-newgen-motion="off"] .mantine-Notification-root {
+  animation: none !important;
 }
