@@ -111,25 +111,23 @@ export function SettingsAppearanceSection(props: Props): ReactElement {
           </div>
         </div>
 
-        {(
-          <div className={classes.settingRow}>
-            <div className={classes.settingCopy}>
-              <Text size="sm" fw={600}>
-                Background image
-              </Text>
-              <Text size="xs" c="dimmed" mt={2}>
-                Show the cinematic scene behind the dark interface. Off leaves a flat canvas.
-              </Text>
-            </div>
-            <div className={classes.settingControl}>
-              <Switch
-                checked={props.backgroundImage}
-                onChange={(event) => props.onBackgroundImageChange(event.currentTarget.checked)}
-                aria-label="Background image"
-              />
-            </div>
+        <div className={classes.settingRow}>
+          <div className={classes.settingCopy}>
+            <Text size="sm" fw={600}>
+              Background image
+            </Text>
+            <Text size="xs" c="dimmed" mt={2}>
+              Show the cinematic scene behind the dark interface. Off leaves a flat canvas.
+            </Text>
           </div>
-        )}
+          <div className={classes.settingControl}>
+            <Switch
+              checked={props.backgroundImage}
+              onChange={(event) => props.onBackgroundImageChange(event.currentTarget.checked)}
+              aria-label="Background image"
+            />
+          </div>
+        </div>
 
         <div className={classes.settingRow}>
           <div className={classes.settingCopy}>
