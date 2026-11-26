@@ -16,6 +16,7 @@ import type { ThemeSelection, WorkspacePanelsId } from "@shared/settings/appeara
 import { RowActionMenuProvider } from "@ui/RowActionMenu/RowActionMenuProvider";
 import { isRendererTest } from "@renderer/shared/isRendererTest";
 import { NewGenVisualPreferences } from "./NewGenVisualPreferences";
+import { NewGenAudio } from "./NewGenAudio";
 
 const UiDensityContext = createContext<UiDensity>("compact");
 const ShellSceneContext = createContext(false);
@@ -171,6 +172,7 @@ export function AppProviders({
               >
                 <RowActionMenuProvider>
                   <NewGenVisualPreferences>
+                    <NewGenAudio />
                     <Notifications position="bottom-right" autoClose={notificationsAutoClose} />
                     {children}
                   </NewGenVisualPreferences>

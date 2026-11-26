@@ -1,4 +1,6 @@
-import type { ReactElement } from "react";
+import type { CSSProperties, ReactElement } from "react";
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
+import { resolveNewGenCover } from "@ui/MapArtThumb/newGenCover";
 import { Copy, Eye, HardDrives, Play, ShareNetwork, Stop, Wrench } from "@phosphor-icons/react";
 import { ActionIcon, Badge, Button, Group, Stack, Text, Title, Tooltip } from "@mantine/core";
 import type { ServerInstallationInfo, ServerProfile, ServerRuntimeInfo } from "@shared/types";
@@ -44,11 +46,12 @@ interface Props {
 
 export function WorkspaceHeader(props: Props): ReactElement {
   const status = props.runtime?.status ?? "stopped";
+  const cover = resolveNewGenCover(props.server.map);
   const version = resolveDisplayedServerVersion(props.installation) ?? "–";
   const displayStatus = props.startBusy === true && (status === "stopped" || status === "error") ? "starting" : status;
 
   return (
-    <header className={classes.header}>
+    <header className={classes.header} style={cover ? ({ "--newgen-cover": `url("${cover}")` } as CSSProperties) : undefined}>
       <WorkspaceHeaderIdentity props={props} status={status} displayStatus={displayStatus} version={version} />
       <WorkspaceHeaderActions props={props} status={status} />
     </header>
@@ -66,6 +69,7 @@ function WorkspaceHeaderIdentity({
   displayStatus: ServerRuntimeInfo["status"];
   version: string;
 }): ReactElement {
+  const { text } = useNewGenVisualPreferences();
   return (
     <Group gap="sm" align="flex-start" wrap="nowrap" className={classes.identity}>
       <MapArtThumb
@@ -86,7 +90,7 @@ function WorkspaceHeaderIdentity({
           {status === "running" && <RconStatusIcon serverId={props.server.id} />}
           {!props.server.enabled && (
             <Badge variant="light" color="gray">
-              Inactive
+              {text("Inactive", "Inaktív")}
             </Badge>
           )}
         </Group>
@@ -96,7 +100,7 @@ function WorkspaceHeaderIdentity({
         <Group gap="sm" wrap="wrap" align="center" className={classes.details}>
           <Group gap="xs" wrap="nowrap" align="center" className={classes.detailItem}>
             <Text size="xs" c="dimmed">
-              Session:
+              {text("Session:", "Szervernév:")}
             </Text>
             <Text size="xs" title={props.server.sessionName} className={classes.detailValue}>
               {props.server.sessionName}
@@ -118,7 +122,7 @@ function WorkspaceHeaderIdentity({
           {props.joinCommand && (
             <Group gap="xs" wrap="nowrap" align="center" className={classes.detailItem}>
               <Text size="xs" c="dimmed">
-                Join:
+                {text("Join:", "Csatlakozás:")}
               </Text>
               <Text size="xs" ff="monospace" title={props.joinCommand} className={classes.detailValue}>
                 {props.joinCommand}
@@ -216,6 +220,7 @@ function WorkspaceHeaderPrimaryActions({
   lockTitle: string;
   installBlockedTitle: string;
 }): ReactElement {
+  const { text } = useNewGenVisualPreferences();
   return (
     <Group gap="xs" wrap="nowrap">
       <WorkspaceHeaderStartAction
@@ -248,7 +253,7 @@ function WorkspaceHeaderPrimaryActions({
         disabled={!canStop || manualRestartPending}
         title={manualRestartPending ? "Cancel the queued restart first" : undefined}
       >
-        Stop
+        {text("Stop", "Leállítás")}
       </Button>
     </Group>
   );
@@ -273,6 +278,7 @@ function WorkspaceHeaderStartAction({
   lockTitle: string;
   installBlockedTitle: string;
 }): ReactElement {
+  const { text } = useNewGenVisualPreferences();
   if (isServerDisabled) {
     return (
       <Button
@@ -282,7 +288,7 @@ function WorkspaceHeaderStartAction({
         disabled={!canEnable}
         title={props.filesJobActive === true ? lockTitle : undefined}
       >
-        Enable
+        {text("Enable", "Engedélyezés")}
       </Button>
     );
   }
@@ -298,7 +304,7 @@ function WorkspaceHeaderStartAction({
       loading={startLoading}
       title={startTitle}
     >
-      {startLoading ? "Starting…" : "Start"}
+      {startLoading ? text("Starting…", "Indítás…") : text("Start", "Indítás")}
     </Button>
   );
 }

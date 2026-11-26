@@ -184,3 +184,13 @@
     overflow: visible;
   }
 }
+
+:global([data-mantine-color-scheme="dark"]) .tabList :global(.mantine-Tabs-tab[data-active]) {
+  color: var(--app-color-accent-text);
+  box-shadow: inset 0 -2px 0 var(--app-color-accent);
+}
+
+:global([data-mantine-color-scheme="dark"]) .tabPanel {
+  background-color: rgba(14, 17, 18, 0.75);
+  border: 1px solid rgba(181, 157, 109, 0.2);
+}

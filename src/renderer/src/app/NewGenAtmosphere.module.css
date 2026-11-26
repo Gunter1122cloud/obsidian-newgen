@@ -42,3 +42,8 @@
 @media (prefers-reduced-motion: reduce) {
   .atmosphere { display: none; }
 }
+
+:global([data-newgen-background="off"]) .atmosphere,
+:global([data-mantine-color-scheme="light"]) .atmosphere {
+  display: none;
+}

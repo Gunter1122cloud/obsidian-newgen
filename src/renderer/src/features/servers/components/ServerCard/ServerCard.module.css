@@ -654,3 +654,32 @@
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
   }
 }
+
+.cover {
+  display: none;
+}
+
+:global([data-overview-page]) .card .cover {
+  display: block;
+  width: 100%;
+  height: 124px;
+  object-fit: cover;
+  border: 1px solid var(--app-color-border);
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+:global([data-overview-page]) .card [data-newgen-cover] .identity {
+  display: flex;
+  align-items: center;
+}
+
+:global([data-overview-page]) .card [data-newgen-cover] .thumb {
+  width: 40px;
+  height: 40px;
+}
+
+:global([data-mantine-color-scheme="dark"]) :global([data-overview-page]) .card {
+  background-image: linear-gradient(145deg, rgba(35, 39, 39, 0.94), rgba(15, 18, 19, 0.93)), url("../../../../assets/newgen/metal.webp");
+  background-repeat: no-repeat, repeat;
+}

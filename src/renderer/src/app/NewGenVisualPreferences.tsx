@@ -13,16 +13,20 @@ type Language = "en" | "hu";
 interface VisualPreferences {
   language: Language;
   motion: boolean;
+  sound: boolean;
   setLanguage: (language: Language) => void;
   setMotion: (motion: boolean) => void;
+  setSound: (sound: boolean) => void;
   text: (en: string, hu: string) => string;
 }
 
 const Context = createContext<VisualPreferences>({
   language: "en",
   motion: true,
+  sound: false,
   setLanguage: () => undefined,
   setMotion: () => undefined,
+  setSound: () => undefined,
   text: (en) => en,
 });
 
@@ -49,6 +53,7 @@ export function useNewGenVisualPreferences(): VisualPreferences {
 export function NewGenVisualPreferences({ children }: PropsWithChildren): ReactElement {
   const [language, setLanguage] = useState<Language>(() => (readPreference("newgen.language") === "hu" ? "hu" : "en"));
   const [motion, setMotion] = useState(() => readPreference("newgen.motion") !== "off");
+  const [sound, setSound] = useState(() => readPreference("newgen.sound") === "on");
 
   useLayoutEffect(() => {
     const root = document.documentElement;
@@ -57,15 +62,16 @@ export function NewGenVisualPreferences({ children }: PropsWithChildren): ReactE
     root.dataset.newgenMotion = motion ? "on" : "off";
     writePreference("newgen.language", language);
     writePreference("newgen.motion", motion ? "on" : "off");
+    writePreference("newgen.sound", sound ? "on" : "off");
     return () => {
       root.lang = previousLanguage;
       delete root.dataset.newgenMotion;
     };
-  }, [language, motion]);
+  }, [language, motion, sound]);
 
   const value = useMemo<VisualPreferences>(
-    () => ({ language, motion, setLanguage, setMotion, text: (en, hu) => (language === "hu" ? hu : en) }),
-    [language, motion],
+    () => ({ language, motion, sound, setLanguage, setMotion, setSound, text: (en, hu) => (language === "hu" ? hu : en) }),
+    [language, motion, sound],
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
