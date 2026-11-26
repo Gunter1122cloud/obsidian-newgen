@@ -11,7 +11,7 @@ import {
 import { AppAlert } from "@ui/AppAlert/AppAlert";
 
 /**
- * Asks whether to keep values that look edited outside YARK, or discard them.
+ * Asks whether to keep values that look edited outside the existing profile, or discard them.
  * Adopting the INI checks port clashes with other servers. Does not block Start (#682).
  */
 export function ImportCompatibilityReport(props: {
@@ -25,8 +25,8 @@ export function ImportCompatibilityReport(props: {
 }): ReactElement | null {
   const { server, servers, profileDirty = false, choiceSettled = false, onChoiceSettled, onUpdated } = props;
   const [report, setReport] = useState<IniImportCompatibilityReport | null>(null);
-  const [pending, setPending] = useState<"file" | "yark" | null>(null);
-  const pendingRef = useRef<"file" | "yark" | null>(null);
+  const [pending, setPending] = useState<"file" | "profile" | null>(null);
+  const pendingRef = useRef<"file" | "profile" | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   /** Hide after a choice. Profile save writes the INI without waiting, so a re-read can still see the old file. */
   const [resolved, setResolved] = useState(choiceSettled);
@@ -86,7 +86,7 @@ export function ImportCompatibilityReport(props: {
   if (resolved || report === null || report.replacements.length === 0) return null;
   const kept = formatIniImportKeptSummary(report);
 
-  const apply = async (input: ReturnType<typeof serverToProfileInput>, which: "file" | "yark"): Promise<void> => {
+  const apply = async (input: ReturnType<typeof serverToProfileInput>, which: "file" | "profile"): Promise<void> => {
     if (pendingRef.current !== null) return;
     pendingRef.current = which;
     setPending(which);
@@ -108,7 +108,7 @@ export function ImportCompatibilityReport(props: {
     }
   };
 
-  const updateYark = (): void => {
+  const updateFromFile = (): void => {
     if (profileDirty) {
       setActionError("Save or cancel the edits on this form first.");
       return;
@@ -126,13 +126,13 @@ export function ImportCompatibilityReport(props: {
       setActionError("Save or cancel the edits on this form first.");
       return;
     }
-    void apply(serverToProfileInput(server), "yark");
+    void apply(serverToProfileInput(server), "profile");
   };
 
   return (
     <AppAlert color="blue" title="Choose which values to keep" data-import-compatibility-report>
       <Text size="sm">
-        GameUserSettings.ini has values that differ from this server&apos;s settings in YARK. Choose which values to
+        GameUserSettings.ini has values that differ from this server&apos;s saved profile. Choose which values to
         keep:
       </Text>
       <List size="sm" mt="xs">
@@ -164,19 +164,19 @@ export function ImportCompatibilityReport(props: {
           loading={pending === "file"}
           disabled={pending !== null || profileDirty}
           title={profileDirty ? "Save or cancel the edits on this form first." : undefined}
-          onClick={updateYark}
+          onClick={updateFromFile}
         >
           Use file values
         </Button>
         <Button
           size="xs"
           variant="default"
-          loading={pending === "yark"}
+          loading={pending === "profile"}
           disabled={pending !== null || profileDirty}
           title={profileDirty ? "Save or cancel the edits on this form first." : undefined}
           onClick={discard}
         >
-          Keep YARK values
+          Keep profile values
         </Button>
       </Group>
     </AppAlert>
