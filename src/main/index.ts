@@ -11,6 +11,7 @@ import {
 import { BackupRepository } from "../backend/infra/db/backup-repository";
 import { ServerRepository } from "../backend/infra/db/server-repository";
 import { ProcessManager } from "../backend/infra/process/process-manager";
+import { startDiscordControl } from "./discord-control";
 import { bootstrapBackgroundFromStored } from "../shared/app-chrome";
 import { APPEARANCE_SETTINGS_KEY } from "../shared/settings/appearance";
 import { BackupService } from "../backend/domains/backups/backup-service";
@@ -618,6 +619,7 @@ if (isPrimaryInstance) {
     let isQuitting = false;
     let pendingQuit: Promise<void> | null = null;
     let quitPolicyPromptInFlight = false;
+    const discordControl = app.isPackaged ? startDiscordControl(userData, instances, () => !isQuitting) : null;
 
     const requestAppQuit = (): void => {
       // Real quit path — goes through before-quit (#59 confirm Stop / Cancel).
@@ -1032,6 +1034,7 @@ if (isPrimaryInstance) {
     });
 
     app.on("will-quit", () => {
+      discordControl?.close();
       backupScheduler.stop();
       maintenanceScheduler.stop();
       crashRecoveryService.dispose();
