@@ -4,6 +4,6 @@ Do not publish a production-ready installer merely because packaging succeeds. T
 
 The first installation is separate from the old Obsidian manager. Do not replace its files or start imported instances until migration, process adoption, shared cluster/Store, and Discord acceptance are verified on a disposable Windows host. Two managers must never control the same live process concurrently.
 
-Repository owner: enable Actions on the fork, and configure the existing CurseForge proxy variable using a proxy you are authorized to use. The existing release workflow deliberately fails rather than ship a package with unavailable metadata. Do not use the upstream project's credentials or silently bypass this gate.
+Repository owner: enable Actions on the fork. CurseForge metadata is independent of Windows packaging and GitHub app updates. A shared proxy URL is optional; if configured it must be an authorized HTTPS endpoint. Without one, metadata search requires local configuration. Existing mod IDs are preserved. Never embed a personal API key in the distributed application or Git history.
 
 This checklist does not certify that migration or live control is implemented.

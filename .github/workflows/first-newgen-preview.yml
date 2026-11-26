@@ -32,7 +32,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           VERIFIED_SHA: ${{ github.event.workflow_run.head_sha }}
-          YARK_CURSEFORGE_PROXY_URL: ${{ vars.YARK_CURSEFORGE_PROXY_URL }}
         run: |
           set -euo pipefail
           TAG=v0.28.0
@@ -51,10 +50,6 @@ jobs:
             echo "First preview release already exists; skip."
             exit 0
           fi
-          if [ -z "$YARK_CURSEFORGE_PROXY_URL" ]; then
-            echo "::error::Repository variable YARK_CURSEFORGE_PROXY_URL is missing. Configure an authorized CurseForge proxy; no release was queued."
-            exit 1
-          fi
           TAG_SHA=$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/$TAG" --jq ".[] | select(.ref == \"refs/tags/$TAG\") | .object.sha")
           if [ -z "$TAG_SHA" ]; then
             gh api "repos/$GITHUB_REPOSITORY/git/refs" -f "ref=refs/tags/$TAG" -f "sha=$VERIFIED_SHA" --jq .ref
@@ -64,5 +59,5 @@ jobs:
           fi
           # GITHUB_TOKEN-created tags do not trigger push workflows. Explicitly
           # dispatch the existing release workflow, which rechecks main, CI,
-          # tests, the proxy, packaged payload, manifest and SHA256 checksums.
+          # tests, optional proxy configuration, packaged payload, manifest and SHA256 checksums.
           gh workflow run release.yml --repo "$GITHUB_REPOSITORY" --ref main -f "tag=$TAG"
