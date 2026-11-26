@@ -26,6 +26,7 @@ jobs:
     runs-on: windows-latest
     permissions:
       contents: write
+      actions: read
     steps:
       - name: Resolve release tag
         id: tag
@@ -57,6 +58,25 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ steps.tag.outputs.name }}
+
+      - name: Require successful Windows CI on exact main commit
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          SHA=$(git rev-parse HEAD)
+          MAIN=$(gh api "repos/${GITHUB_REPOSITORY}/branches/main" --jq .commit.sha)
+          if [ "$SHA" != "$MAIN" ]; then
+            echo "::error::Release tag must point at the current main commit."
+            exit 1
+          fi
+          RUN=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/ci.yml/runs?head_sha=$SHA&branch=main&event=push&status=success&per_page=1" --jq ".workflow_runs[0].id // empty")
+          if [ -z "$RUN" ]; then
+            echo "::error::No successful Windows CI for this exact main commit."
+            exit 1
+          fi
+          echo "Verified Windows CI run $RUN for $SHA"
 
       - name: Setup Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -141,6 +161,27 @@ jobs:
         run: npm run verify:fuses
         # Reads dist/win-unpacked (left by electron-builder) against build.electronFuses (#217).
 
+      - name: Verify release payload and generate SHA256SUMS
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $version = node -p "require('./package.json').version"
+          $setup = "Obsidian-NewGen-Setup-$version.exe"
+          $portable = "Obsidian-NewGen-Portable-$version.exe"
+          foreach ($file in @($setup, $portable, "latest.yml")) {
+            if (!(Test-Path -LiteralPath (Join-Path dist $file) -PathType Leaf)) {
+              throw "Missing release asset: $file"
+            }
+          }
+          $manifest = Get-Content -LiteralPath dist/latest.yml -Raw
+          if ($manifest -notmatch [regex]::Escape($setup) -or $manifest -notmatch "(?m)^version:\s*$([regex]::Escape($version))\s*$") {
+            throw "Updater manifest does not identify this version and Setup"
+          }
+          $assets = Get-ChildItem -LiteralPath dist -File | Where-Object { $_.Extension -in ".exe", ".yml", ".blockmap" } | Sort-Object Name
+          $assets | ForEach-Object {
+            "$((Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)"
+          } | Set-Content -LiteralPath dist/SHA256SUMS -Encoding ascii
+
       - name: Upload build artifact
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -148,6 +189,8 @@ jobs:
           path: |
             dist/*.exe
             dist/*.yml
+            dist/*.blockmap
+            dist/SHA256SUMS
           if-no-files-found: error
 
       - name: Create GitHub Release
@@ -161,6 +204,8 @@ jobs:
           files: |
             dist/*.exe
             dist/*.yml
+            dist/*.blockmap
+            dist/SHA256SUMS
           fail_on_unmatched_files: true
 
       # After softprops uploads installer assets — not on tag push alone.
