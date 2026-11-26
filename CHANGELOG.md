@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to **YARK server manager** are documented in this file.
+All notable changes to **Obsidian Command NewGen** are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -10,6 +10,10 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 ## [Unreleased]
 
 ### Added
+
+- Obsidian Command NewGen's independent black-and-gold desktop identity, crystal logo and splash, while preserving the existing server list, live metrics, and original UI actions.
+
+- Opt-in private Discord control API for host-local map status and lifecycle actions, with strict role/channel authorization, read-only service identity, TLS credentials, replay protection, and live RCON player counts. Disabled by default until explicitly configured.
 
 - Independent GitHub release packaging and optional direct CurseForge metadata access with a Windows user-encrypted local API key that survives app updates.
 
