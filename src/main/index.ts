@@ -122,7 +122,7 @@ if (app.isPackaged) {
     // associates the taskbar button (and toasts) with YARK's .exe icon.
     // Do not set this while unpackaged: an explicit AUMID makes Windows ignore
     // BrowserWindow `{ icon }` and fall back to electron.exe (Electron atom).
-    app.setAppUserModelId("com.yark.servermanager");
+    app.setAppUserModelId("com.obsidian.newgen");
   }
 }
 
@@ -194,7 +194,7 @@ function createWindow(
     show: false,
     skipTaskbar: hiddenUntilReveal,
     focusable: !hiddenUntilReveal,
-    title: "YARK server manager",
+    title: "Obsidian Command NewGen",
     backgroundColor: bootstrapBackgroundFromStored(settings.get(APPEARANCE_SETTINGS_KEY)),
     ...(icon !== undefined ? { icon } : {}),
     webPreferences: {
