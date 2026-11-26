@@ -77,7 +77,7 @@ describe("HostedResourceSelector", () => {
     const onChange = renderSelector(api, "");
 
     await screen.findByRole("combobox", { name: "AdminListURL" });
-    await user.click(await screen.findByRole("button", { name: "Choose a YARK Hosted Resource" }));
+    await user.click(await screen.findByRole("button", { name: "Choose a hosted resource" }));
     await user.click(await screen.findByRole("option", { name: /Admins allowlist/ }));
 
     expect(onChange).toHaveBeenCalledWith(URL_FOR_TOKEN);
@@ -93,7 +93,7 @@ describe("HostedResourceSelector", () => {
     });
     renderSelector(api, "");
 
-    await user.click(await screen.findByRole("button", { name: "Choose a YARK Hosted Resource" }));
+    await user.click(await screen.findByRole("button", { name: "Choose a hosted resource" }));
     expect(screen.queryByRole("option", { name: "Off" })).not.toBeInTheDocument();
     expect(screen.queryByRole("option", { name: "Admins allowlist" })).not.toBeInTheDocument();
     expect(screen.getByText(/No enabled admin list resource yet/i)).toBeInTheDocument();
@@ -131,7 +131,7 @@ describe("HostedResourceSelector", () => {
     const onChange = renderSelector(api, "");
     const field = await screen.findByRole("combobox", { name: "AdminListURL" });
 
-    expect(screen.getByText("Type a URL or select a YARK Hosted Resource.")).toBeInTheDocument();
+    expect(screen.getByText("Type a URL or select a hosted resource.")).toBeInTheDocument();
     await user.type(field, "https://example.com/admins.txt");
 
     expect(onChange).toHaveBeenLastCalledWith("https://example.com/admins.txt");
@@ -158,7 +158,7 @@ describe("HostedResourceSelector", () => {
     expect(field).toHaveValue("Ad");
 
     // The button lists every compatible resource, whatever the field holds.
-    await user.click(screen.getByRole("button", { name: "Choose a YARK Hosted Resource" }));
+    await user.click(screen.getByRole("button", { name: "Choose a hosted resource" }));
     expect(await screen.findByRole("option", { name: /AdminList/ })).toBeInTheDocument();
     expect(screen.getByRole("option", { name: /Notifications/ })).toBeInTheDocument();
   });
@@ -171,7 +171,7 @@ describe("HostedResourceSelector", () => {
     renderSelector(api, "");
     const field = await screen.findByRole("combobox", { name: "AdminListURL" });
 
-    await user.click(screen.getByRole("button", { name: "Choose a YARK Hosted Resource" }));
+    await user.click(screen.getByRole("button", { name: "Choose a hosted resource" }));
     expect(field).toHaveAttribute("aria-expanded", "true");
 
     await user.click(field);
@@ -204,7 +204,7 @@ describe("HostedResourceSelector", () => {
     });
     const onChange = renderSelector(api, "");
 
-    await user.click(await screen.findByRole("button", { name: "Choose a YARK Hosted Resource" }));
+    await user.click(await screen.findByRole("button", { name: "Choose a hosted resource" }));
     await user.click(await screen.findByRole("option", { name: "Create admin list resource" }));
     // The modal mounts one transition tick after the click.
     expect(await screen.findByLabelText(/display name/i)).toHaveValue("Admin list");
@@ -234,7 +234,7 @@ describe("HostedResourceSelector", () => {
     renderSelector(api, "");
 
     expect(await screen.findByText(/the URL starts serving once you turn it on/i)).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Choose a YARK Hosted Resource" }));
+    await user.click(screen.getByRole("button", { name: "Choose a hosted resource" }));
     expect(await screen.findByRole("option", { name: "Create admin list resource" })).toBeInTheDocument();
   });
 });

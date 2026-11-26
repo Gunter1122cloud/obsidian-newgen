@@ -40,7 +40,7 @@ function overview(enabled: boolean, resources: HostedResourceDto[] = []): Hosted
 function diagnostics(): HostedResourcesDiagnosticsDto {
   return {
     state: overview(true).state,
-    ownership: { ok: true, message: "Only YARK's listener answered." },
+    ownership: { ok: true, message: "Only the Obsidian Command listener answered." },
     resources: [
       {
         resourceId: resource.id,
