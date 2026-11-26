@@ -9,6 +9,7 @@ export function NewGenAtmosphere({ enabled }: { enabled: boolean }): ReactElemen
     <div className={classes.atmosphere} aria-hidden="true" data-newgen-atmosphere>
       <div className={classes.smoke} />
       <div className={classes.particles} />
+      <div className={classes.sweep} />
     </div>
   );
 }

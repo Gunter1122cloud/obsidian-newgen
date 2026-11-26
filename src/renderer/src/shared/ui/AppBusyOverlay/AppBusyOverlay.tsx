@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { Loader, Progress, Stack, Text } from "@mantine/core";
 import classes from "./AppBusyOverlay.module.css";
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
 
 export interface AppBusyOverlayContent {
   title: string;
@@ -15,6 +16,7 @@ interface Props {
 /** Full-shell blocking overlay — eats pointer events so chrome stays inert. */
 export function AppBusyOverlay({ content }: Props): ReactElement {
   const label = content.message.trim() || content.title;
+  const visual = useNewGenVisualPreferences();
   return (
     <div
       className={classes.root}
@@ -27,10 +29,14 @@ export function AppBusyOverlay({ content }: Props): ReactElement {
     >
       <div className={classes.panel}>
         <Stack gap="sm" align="center">
+          <Text className={classes.kicker} size="xs" fw={700}>
+            {visual.text("OPERATION IN PROGRESS", "MŰVELET VÉGREHAJTÁSA")}
+          </Text>
           <div className={classes.radar} aria-hidden="true">
-            <Loader size="md" color="blue" />
+            <span className={classes.radarSweep} />
+            <Loader size={34} color="#c7a45c" />
           </div>
-          <Text id="app-busy-overlay-title" size="sm" fw={600} ta="center">
+          <Text id="app-busy-overlay-title" size="sm" fw={700} ta="center">
             {content.title}
           </Text>
           <Text id="app-busy-overlay-message" size="sm" c="dimmed" ta="center">
@@ -41,6 +47,7 @@ export function AppBusyOverlay({ content }: Props): ReactElement {
             value={content.percent ?? 12}
             animated={content.percent == null}
             striped={content.percent == null}
+            color="#c7a45c"
             size="sm"
             radius="xl"
             aria-label={label}

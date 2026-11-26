@@ -61,3 +61,42 @@
 :global([data-mantine-color-scheme="light"]) .atmosphere {
   display: none;
 }
+
+
+/* A single slow light pass gives the background depth without competing with controls. */
+.sweep {
+  position: absolute;
+  top: -28%;
+  bottom: -28%;
+  left: -42%;
+  width: 38%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(181, 157, 109, 0.025) 34%,
+    rgba(224, 190, 126, 0.12) 50%,
+    rgba(181, 157, 109, 0.035) 66%,
+    transparent 100%
+  );
+  filter: blur(22px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  transform: skewX(-16deg);
+  animation: tacticalSweep 28s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes tacticalSweep {
+  0%, 12% { transform: translate3d(-10%, 0, 0) skewX(-16deg); opacity: 0; }
+  28% { opacity: 0.45; }
+  58% { opacity: 0.22; }
+  84%, 100% { transform: translate3d(430%, 0, 0) skewX(-16deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sweep { display: none; animation: none; }
+}
+
+:global([data-newgen-motion="off"]) .sweep {
+  display: none;
+  animation: none;
+}
