@@ -11,6 +11,8 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ### Added
 
+- Use both supplied rusted-iron textures in the desktop shell, navigation, server cards, dialogs, notifications and cinematic operation overlay; add motion-aware scene drift and radar/light-sweep effects.
+
 - Independent GitHub release packaging and optional direct CurseForge metadata access with a Windows user-encrypted local API key that survives app updates.
 
 - Extend Hungarian UI localization to shared page headings, workspace tabs, settings navigation, server status, metadata and common dialog controls.
