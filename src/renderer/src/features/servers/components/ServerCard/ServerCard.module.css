@@ -681,7 +681,6 @@
 
 :global([data-mantine-color-scheme="dark"]) :global([data-overview-page]) .card {
   background-image:
-    linear-gradient(145deg, rgba(35, 39, 39, 0.94), rgba(15, 18, 19, 0.93)),
-    url("../../../../assets/newgen/metal.webp");
+    linear-gradient(145deg, rgba(35, 39, 39, 0.94), rgba(15, 18, 19, 0.93)), url("../../../../assets/newgen/metal.webp");
   background-repeat: no-repeat, repeat;
 }

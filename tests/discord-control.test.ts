@@ -83,7 +83,13 @@ describe("NewGen Discord control", () => {
   it("allows only fixed RCON commands for a tracked running server", async () => {
     const { handlers, instances } = fixture();
     const execute = (action: string) => {
-      return dispatchDiscordControl(instances, { ...request, action }, "host", () => true, () => true);
+      return dispatchDiscordControl(
+        instances,
+        { ...request, action },
+        "host",
+        () => true,
+        () => true,
+      );
     };
     for (const action of ["save", "wipe"]) {
       expect(await execute(action)).toMatchObject({ ok: true });
