@@ -1,4 +1,5 @@
 import type { ReactElement } from "react";
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
 import { Button, Group, Text, VisuallyHidden } from "@mantine/core";
 import { AppPageHeader } from "@ui/AppPageHeader/AppPageHeader";
 import { AddServerSplitButton } from "@features/servers/components/AddServerSplitButton/AddServerSplitButton";
@@ -47,18 +48,19 @@ export function OverviewHeader({
   fleetRamBytes = null,
   fleetCpuPercent = null,
 }: Props): ReactElement {
+  const { text } = useNewGenVisualPreferences();
   const survivorsLabel =
     survivorsOnlineTotal == null
-      ? "Survivors –"
+      ? text("Survivors –", "Játékosok –")
       : survivorsOnlineTotal === 1
-        ? "1 survivor online"
-        : `${survivorsOnlineTotal} survivors online`;
+        ? text("1 survivor online", "1 aktív játékos")
+        : text(`${survivorsOnlineTotal} survivors online`, `${survivorsOnlineTotal} aktív játékos`);
   const ramLabel = fleetRamBytes == null ? "RAM –" : `RAM ${formatWorkingSet(fleetRamBytes)}`;
   const cpuLabel = fleetCpuPercent == null ? "CPU –" : `CPU ${formatCpuPercent(fleetCpuPercent)}`;
 
   return (
     <AppPageHeader
-      title="Servers"
+      title={text("Servers", "Szerverek")}
       className={classes.header}
       actions={
         <Group gap="md" wrap="wrap" justify="flex-end">
@@ -104,7 +106,7 @@ export function OverviewHeader({
             data-install-health-scan={checkingInstalls || undefined}
             aria-busy={checkingInstalls || undefined}
           >
-            {checkingInstalls ? "Checking servers health…" : "Check Servers Health"}
+            {checkingInstalls ? text("Checking servers health…", "Szerverek ellenőrzése…") : text("Check Servers Health", "Szerverek ellenőrzése")}
           </Button>
           {checkingInstalls ? (
             <VisuallyHidden component="span" role="status" aria-live="polite">
@@ -121,7 +123,7 @@ export function OverviewHeader({
             onClick={onCheckUpdates}
             loading={checkingUpdates}
           >
-            Check server updates
+            {text("Check server updates", "Frissítések keresése")}
           </Button>
           {onUpdateAllOutdated !== undefined && canUpdateAllOutdated ? (
             <Button
@@ -135,12 +137,12 @@ export function OverviewHeader({
               disabled={openingUpdateAllOutdated}
               loading={openingUpdateAllOutdated}
             >
-              Update All
+              {text("Update All", "Összes frissítése")}
             </Button>
           ) : null}
           {!emptyFleet ? (
             <AddServerSplitButton
-              primaryLabel="New server"
+              primaryLabel={text("New server", "Új szerver")}
               onCreate={onCreateServer}
               onImport={onImportServer}
               menuAriaLabel="More new-server options"
