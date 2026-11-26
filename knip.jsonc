@@ -15,7 +15,6 @@
   "ignore": [
     "website/**",
     "workers/**",
-    "electron-mcp-server/**",
     // One-shot icon rebuild (brand/README.md); optional sharp / png-to-ico.
     "brand/_build-icons.cjs",
   ],
@@ -25,7 +24,7 @@
     "tasklist",
   ],
   "ignoreDependencies": [
-    // String-referenced in electron.vite.config.ts babel.plugins when YARK_REACT_COMPILER=1 (#404).
+    // String-referenced in electron.vite.config.ts babel.plugins when the optional React compiler is enabled (#404).
     "babel-plugin-react-compiler",
   ],
   "rules": {
