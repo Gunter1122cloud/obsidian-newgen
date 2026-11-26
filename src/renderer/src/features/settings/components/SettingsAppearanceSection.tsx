@@ -5,6 +5,7 @@ import { isThemeFamilyId, isThemeScheme, isWorkspacePanelsId } from "@shared/set
 import { WORKSPACE_PANELS_OPTION_LIST, resolveWorkspacePanelsOption } from "@shared/workspace/workspacePanels";
 import type { ThemeFamilyId, ThemeScheme, UiDensity, WorkspacePanelsId } from "../settingsModel";
 import classes from "../SettingsPage.module.css";
+import { useNewGenVisualPreferences } from "@app/NewGenVisualPreferences";
 
 interface Props {
   uiDensity: UiDensity;
@@ -26,6 +27,7 @@ interface Props {
  * family, variant or option is data, not a UI change.
  */
 export function SettingsAppearanceSection(props: Props): ReactElement {
+  const visual = useNewGenVisualPreferences();
   return (
     <section className={classes.section} aria-labelledby="settings-appearance" data-settings-appearance>
       <Title order={3} size="h4" id="settings-appearance">
@@ -36,6 +38,31 @@ export function SettingsAppearanceSection(props: Props): ReactElement {
       </Text>
 
       <div className={classes.settingStack}>
+        <div className={classes.settingRow}>
+          <div className={classes.settingCopy}>
+            <Text size="sm" fw={600}>{visual.text("Interface language (preview)", "Felület nyelve (előnézet)")}</Text>
+            <Text size="xs" c="dimmed" mt={2}>{visual.text("Navigation and dashboard translation; other pages remain English.", "Navigáció és áttekintés fordítása; a többi oldal egyelőre angol.")}</Text>
+          </div>
+          <div className={classes.settingControl}>
+            <SegmentedControl
+              size="xs"
+              value={visual.language}
+              onChange={(value) => {
+                if (value === "en" || value === "hu") visual.setLanguage(value);
+              }}
+              data={[{ label: "English", value: "en" }, { label: "Magyar", value: "hu" }]}
+              aria-label="Interface language"
+            />
+          </div>
+        </div>
+        <div className={classes.settingRow}>
+          <div className={classes.settingCopy}>
+            <Text size="sm" fw={600}>{visual.text("Interface animations", "Felületi animációk")}</Text>
+          </div>
+          <div className={classes.settingControl}>
+            <Switch checked={visual.motion} onChange={(event) => visual.setMotion(event.currentTarget.checked)} aria-label="Interface animations" />
+          </div>
+        </div>
         <div className={classes.settingRow}>
           <div className={classes.settingCopy}>
             <Text size="sm" fw={600}>
