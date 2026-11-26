@@ -580,3 +580,77 @@
     left: 0;
   }
 }
+
+/* Overview-only visual layer. Existing actions, status model and IPC are unchanged. */
+:global([data-overview-page]) .card {
+  border-radius: 6px !important;
+  min-width: 0;
+}
+
+:global([data-overview-page]) .card .mainRow {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+:global([data-overview-page]) .card .cardHit {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  overflow: visible;
+}
+
+:global([data-overview-page]) .card .identityRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+
+:global([data-overview-page]) .card .identity {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+:global([data-overview-page]) .card .thumb {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 116px;
+  border-radius: 3px;
+}
+
+:global([data-overview-page]) .card .metaGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+:global([data-overview-page]) .card .rowActions {
+  width: 100%;
+  justify-content: flex-end;
+  border-top: 1px solid var(--app-color-border);
+  padding-top: 10px;
+}
+
+:global([data-overview-page]) .card .statusLabelSlot {
+  display: inline-flex;
+}
+
+:global([data-overview-page]) .card .statusDotSlot {
+  display: none;
+}
+
+:global([data-mantine-color-scheme="dark"]) :global([data-overview-page]) .card {
+  background-color: #191b1c;
+  background-image: linear-gradient(145deg, #292b2a, #151718 70%);
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.32);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :global([data-overview-page]) .card {
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  :global([data-overview-page]) .card:hover {
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
+  }
+}
