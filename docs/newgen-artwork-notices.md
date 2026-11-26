@@ -1,5 +1,7 @@
 # NewGen artwork sources
 
+- `rusty-iron.webp` and `rusty-iron-02.webp`: owner-supplied rusted-iron texture images, optimized for the desktop shell and surfaces. Verify the owner's source/license before redistributing outside the owner's project.
+
 - `metal.webp`: resized from the user-supplied rusty_iron.webp, identified by the user-provided Poly Haven source: https://polyhaven.com/a/rusty_iron . Confirm provenance before public release.
 - `smoke.webp`: Kenney Smoke Particles, PNG/White puff/whitePuff01.png, resized. CC0.
 - `particle.webp`: Kenney Particle Pack, PNG (Transparent)/circle_01.png, resized. CC0.
