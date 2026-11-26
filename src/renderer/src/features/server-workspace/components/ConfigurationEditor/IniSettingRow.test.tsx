@@ -76,7 +76,7 @@ describe("IniSettingRow hosted resource wiring (#577)", () => {
 
     const field = container.querySelector("[data-hosted-resource-selector]");
     expect(field).not.toBeNull();
-    await user.click(screen.getByRole("button", { name: "Choose a YARK Hosted Resource" }));
+    await user.click(screen.getByRole("button", { name: "Choose a hosted resource" }));
     await user.click(await screen.findByRole("option", { name: "Bans list" }));
 
     expect(onUpdateValue).toHaveBeenCalledWith("gameUserSettings", "ServerSettings", "BanListURL", BAN_URL, 0);
@@ -96,7 +96,7 @@ describe("IniSettingRow hosted resource wiring (#577)", () => {
 
     // The field still renders (a plain URL stays valid), but nothing is offered.
     expect(container.querySelector("[data-hosted-resource-selector]")).not.toBeNull();
-    await user.click(screen.getByRole("button", { name: "Choose a YARK Hosted Resource" }));
+    await user.click(screen.getByRole("button", { name: "Choose a hosted resource" }));
     expect(screen.queryByRole("option", { name: "Bans list" })).not.toBeInTheDocument();
   });
 });

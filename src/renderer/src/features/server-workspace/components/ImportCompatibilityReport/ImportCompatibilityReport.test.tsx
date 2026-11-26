@@ -85,9 +85,9 @@ ConfigOverrideItemMaxQuantity=(hello world)
       "GameUserSettings.ini has values that differ from this server's saved profile. Choose which values to keep:",
     );
     expect(alert).toHaveTextContent("Game port in GameUserSettings.ini: 7778.");
-    expect(alert).toHaveTextContent("Game port in NewGen profile: 7777.");
+    expect(alert).toHaveTextContent("Game port in the NewGen profile: 7777.");
     expect(alert).toHaveTextContent(
-      "Admin password differs between GameUserSettings.ini and NewGen profile. Values are hidden.",
+      "Admin password differs between GameUserSettings.ini and the NewGen profile. Values are hidden.",
     );
     expect(alert).toHaveTextContent("One line in the file stays word for word. NewGen does not interpret it.");
     expect(alert).not.toHaveTextContent("secret-admin");
@@ -103,7 +103,7 @@ ConfigOverrideItemMaxQuantity=(hello world)
     ]);
     await user.click(await screen.findByRole("button", { name: "Use file values" }));
     expect(
-      await screen.findByText(/Port 7778 is already used by Other, so NewGen can't take that game port/),
+      await screen.findByText(/Port 7778 is already used by Other, so the NewGen profile can't use that game port/),
     ).toBeVisible();
     expect(window.api.updateServer).not.toHaveBeenCalled();
   });
