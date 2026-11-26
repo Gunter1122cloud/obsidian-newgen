@@ -6,3 +6,5 @@
 - `click.wav` and `notice.wav`: Kenney Interface Sounds, Audio/click_002.ogg, converted to mono PCM, second sound is a repeated variant. CC0.
 - Kenney: https://kenney.nl/ ; CC0: https://creativecommons.org/publicdomain/zero/1.0/
 - Tactical illustrations: original procedural SVG art for NewGen; not game screenshots or exact representations of map geography.
+
+- Rajdhani and Exo 2 fonts: upstream Google Fonts repository, SIL Open Font License 1.1; full licenses bundled next to the fonts.

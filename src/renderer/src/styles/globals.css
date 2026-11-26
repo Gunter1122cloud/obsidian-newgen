@@ -405,3 +405,28 @@ body {
   animation-iteration-count: 1 !important;
   transition-duration: 0.01ms !important;
 }
+
+@font-face {
+  font-family: "NewGen Exo";
+  src: url("../assets/newgen/Exo2-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "NewGen Rajdhani";
+  src: url("../assets/newgen/Rajdhani-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root[data-mantine-color-scheme="dark"] {
+  --mantine-font-family: "NewGen Exo", "Segoe UI", sans-serif !important;
+  --app-font-display: "NewGen Rajdhani", "NewGen Exo", "Segoe UI", sans-serif !important;
+}
+
+[data-mantine-color-scheme="dark"] h1,
+[data-mantine-color-scheme="dark"] h2,
+[data-mantine-color-scheme="dark"] h3 {
+  font-family: var(--app-font-display);
+}
