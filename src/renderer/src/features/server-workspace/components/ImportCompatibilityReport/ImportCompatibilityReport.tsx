@@ -132,8 +132,7 @@ export function ImportCompatibilityReport(props: {
   return (
     <AppAlert color="blue" title="Choose which values to keep" data-import-compatibility-report>
       <Text size="sm">
-        GameUserSettings.ini has values that differ from this server&apos;s saved profile. Choose which values to
-        keep:
+        GameUserSettings.ini has values that differ from this server&apos;s saved profile. Choose which values to keep:
       </Text>
       <List size="sm" mt="xs">
         {report.replacements.map((field) => (
