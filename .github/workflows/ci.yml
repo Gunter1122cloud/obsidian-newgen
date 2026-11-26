@@ -82,3 +82,19 @@ jobs:
 
       - name: E2E host port probe
         run: npm run e2e:host-port-probe
+
+      - name: Capture NewGen Electron gallery
+        run: npm run website:screenshots
+        env:
+          WEBSITE_SCREENSHOT_OUT: artifacts/newgen-electron
+          WEBSITE_VIEWPORT_WIDTH: "1920"
+          WEBSITE_VIEWPORT_HEIGHT: "1080"
+          WEBSITE_DEMO_CLUSTER_ID: NewGen-demo
+
+      - name: Upload NewGen Electron screenshots
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: newgen-electron-screenshots
+          path: artifacts/newgen-electron/*.png
+          if-no-files-found: error
