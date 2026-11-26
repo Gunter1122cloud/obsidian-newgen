@@ -53,7 +53,7 @@ describe("App empty installation snapshot", () => {
 
     render(<App />);
 
-    expect(await screen.findByRole("dialog", { name: /set up yark/i })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: /set up obsidian/i })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /skip setup/i }));
     await waitFor(() => {
       expect(api.setOnboarding).toHaveBeenCalledWith(expect.objectContaining({ status: "skipped" }));
@@ -72,7 +72,7 @@ describe("App empty installation snapshot", () => {
 
     render(<App />);
 
-    const dialog = await screen.findByRole("dialog", { name: /set up yark/i });
+    const dialog = await screen.findByRole("dialog", { name: /set up obsidian/i });
     await user.click(screen.getByRole("button", { name: /skip setup/i }));
 
     await waitFor(() => expect(api.setOnboarding).toHaveBeenCalledTimes(1));
@@ -90,7 +90,7 @@ describe("App empty installation snapshot", () => {
     render(<App />);
 
     expect(await screen.findByText("Create your first server")).toBeInTheDocument();
-    expect(screen.queryByRole("dialog", { name: /set up yark/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("dialog", { name: /set up obsidian/i })).not.toBeInTheDocument();
     await waitFor(() => {
       expect(notifySpy).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -124,7 +124,7 @@ describe("App empty installation snapshot", () => {
     expect(toast?.onClick).toEqual(expect.any(Function));
     toast?.onClick?.({} as never);
 
-    expect(await screen.findByRole("dialog", { name: /set up yark/i })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: /set up obsidian/i })).toBeInTheDocument();
   });
 
   it("restores a pending setup cluster for the next create handoff", async () => {
