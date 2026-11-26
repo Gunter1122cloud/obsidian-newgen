@@ -1,7 +1,7 @@
 /** YARK desktop self-update status (distinct from ASA/SteamCMD updates). */
 
-const YARK_GITHUB_OWNER = "gabomarin";
-const YARK_GITHUB_REPO = "yark";
+const YARK_GITHUB_OWNER = "Gunter1122cloud";
+const YARK_GITHUB_REPO = "obsidian-newgen";
 export const YARK_RELEASES_URL = `https://github.com/${YARK_GITHUB_OWNER}/${YARK_GITHUB_REPO}/releases`;
 /** List endpoint — `/releases/latest` 404s while every published tag is a GitHub prerelease (0.x). */
 export const YARK_RELEASES_API = `https://api.github.com/repos/${YARK_GITHUB_OWNER}/${YARK_GITHUB_REPO}/releases`;
