@@ -88,7 +88,7 @@ export function yarkManagedSurfaceForCatalogId(id: string): YarkManagedSurface {
 }
 
 export function yarkManagedLaunchCopy(id: string): string {
-  return `YARK already sets this from ${yarkManagedSurfaceForCatalogId(id)}. Do not add it in Extra arguments.`;
+  return `NewGen already manages this from ${yarkManagedSurfaceForCatalogId(id)}. Do not add it in Extra arguments.`;
 }
 
 export type CatalogBrowseSecondary =
