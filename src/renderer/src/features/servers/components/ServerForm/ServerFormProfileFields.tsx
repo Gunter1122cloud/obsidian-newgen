@@ -44,7 +44,7 @@ export interface ServerFormProfileFieldsProps {
   showInactiveWarning?: boolean;
   moveDisabled: boolean;
   moveDisabledReason: string;
-  /** Create-only: YARK profile-aware port suggestion (#55). */
+  /** Create-only: manager profile-aware port suggestion (#55). */
   createPortSuggestion?: { offset: number; exhausted: boolean } | null;
   onNameChange: (value: string) => void;
   onSessionNameChange: (value: string) => void;
@@ -95,7 +95,7 @@ export function ServerFormProfileFields(props: ServerFormProfileFieldsProps): Re
           required
           error={props.nameFolderError ?? undefined}
           description={
-            props.isCreate ? 'YARK profile and install subfolder. Do not use < > : " / \\ | ? *' : "YARK profile name"
+            props.isCreate ? 'Manager profile and install subfolder. Do not use < > : " / \\ | ? *' : "Profile name"
           }
         />
         <TextInput

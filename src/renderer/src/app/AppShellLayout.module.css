@@ -265,7 +265,7 @@
 /* Final visual direction: the two user-supplied rusted-iron textures are the actual shell artwork. */
 :global([data-mantine-color-scheme="dark"][data-newgen-background="on"]) .shell::before {
   background-image:
-    linear-gradient(112deg, rgba(8, 9, 10, 0.84), rgba(8, 10, 11, 0.68) 48%, rgba(8, 9, 10, 0.88)),
+    linear-gradient(112deg, rgba(8, 9, 10, 0.7), rgba(8, 10, 11, 0.54) 48%, rgba(8, 9, 10, 0.76)),
     url("../assets/newgen/rusty-iron.webp");
   background-size: cover, cover;
   background-position: center, center;
@@ -286,7 +286,7 @@
   background-size: cover, cover;
   background-position: center, center;
   background-repeat: no-repeat;
-  opacity: 0.2;
+  opacity: 0.26;
   mix-blend-mode: soft-light;
   animation: newgenRustSecondPass 42s ease-in-out infinite alternate;
 }
@@ -300,7 +300,7 @@
 
 :global([data-mantine-color-scheme="dark"]) .navbar {
   background:
-    linear-gradient(160deg, rgba(12, 14, 15, 0.94), rgba(12, 14, 15, 0.84)),
+    linear-gradient(160deg, rgba(12, 14, 15, 0.84), rgba(12, 14, 15, 0.72)),
     url("../assets/newgen/rusty-iron-02.webp") center / cover no-repeat;
   background-blend-mode: normal, soft-light;
   border-right-color: rgba(190, 158, 96, 0.42);

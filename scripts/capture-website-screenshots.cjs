@@ -88,21 +88,21 @@ const DEMO_FLEET = [
     name: DEMO_SERVER,
     mapLabel: "The Island",
     mapId: "TheIsland_WP",
-    session: "YARK Demo",
+    session: "Untamed Kingdom | The Island",
     folder: "TheIsland",
   },
   {
     name: "Scorched Earth",
     mapLabel: "Scorched Earth",
     mapId: "ScorchedEarth_WP",
-    session: "YARK SE",
+    session: "Untamed Kingdom | Scorched Earth",
     folder: "ScorchedEarth",
   },
   {
     name: "Ragnarok",
     mapLabel: "Ragnarok",
     mapId: "Ragnarok_WP",
-    session: "YARK Ragnarok",
+    session: "Untamed Kingdom | Ragnarok",
     folder: "Ragnarok",
   },
 ];
@@ -397,7 +397,7 @@ function demoModMetadataCache() {
       name: names[id] ?? `Demo mod ${id}`,
       summary: "Seeded for website gallery screenshots.",
       thumbnailUrl: null,
-      authors: ["YARK Demo"],
+      authors: ["Untamed Kingdom"],
       downloadCount: 1_250_000,
       dateModified: "2026-08-01T00:00:00.000Z",
       curseforgeUrl: `https://www.curseforge.com/ark-survival-ascended/mods/${id}`,
@@ -679,7 +679,7 @@ function seedGalleryHostedResources(userData) {
         format: "json",
         notes: "Small JSON payload served locally to an ASA setting",
         tags: JSON.stringify(["dynamic-config"]),
-        content: JSON.stringify({ motd: "YARK demo", rates: { harvest: 2, taming: 3 } }, null, 2),
+        content: JSON.stringify({ motd: "Untamed Kingdom", rates: { harvest: 2, taming: 3 } }, null, 2),
       },
     ];
     const insertResource = db.prepare(

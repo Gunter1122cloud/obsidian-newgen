@@ -211,7 +211,7 @@ function ExternalChangeAlert(props: {
   if (props.iniMode === "visual") {
     // No Reload CTA here — Save merges non-overlapping edits; Reload stays in the toolbar (#667).
     return (
-      <AppAlert color="blue" mb="sm" title="INI updated outside YARK" onClose={props.onDismiss} withCloseButton>
+      <AppAlert color="blue" mb="sm" title="INI updated outside NewGen" onClose={props.onDismiss} withCloseButton>
         <Stack gap={4}>
           <Text size="sm">{summary} Click Save to merge your changes with theirs when they do not overlap.</Text>
           {detail}
@@ -220,7 +220,7 @@ function ExternalChangeAlert(props: {
     );
   }
   return (
-    <AppAlert color="attention" mb="sm" title="INI changed outside YARK" onClose={props.onDismiss} withCloseButton>
+    <AppAlert color="attention" mb="sm" title="INI changed outside NewGen" onClose={props.onDismiss} withCloseButton>
       <Stack gap="xs">
         <Stack gap={4}>
           <Text size="sm">

@@ -13,6 +13,7 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 - Use both supplied rusted-iron textures in the desktop shell, navigation, server cards, dialogs, notifications and cinematic operation overlay; add motion-aware scene drift and radar/light-sweep effects.
 - Use the bundled real ASA map landscapes as server-card hero covers, with a dark title veil and restrained hover motion.
+- Remove YARK branding from ordinary UI labels and gallery demo content while preserving required GPL third-party attribution.
 
 - Independent GitHub release packaging and optional direct CurseForge metadata access with a Windows user-encrypted local API key that survives app updates.
 
