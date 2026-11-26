@@ -20,7 +20,7 @@ interface Props {
   onDismissError: () => void;
   /** Save lost a race with an external INI edit (#665 / #667). */
   staleDocument?: boolean;
-  /** Last YARK save, draft, and disk values for an overlapping Save (#696). */
+  /** Last NewGen save, draft, and disk values for an overlapping Save (#696). */
   conflicts?: readonly IniConflictOccurrence[];
   onAcceptConflicts?: (choices: readonly ConflictChoice[]) => void;
   /** Disk/pending changed while the editor has unsaved edits (#665). */
@@ -283,7 +283,7 @@ export function ConfigurationEditorStatusAlerts(props: Props): ReactElement | nu
       )}
       {pendingQueued && (
         <AppAlert color="attention" mb="sm" title="INI queued">
-          Your saved draft is waiting. YARK will write it to the install when the server stops (or before the next
+          Your saved draft is waiting. NewGen will write it to the install when the server stops (or before the next
           start). Open in editor shows the live files, which may still be outdated.
         </AppAlert>
       )}

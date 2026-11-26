@@ -1,6 +1,6 @@
 /**
  * Decide whether the operator can copy externally edited identity values
- * from GameUserSettings.ini into the YARK profile (#682).
+ * from GameUserSettings.ini into the NewGen profile (#682).
  */
 
 import { PORT_MAX, PORT_MIN, type ServerProfile, type ServerProfileInput } from "../types";
@@ -64,7 +64,7 @@ function portClashReason(
     const used = new Set([other.gamePort, other.queryPort, other.rconPort]);
     for (const left of mine) {
       if (!used.has(left.port)) continue;
-      lines.push(`Port ${left.port} is already used by ${other.name}, so YARK can't take that ${left.kind} port.`);
+      lines.push(`Port ${left.port} is already used by ${other.name}, so the NewGen profile can't use that ${left.kind} port.`);
     }
   }
   return lines.join(" ");
@@ -72,7 +72,7 @@ function portClashReason(
 
 /**
  * Resolve a port from a replacement row. Blank/missing file values keep the
- * YARK port so ASA wipes can still adopt the rest of the identity.
+ * NewGen port so ASA wipes can still adopt the rest of the identity.
  */
 function resolveAdoptedPort(
   field: IniImportIdentityField | undefined,
@@ -92,9 +92,9 @@ function resolveAdoptedPort(
 /**
  * Build a profile update from the INI. Refuses when a port clashes with another
  * server, the three ports are not distinct, or a password or name cannot be stored.
- * A missing or blank admin password keeps the one already in YARK.
- * A missing or blank port keeps the YARK port. A missing or blank join password
- * clears the join password. RCON on/off is not a profile field. YARK keeps RCON on.
+ * A missing or blank admin password keeps the one already in the NewGen profile.
+ * A missing or blank port keeps the NewGen profile port. A missing or blank join password
+ * clears the join password. RCON on/off is not a profile field. NewGen keeps RCON enabled.
  */
 export function planAdoptExternalIni(
   server: ServerProfile,
@@ -103,7 +103,7 @@ export function planAdoptExternalIni(
 ): IniImportAdoptResult {
   const adoptable = report.replacements.filter((field) => field.id !== "rconEnabled");
   if (adoptable.length === 0) {
-    return { ok: false, reason: "YARK keeps RCON on. Choose Keep YARK values to save that." };
+    return { ok: false, reason: "NewGen keeps RCON enabled. Choose Keep profile values to save that." };
   }
 
   const problems: string[] = [];
@@ -113,7 +113,7 @@ export function planAdoptExternalIni(
     problems.push("The name in GameUserSettings.ini is blank.");
   }
   if (sessionName.length > 96) {
-    problems.push("That name is too long for YARK.");
+    problems.push("That name is too long for the NewGen profile.");
   }
 
   const gamePort = resolveAdoptedPort(replacement(report, "gamePort"), server.gamePort, "Game port", problems);
