@@ -102,7 +102,10 @@ const denied = (error: string) => ({ ok: false, error });
 type Metric = { cpuSeconds: number; atMs: number; startedAt: string | null };
 
 export async function dispatchDiscordControl(
-  instances: Pick<InstanceService, "list" | "statuses" | "start" | "stop" | "restart" | "sendRcon" | "execRcon" | "listPlayers">,
+  instances: Pick<
+    InstanceService,
+    "list" | "statuses" | "start" | "stop" | "restart" | "sendRcon" | "execRcon" | "listPlayers"
+  >,
   q: Request,
   hostId: string,
   claim: (id: string) => boolean,
@@ -137,7 +140,10 @@ export async function dispatchDiscordControl(
         const disk = await statfs(p.installDir).catch(() => null);
         const playerCount =
           state?.status === "running" && state.processLive
-            ? await instances.listPlayers(p.id).then((players) => players.length).catch(() => null)
+            ? await instances
+                .listPlayers(p.id)
+                .then((players) => players.length)
+                .catch(() => null)
             : null;
         return {
           mapId: p.id,
