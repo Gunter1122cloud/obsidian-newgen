@@ -10,7 +10,7 @@ describe("bundledSteamCmdUnusedNote", () => {
 
   it("notes when a chosen SteamCMD lives elsewhere", () => {
     expect(bundledSteamCmdUnusedNote(bundled, "C:\\tools\\steamcmd\\steamcmd.exe")).toBe(
-      "Not in use. YARK is using the SteamCMD you chose in Settings → SteamCMD.",
+      "Not in use. Obsidian Command is using the SteamCMD you chose in Settings → SteamCMD.",
     );
   });
 

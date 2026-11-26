@@ -13,7 +13,7 @@ import {
 
 describe("launchOptionsCatalogModel (#381)", () => {
   it("exposes operator tooltips for every browse filter", () => {
-    expect(CATALOG_STATUS_FILTERS.map(catalogStatusLabel)).toEqual(["All", "Supported", "Uncertain", "YARK-owned"]);
+    expect(CATALOG_STATUS_FILTERS.map(catalogStatusLabel)).toEqual(["All", "Supported", "Uncertain", "NewGen-managed"]);
     for (const filter of CATALOG_STATUS_FILTERS) {
       const tooltip = catalogStatusFilterTooltip(filter);
       expect(tooltip.trim().length).toBeGreaterThan(20);
@@ -34,9 +34,9 @@ describe("launchOptionsCatalogModel (#381)", () => {
     expect(yarkManagedSurfaceForCatalogId("mods")).toBe("Mods");
     expect(yarkManagedSurfaceForCatalogId("port")).toBe("Server settings");
     expect(yarkManagedLaunchCopy("port")).toBe(
-      "YARK already sets this from Server settings. Do not add it in Extra arguments.",
+      "NewGen already manages this from Server settings. Do not add it in Extra arguments.",
     );
-    expect(yarkManagedLaunchCopy("mods")).toBe("YARK already sets this from Mods. Do not add it in Extra arguments.");
+    expect(yarkManagedLaunchCopy("mods")).toBe("NewGen already manages this from Mods. Do not add it in Extra arguments.");
 
     for (const id of YARK_OWNED_CATALOG_IDS) {
       const entry = lookupLaunchOptionById(id);
@@ -51,11 +51,11 @@ describe("launchOptionsCatalogModel (#381)", () => {
     }
   });
 
-  it("throws when a YARK-owned id has no managed-surface mapping", () => {
+  it("throws when a NewGen-managed id has no managed-surface mapping", () => {
     expect(() => yarkManagedSurfaceForCatalogId("not-a-mapped-yark-owned")).toThrow(/no managed-surface mapping/i);
   });
 
-  it("keeps Conflicts metadata for non–YARK-owned rows", () => {
+  it("keeps Conflicts metadata for non–NewGen-managed rows", () => {
     expect(
       catalogBrowseSecondary({
         id: "nobattleye",
