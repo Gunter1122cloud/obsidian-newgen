@@ -359,7 +359,7 @@ export function yarkPassiveModsArg(modIds: readonly string[]): string {
 }
 
 /** True when an arg is a real `-passivemods=` / `?passivemods` token. */
-export function isPassiveModsArg(arg: string): boolean {
+function isPassiveModsArg(arg: string): boolean {
   return tokenStem(arg) === "passivemods";
 }
 
