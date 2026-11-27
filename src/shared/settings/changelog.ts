@@ -27,6 +27,22 @@ const DEFAULT_RECENT_CHANGELOG_LIMIT = 8;
  */
 export const changelog: ChangelogEntry[] = [
   {
+    version: "0.29.0",
+    date: "2026-11-27",
+    sections: [
+      {
+        title: "Highlights",
+        items: [
+          "Use the tactical command deck with both supplied iron textures and ASA map artwork.",
+          "Add independent daily restart timers for each map, with an optional wild dino wipe ten minutes after readiness.",
+          "Leave ASA running when closing or updating the manager, and restore verified Loader and game process identities.",
+          "Use the effective passive mod lists in both launch arguments and preview.",
+          "Configure private Discord status and lifecycle control with the existing server actions.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.28.0",
     date: "2026-11-25",
     sections: [

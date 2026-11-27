@@ -9,6 +9,10 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
+- Integrated release verification for NewGen 0.29.0.
+
+## [0.29.0] - 2026-11-27
+
 ### Added
 
 - Use both supplied rusted-iron textures as the visual foundation for the desktop shell, navigation, server cards, dialogs and notifications; add motion-aware scene drift and radar/light-sweep effects.
