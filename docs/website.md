@@ -23,7 +23,7 @@ Public product site and operator docs for YARK server manager.
 | `website/src/content/docs/docs/` | Starlight docs under `/docs/`                                                                                                                                                        |
 | `website/public/`                | Favicons, logo, screenshots                                                                                                                                                          |
 | `website/astro.config.mjs`       | `base: "/"`, Starlight sidebar, dark-only theme, `disable404Route: true` (avoid duplicate `/404` with docs catch-all); remark plugin prefixes content `/docs/…` links with that base |
-| `.github/workflows/pages.yml`    | Build Astro → deploy `website/dist` to Cloudflare Pages project `getyark`                                                                                                            |
+| `.github/workflows/pages.yml`    | Build Astro → upload artifact; optionally deploy to a configured NewGen Pages project                                                                                                            |
 
 ## 404 page
 
@@ -60,18 +60,11 @@ website/Pages workflows change. Unrelated app PRs skip this job.
 
 Workflow: [`.github/workflows/pages.yml`](../.github/workflows/pages.yml)
 
-- Triggers: push to `main` touching `website/**`, root `package.json` (version for
-  download URL), or the workflow; plus `workflow_dispatch`
-- `npm ci` + `npm run build` in `website/`
-- Artifact: `website/dist` → Cloudflare Pages project **`getyark`** (`getyark.pages.dev`)
-- Permissions: `contents: read`
-- Secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
-
-**One-time Cloudflare setup:** Custom domains `getyark.com` and `www.getyark.com` on the
-`getyark` Pages project (same account as the `getyark.com` DNS zone).
-
-After deploy, submit `https://getyark.com/sitemap-index.xml` in Search Console
-when you care about SEO indexing.
+- Pull requests and main pushes affecting the site build and upload `website/dist` as the `newgen-website` artifact.
+- Main pushes and manual dispatches deploy only when the repository variable `NEWGEN_CLOUDFLARE_PROJECT` names a separate NewGen Pages project.
+- Configure repository Actions secrets `CLOUDFLARE_API_TOKEN` (Pages Edit permission) and `CLOUDFLARE_ACCOUNT_ID` in that account.
+- If no project is configured, deployment is explicitly skipped; the site build remains available as an artifact. Once a project is configured, missing credentials or deployment errors fail the job.
+- Do not deploy to the upstream `getyark` project. Configure NewGen-owned domains separately.
 
 ### SEO notes (getyark.com)
 
