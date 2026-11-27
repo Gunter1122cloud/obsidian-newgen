@@ -259,9 +259,11 @@ describe("MaintenanceRestartRuntime", () => {
       });
 
       await runtime.runRestartNow("s1");
-      // Drain last-minute ticks through T0 + wipe settle (20s) + RCON probes.
+      // Wait for restart and verify no wipe before the ten-minute settle period.
       await vi.advanceTimersByTimeAsync(12_000);
-      await vi.advanceTimersByTimeAsync(25_000);
+      await vi.advanceTimersByTimeAsync(590_000);
+      expect(instances.execRcon).not.toHaveBeenCalledWith("s1", "DestroyWildDinos", { recordEvent: false });
+      await vi.advanceTimersByTimeAsync(10_000);
 
       expect(instances.restart).toHaveBeenCalled();
       const cmds = instances.execRcon.mock.calls.map((c: unknown[]) => String(c[1] ?? ""));

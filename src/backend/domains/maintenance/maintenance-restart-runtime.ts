@@ -352,7 +352,7 @@ export class MaintenanceRestartRuntime {
     const now = Date.now();
     const next = nextLocalRestartAt(policy.restartDaysOfWeek, policy.restartTimeLocal, now);
     if (next === null) return;
-    const targetKey = next.toISOString();
+    const targetKey = `${policy.serverId}:${next.toISOString()}`;
     if (this.completedTargets.has(targetKey)) return;
 
     const offsets = resolveWarningOffsetLabels(policy.restartWarnings, MAINTENANCE_RESTART_PRESET_OFFSETS);
@@ -623,12 +623,20 @@ export class MaintenanceRestartRuntime {
       throw new Error("Stop in progress during post-restart wipe");
     }
     await this.ensureRconForWipe(serverId);
+    const readyProcess = this.processes.getStatus(serverId);
     await delay(MAINTENANCE_WIPE_POST_READY_MS);
     if (this.isIntentionalStop(serverId)) {
       throw new Error("Stop in progress during post-restart wipe");
     }
-    if (!this.processes.isActive(serverId)) {
-      throw new Error("Server stopped before wild wipe");
+    const currentProcess = this.processes.getStatus(serverId);
+    if (
+      !this.processes.isActive(serverId) ||
+      currentProcess.status !== "running" ||
+      readyProcess.pid === null ||
+      currentProcess.pid !== readyProcess.pid ||
+      currentProcess.startedAt !== readyProcess.startedAt
+    ) {
+      throw new Error("Server process changed before wild wipe");
     }
     if (policy.wipeSaveWorldFirst) {
       await this.instances.execRcon(serverId, "SaveWorld", {

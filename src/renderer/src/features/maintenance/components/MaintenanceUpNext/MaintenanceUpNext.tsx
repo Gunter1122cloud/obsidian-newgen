@@ -33,7 +33,7 @@ function MaintenanceWipeToggle(props: {
   onWipeEnable: () => void;
 }): ReactElement {
   const { policy } = props;
-  const subtitle = policy.wipeEnabled ? "After scheduled restart" : "Does not remove tames or structures";
+  const subtitle = policy.wipeEnabled ? "10 minutes after server readiness" : "Does not remove tames or structures";
 
   return (
     <div className={classes.nestedRow}>
@@ -150,7 +150,7 @@ export function MaintenanceUpNext(props: Props): ReactElement {
     subtitle = `Runs ${AUTO_UPDATE_TRIGGER_COPY}`;
   } else {
     title = "Wild dino wipe";
-    subtitle = "Needs a restart schedule — wipe runs when that restart finishes";
+    subtitle = "Needs a restart schedule — wipe runs 10 minutes after server readiness";
   }
 
   const lastRestartLine =

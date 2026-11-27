@@ -9,6 +9,8 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
+- Wait ten minutes after server and RCON readiness before maintenance wild wipe, skip wipe if the server process changed, and scope completed restart occurrences to each map.
+
 ### Added
 
 - Independent GitHub release packaging and optional direct CurseForge metadata access with a Windows user-encrypted local API key that survives app updates.
