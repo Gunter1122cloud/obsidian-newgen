@@ -27,6 +27,18 @@ const DEFAULT_RECENT_CHANGELOG_LIMIT = 8;
  */
 export const changelog: ChangelogEntry[] = [
   {
+    version: "0.29.1",
+    date: "2026-11-27",
+    sections: [
+      {
+        title: "Fixed",
+        items: [
+          "Remove the inherited external website deployment. NewGen releases and desktop updates use GitHub only.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.29.0",
     date: "2026-11-27",
     sections: [
