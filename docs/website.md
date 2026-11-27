@@ -23,7 +23,7 @@ Public product site and operator docs for YARK server manager.
 | `website/src/content/docs/docs/` | Starlight docs under `/docs/`                                                                                                                                                        |
 | `website/public/`                | Favicons, logo, screenshots                                                                                                                                                          |
 | `website/astro.config.mjs`       | `base: "/"`, Starlight sidebar, dark-only theme, `disable404Route: true` (avoid duplicate `/404` with docs catch-all); remark plugin prefixes content `/docs/…` links with that base |
-| `.github/workflows/pages.yml`    | Build Astro → upload artifact; optionally deploy to a configured NewGen Pages project                                                                                                            |
+| `.github/workflows/pages.yml`    | Build Astro → upload GitHub Actions artifact                                                                                                            |
 
 ## 404 page
 
@@ -58,13 +58,9 @@ website/Pages workflows change. Unrelated app PRs skip this job.
 
 ## Deploy
 
-Workflow: [`.github/workflows/pages.yml`](../.github/workflows/pages.yml)
+NewGen does not deploy to Cloudflare Pages. The workflow [`.github/workflows/pages.yml`](../.github/workflows/pages.yml) builds the website and uploads the `newgen-website` GitHub Actions artifact. No Cloudflare project, credentials or external hosting are required.
 
-- Pull requests and main pushes affecting the site build and upload `website/dist` as the `newgen-website` artifact.
-- Main pushes and manual dispatches deploy only when the repository variable `NEWGEN_CLOUDFLARE_PROJECT` names a separate NewGen Pages project.
-- Configure repository Actions secrets `CLOUDFLARE_API_TOKEN` (Pages Edit permission) and `CLOUDFLARE_ACCOUNT_ID` in that account.
-- If no project is configured, deployment is explicitly skipped; the site build remains available as an artifact. Once a project is configured, missing credentials or deployment errors fail the job.
-- Do not deploy to the upstream `getyark` project. Configure NewGen-owned domains separately.
+Desktop installers and update metadata are published exclusively through [NewGen GitHub Releases](https://github.com/Gunter1122cloud/obsidian-newgen/releases). The website build is not an update source.
 
 ### SEO notes (getyark.com)
 

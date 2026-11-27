@@ -9,7 +9,7 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
-- Build and retain NewGen website artifacts without inherited Cloudflare credentials; require an explicitly configured independent Pages project for deployment.
+- Remove inherited Cloudflare deployment; build website artifacts on GitHub only and keep desktop updates on NewGen GitHub Releases.
 
 - Integrated release verification for NewGen 0.29.0.
 
