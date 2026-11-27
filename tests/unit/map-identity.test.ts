@@ -173,7 +173,7 @@ describe("validateMapIdentity", () => {
     ).toEqual([
       {
         field: "mapModId",
-        message: "Map mod Project ID is passive and will be omitted from -mods= — mark it active",
+        message: "Map mod Project ID is passive — mark the map mod active before starting",
         severity: "warning",
       },
     ]);

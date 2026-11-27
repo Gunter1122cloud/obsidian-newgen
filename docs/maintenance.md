@@ -49,7 +49,7 @@ No push channel — the Maintenance tab polls `getPolicy` while mounted.
 | `MAINTENANCE_RUN_NOW_LEAD_MS`       | 10s                                            | Run now confirm → warning window                                   |
 | `MAINTENANCE_FAIL_LIMIT`            | 3                                              | Hard failures before session pause (per runtime)                   |
 | `MAINTENANCE_RCON_SOFT_FAIL_LIMIT`  | 3                                              | Consecutive ServerChat fails in one window → hard-fail that window |
-| `MAINTENANCE_WIPE_POST_READY_MS`    | 20s                                            | Extra wait after `running` before wipe                             |
+| `MAINTENANCE_WIPE_POST_READY_MS`    | 10 min                                         | Extra wait after `running` before wipe                             |
 | `MAINTENANCE_WIPE_READY_TIMEOUT_MS` | 10 min                                         | Cap waiting for post-restart ready + RCON                          |
 | Update retry cooldown               | 5 min                                          | Private in update-runtime; failed Steam build key                  |
 | Steam availability UI cache         | 30s                                            | Update-runtime snapshot reuse                                      |
@@ -144,7 +144,7 @@ Execute path (schedule or Run now):
 When **Wild dino wipe** is On (toggle in Up next; turning wipe On enables restart):
 
 1. After a **successful** maintenance restart, wait until status is `running`.
-2. Ensure RCON, wait `MAINTENANCE_WIPE_POST_READY_MS` (~20s) for settle / wildlife spawn.
+2. Ensure RCON, wait `MAINTENANCE_WIPE_POST_READY_MS` (10 minutes) for settle / wildlife spawn.
 3. `SaveWorld`, then `DestroyWildDinos` (`wipeSaveWorldFirst` is always written `true` from the UI).
 4. Wipe failure is recorded (`lastWipeOk`); it does **not** inflate the restart fail-streak.
 5. Launch `-ForceRespawnDinos` (wipe on every start) stays on the Launch tab — unchanged.

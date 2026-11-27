@@ -15,10 +15,10 @@ export function ServerFormStartupFields(props: Props): ReactElement {
       <div className={classes.startupRow}>
         <div className={classes.startupCopy}>
           <Text size="sm" fw={600}>
-            Auto-start with YARK
+            Auto-start with NewGen
           </Text>
           <Text size="xs" c="dimmed" mt={2}>
-            Start this server automatically after YARK launches and startup checks finish. Default off.
+            Start this server automatically after NewGen launches and startup checks finish. Default off.
           </Text>
         </div>
         <Switch

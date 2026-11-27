@@ -5,6 +5,7 @@ import { join } from "node:path";
 import type { ChildProcess } from "node:child_process";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ProcessManager } from "@backend/infra/process/process-manager";
+import * as childLookup from "@backend/infra/process/windows-child-process";
 import { reattachLeftRunningProcesses } from "@backend/infra/process/left-running-reattach";
 import {
   writeLeftRunningProcesses,
@@ -209,6 +210,60 @@ describe("reattachLeftRunningProcesses", () => {
     expect(manager.getRuntimePorts(profile.id)).toEqual(sessionPorts);
     expect(manager.applyRuntimePorts(profile).rconPort).toBe(27030);
     expect(manager.applyRuntimePorts(profile).gamePort).not.toBe(profile.gamePort);
+  });
+
+  it("recovers a loader-only checkpoint as the verified game child without spawning", async () => {
+    cleanupRoot = await mkdtemp(join(tmpdir(), "newgen-loader-reattach-"));
+    const profile = makeProfile("loader", cleanupRoot);
+    const binaryDir = join(cleanupRoot, "ShooterGame", "Binaries", "Win64");
+    const loader = join(binaryDir, "AsaApiLoader.exe");
+    const game = join(binaryDir, "ArkAscendedServer.exe");
+    await mkdir(binaryDir, { recursive: true });
+    vi.spyOn(childLookup, "findWindowsChildProcessByName").mockResolvedValue(222);
+    const query = vi.fn(async (pid: number) =>
+      pid === 111
+        ? { pid, executablePath: loader, commandLine: null, osCreationTime: "loader-created" }
+        : { pid, parentPid: 111, executablePath: game, commandLine: null, osCreationTime: "game-created" },
+    );
+    const checkpoints = vi.fn();
+    const manager = new ProcessManager({
+      createAdoptedChild: fakeAdoptedChild,
+      queryOsIdentity: query,
+      onProcessCheckpoint: checkpoints,
+      spawnProcess: () => {
+        throw new Error("must not spawn");
+      },
+    });
+    await manager.reattach(
+      profile,
+      {
+        schemaVersion: LEFT_RUNNING_SCHEMA_VERSION,
+        serverId: profile.id,
+        pid: 111,
+        executablePath: loader,
+        installDir: cleanupRoot,
+        startedAt: "2026-07-31T12:00:00.000Z",
+        expectedCommandLine: loader,
+        launchArgs: [],
+        osCreationTime: "loader-created",
+        osExecutablePath: loader,
+        leftAt: "2026-07-31T12:05:00.000Z",
+      },
+      { skipReadinessCheck: true },
+    );
+    expect(manager.getStatus(profile.id).pid).toBe(222);
+    expect(manager.getStatus(profile.id).status).toBe("running");
+    await vi.waitFor(() => {
+      expect(checkpoints).toHaveBeenCalledWith(
+        expect.objectContaining({
+          pid: 222,
+          executablePath: game,
+          loaderIdentity: { pid: 111, executablePath: loader, osCreationTime: "loader-created" },
+        }),
+      );
+    });
+    const records = await manager.collectLeaveIdentities([profile]);
+    expect(records[0]?.loaderIdentity?.pid).toBe(111);
   });
 
   it("keeps checkpoint when adopt fails after a match", async () => {

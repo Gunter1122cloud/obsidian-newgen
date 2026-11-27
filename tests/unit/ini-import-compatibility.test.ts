@@ -64,7 +64,7 @@ XPMultiplier=2
     const session = report.replacements.find((field) => field.id === "sessionName");
     expect(session).toBeDefined();
     expect(formatIniImportReplacement(session!)).toBe(
-      'Session name in GameUserSettings.ini: "Old Island".\nSession name in YARK: "Island".',
+      'Session name in GameUserSettings.ini: "Old Island".\nSession name in the NewGen profile: "Island".',
     );
   });
 
@@ -110,7 +110,7 @@ ConfigOverrideItemMaxQuantity=(hello world)
     expect(formatIniImportKeptSummary(report)).toBe("1 line stays as it is. 1 stays word for word.");
   });
 
-  it("shows the session name YARK will save when the file hides a tab in it", () => {
+  it("shows the session name NewGen will save when the file hides a tab in it", () => {
     const report = buildIniImportCompatibilityReport(
       profile,
       payload(matchingGus.replace("SessionName=Island", "SessionName=Old\tIsland")),
@@ -119,7 +119,7 @@ ConfigOverrideItemMaxQuantity=(hello world)
     expect(session?.fileValue).toBe("Old Island");
     expect(session).toBeDefined();
     expect(formatIniImportReplacement(session!)).toBe(
-      'Session name in GameUserSettings.ini: "Old Island".\nSession name in YARK: "Island".',
+      'Session name in GameUserSettings.ini: "Old Island".\nSession name in the NewGen profile: "Island".',
     );
   });
 
@@ -129,7 +129,7 @@ ConfigOverrideItemMaxQuantity=(hello world)
     expect(gamePort?.fileValue).toBe("7777\t");
     expect(gamePort).toBeDefined();
     expect(formatIniImportReplacement(gamePort!)).toBe(
-      "Game port in GameUserSettings.ini: not a plain number.\nGame port in YARK: 7777.",
+      "Game port in GameUserSettings.ini: not a plain number.\nGame port in the NewGen profile: 7777.",
     );
   });
 
@@ -142,7 +142,7 @@ ConfigOverrideItemMaxQuantity=(hello world)
     expect(gamePort?.fileValue).toBe("27\u000020");
     expect(gamePort).toBeDefined();
     const line = formatIniImportReplacement(gamePort!);
-    expect(line).toBe("Game port in GameUserSettings.ini: not a plain number.\nGame port in YARK: 7777.");
+    expect(line).toBe("Game port in GameUserSettings.ini: not a plain number.\nGame port in the NewGen profile: 7777.");
     expect(line).not.toContain("27020");
   });
 
@@ -154,7 +154,7 @@ ConfigOverrideItemMaxQuantity=(hello world)
     const session = report.replacements.find((field) => field.id === "sessionName");
     expect(session).toBeDefined();
     expect(formatIniImportReplacement(session!)).toBe(
-      'Session name in GameUserSettings.ini: not set.\nSession name in YARK: "Island".',
+      'Session name in GameUserSettings.ini: not set.\nSession name in the NewGen profile: "Island".',
     );
   });
 
@@ -175,7 +175,7 @@ ConfigOverrideItemMaxQuantity=(hello world)
     expect(admin?.sensitive).toBe(true);
     expect(admin).toBeDefined();
     const line = formatIniImportReplacement(admin!);
-    expect(line).toBe("Admin password differs between GameUserSettings.ini and YARK. Values are hidden.");
+    expect(line).toBe("Admin password differs between GameUserSettings.ini and the NewGen profile. Values are hidden.");
     expect(line).not.toContain("secret-admin");
     expect(line).not.toContain("old");
   });

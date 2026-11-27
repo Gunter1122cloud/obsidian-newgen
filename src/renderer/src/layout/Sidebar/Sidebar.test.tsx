@@ -1,4 +1,4 @@
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AppProviders } from "@app/AppProviders";
@@ -219,7 +219,7 @@ describe("Sidebar Quit Obsidian (#532)", () => {
     cleanup();
   });
 
-  it("shows operator tooltip and opens confirm before quitApp", async () => {
+  it("shows operator tooltip and delegates the single quit dialog to main", async () => {
     const user = userEvent.setup();
     const quitApp = vi.fn().mockResolvedValue({ ok: true, data: undefined });
     window.api = { quitApp } as unknown as typeof window.api;
@@ -249,38 +249,8 @@ describe("Sidebar Quit Obsidian (#532)", () => {
     ).toBeInTheDocument();
 
     await user.click(quitButton);
-    expect(quitApp).not.toHaveBeenCalled();
-
-    const dialog = await screen.findByRole("dialog");
-    expect(dialog).toHaveAttribute("data-yark-quit-modal");
-    expect(dialog).toHaveTextContent(/stopped safely first/i);
-    await user.click(within(dialog).getByRole("button", { name: "Quit Obsidian" }));
     expect(quitApp).toHaveBeenCalledTimes(1);
-  });
-
-  it("does not quit when the confirm is cancelled", async () => {
-    const user = userEvent.setup();
-    const quitApp = vi.fn().mockResolvedValue({ ok: true, data: undefined });
-    window.api = { quitApp } as unknown as typeof window.api;
-
-    render(
-      <AppProviders>
-        <Sidebar
-          route="overview"
-          onNavigate={vi.fn()}
-          steamCmdDetected
-          steamCmdRunning={false}
-          officialVersion="1.0"
-          officialNetworkStatus="online"
-          appVersion="0.5.2"
-        />
-      </AppProviders>,
-    );
-
-    await user.click(screen.getByRole("button", { name: "Quit Obsidian" }));
-    const dialog = await screen.findByRole("dialog");
-    await user.click(within(dialog).getByRole("button", { name: "Cancel" }));
-    expect(quitApp).not.toHaveBeenCalled();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
   it("keeps Quit available in icon rail mode", () => {

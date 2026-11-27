@@ -49,7 +49,7 @@ export interface ServerModsRowActionInput {
   onAdd: (row: ModRow) => void;
   onRemove: (row: ModRow) => void;
   onOpenExternal: (url: string) => void;
-  /** Toggle passive load (`-passivemods=` only). Server mode, enabled rows. */
+  /** Toggle passive load (both managed mod lists). Server mode, enabled rows. */
   onSetPassive?: (row: ModRow) => void;
   onCopyProjectId?: (row: ModRow) => void;
   onCopyCurseForgeUrl?: (row: ModRow) => void;

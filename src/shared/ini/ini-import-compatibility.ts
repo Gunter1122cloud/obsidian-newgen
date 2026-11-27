@@ -127,15 +127,15 @@ function rawIniPort(text: string, section: string, key: string): string | null {
  */
 export function formatIniImportReplacement(field: IniImportIdentityField): string {
   if (field.sensitive) {
-    return `${field.label} differs between GameUserSettings.ini and YARK. Values are hidden.`;
+    return `${field.label} differs between GameUserSettings.ini and the NewGen profile. Values are hidden.`;
   }
   if (field.id === "rconEnabled") {
     return field.fileValue === null || field.fileValue.trim() === ""
-      ? "RCON in GameUserSettings.ini: not set. RCON in YARK: on."
-      : "RCON in GameUserSettings.ini: off. RCON in YARK: on.";
+      ? "RCON in GameUserSettings.ini: not set. RCON in the NewGen profile: on."
+      : "RCON in GameUserSettings.ini: off. RCON in the NewGen profile: on.";
   }
   if (field.id === "sessionName") {
-    const yark = `Session name in YARK: "${field.profileValue}".`;
+    const yark = `Session name in the NewGen profile: "${field.profileValue}".`;
     if (field.fileValue === null || field.fileValue.trim() === "") {
       return `Session name in GameUserSettings.ini: not set.\n${yark}`;
     }
@@ -147,12 +147,12 @@ export function formatIniImportReplacement(field: IniImportIdentityField): strin
     field.fileValue !== "" &&
     !/^\d+$/.test(field.fileValue)
   ) {
-    return `${field.label} in GameUserSettings.ini: not a plain number.\n${field.label} in YARK: ${field.profileValue}.`;
+    return `${field.label} in GameUserSettings.ini: not a plain number.\n${field.label} in the NewGen profile: ${field.profileValue}.`;
   }
   if (field.fileValue === null || field.fileValue.trim() === "") {
-    return `${field.label} in GameUserSettings.ini: blank.\n${field.label} in YARK: ${field.profileValue}.`;
+    return `${field.label} in GameUserSettings.ini: blank.\n${field.label} in the NewGen profile: ${field.profileValue}.`;
   }
-  return `${field.label} in GameUserSettings.ini: ${field.fileValue}.\n${field.label} in YARK: ${field.profileValue}.`;
+  return `${field.label} in GameUserSettings.ini: ${field.fileValue}.\n${field.label} in the NewGen profile: ${field.profileValue}.`;
 }
 
 export function buildIniImportCompatibilityReport(
@@ -275,8 +275,8 @@ export function formatIniImportKeptSummary(report: IniImportCompatibilityReport)
   }
   if (unread === report.keptComplex.length) {
     return unread === 1
-      ? "One line in the file stays word for word. YARK doesn't read it."
-      : `${unread} lines in the file stay word for word. YARK doesn't read them.`;
+      ? "One line in the file stays word for word. NewGen does not interpret it."
+      : `${unread} lines in the file stay word for word. NewGen does not interpret them.`;
   }
   const readable = report.keptComplex.length - unread;
   return `${readable} ${readable === 1 ? "line stays" : "lines stay"} as ${readable === 1 ? "it is" : "they are"}. ${unread} ${unread === 1 ? "stays" : "stay"} word for word.`;

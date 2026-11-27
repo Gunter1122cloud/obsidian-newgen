@@ -20,7 +20,7 @@ interface Props {
   onDismissError: () => void;
   /** Save lost a race with an external INI edit (#665 / #667). */
   staleDocument?: boolean;
-  /** Last YARK save, draft, and disk values for an overlapping Save (#696). */
+  /** Last NewGen save, draft, and disk values for an overlapping Save (#696). */
   conflicts?: readonly IniConflictOccurrence[];
   onAcceptConflicts?: (choices: readonly ConflictChoice[]) => void;
   /** Disk/pending changed while the editor has unsaved edits (#665). */
@@ -211,7 +211,7 @@ function ExternalChangeAlert(props: {
   if (props.iniMode === "visual") {
     // No Reload CTA here — Save merges non-overlapping edits; Reload stays in the toolbar (#667).
     return (
-      <AppAlert color="blue" mb="sm" title="INI updated outside YARK" onClose={props.onDismiss} withCloseButton>
+      <AppAlert color="blue" mb="sm" title="INI updated outside NewGen" onClose={props.onDismiss} withCloseButton>
         <Stack gap={4}>
           <Text size="sm">{summary} Click Save to merge your changes with theirs when they do not overlap.</Text>
           {detail}
@@ -220,7 +220,7 @@ function ExternalChangeAlert(props: {
     );
   }
   return (
-    <AppAlert color="attention" mb="sm" title="INI changed outside YARK" onClose={props.onDismiss} withCloseButton>
+    <AppAlert color="attention" mb="sm" title="INI changed outside NewGen" onClose={props.onDismiss} withCloseButton>
       <Stack gap="xs">
         <Stack gap={4}>
           <Text size="sm">
@@ -283,7 +283,7 @@ export function ConfigurationEditorStatusAlerts(props: Props): ReactElement | nu
       )}
       {pendingQueued && (
         <AppAlert color="attention" mb="sm" title="INI queued">
-          Your saved draft is waiting. YARK will write it to the install when the server stops (or before the next
+          Your saved draft is waiting. NewGen will write it to the install when the server stops (or before the next
           start). Open in editor shows the live files, which may still be outdated.
         </AppAlert>
       )}

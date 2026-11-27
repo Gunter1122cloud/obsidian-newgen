@@ -8,7 +8,7 @@ export interface IniConflictOccurrence {
   section: string;
   key: string;
   occurrence: number;
-  /** Value from the last successful YARK save. The editor load is that baseline until the next save. */
+  /** Value from the last successful NewGen save. The editor load is that baseline until the next save. */
   loaded: string | null;
   /** Value the open draft wants. `null` with `removes` deletes the occurrence. */
   local: string | null;
@@ -29,7 +29,7 @@ export class IniConflictReviewError extends Error {
 
   constructor(conflicts: readonly IniConflictOccurrence[]) {
     const key = conflicts[0]?.key ?? "INI";
-    super(`${key} changed outside YARK since this editor loaded. Reload or resolve the conflict before saving.`);
+    super(`${key} changed outside NewGen since this editor loaded. Reload or resolve the conflict before saving.`);
     this.name = "IniConflictReviewError";
     this.conflicts = conflicts;
     this.code = conflictReviewCode(conflicts);
@@ -62,7 +62,7 @@ function keptConflictValue(conflict: IniConflictOccurrence, side: ConflictKeepSi
   return conflict.local;
 }
 
-/** A null YARK value is a delete only when the draft said so. A failed print cannot be kept. */
+/** A null NewGen value is a delete only when the draft said so. A failed print cannot be kept. */
 export function canKeepConflictSide(conflict: IniConflictOccurrence, side: ConflictKeepSide): boolean {
   if (side !== "yark") return true;
   return conflict.local !== null || conflict.removes === true;

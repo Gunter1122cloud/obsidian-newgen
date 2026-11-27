@@ -49,7 +49,7 @@ function ConflictTable(
           <th className={classes.valueHead} scope="col">
             <span className={classes.headLabel}>
               Your edit
-              <span className={classes.delta}>Changed in YARK</span>
+              <span className={classes.delta}>Changed in NewGen</span>
             </span>
           </th>
           <th className={classes.valueHead} scope="col">

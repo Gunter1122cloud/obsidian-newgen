@@ -11,6 +11,7 @@ import {
 import { AsaSavedLogsTailer, captureAsaLogSessionAnchor, type AsaLogSessionAnchor } from "./asa-log-tail";
 import { createAdoptedChildHandle } from "./adopted-child";
 import { ensureLaunchLogFlags, type spawnAsaProcess } from "./process-spawn";
+import type { LeftRunningProcessIdentity } from "@shared/settings/left-running";
 import type { RuntimeLogSource } from "./process-readiness";
 import { findWindowsChildProcessByName } from "./windows-child-process";
 
@@ -39,6 +40,7 @@ export interface ProcessStartManaged {
    * `child` tracks ArkAscendedServer.exe (#243).
    */
   loaderPid?: number | null;
+  loaderIdentity?: LeftRunningProcessIdentity["loaderIdentity"];
   /**
    * True until the first new ShooterGame.log line after an AsaApi Start
    * (UI: “Loading Ark Server API…”).

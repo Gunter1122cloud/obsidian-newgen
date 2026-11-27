@@ -3,6 +3,7 @@ import { execFileBounded } from "./exec-file-bounded";
 
 interface WmiProcessRow {
   ProcessId?: number;
+  ParentProcessId?: number;
   ExecutablePath?: string | null;
   CommandLine?: string | null;
   CreationDate?: string | null;
@@ -31,7 +32,7 @@ export async function queryWindowsProcessIdentity(pid: number): Promise<LiveProc
     const script = [
       `$ProcessId = ${safePid}`,
       `$p = Get-CimInstance -ClassName Win32_Process -Filter ('ProcessId=' + $ProcessId) -ErrorAction SilentlyContinue`,
-      `if ($null -eq $p) { '' } else { $p | Select-Object ProcessId,ExecutablePath,CommandLine,CreationDate | ConvertTo-Json -Compress }`,
+      `if ($null -eq $p) { '' } else { $p | Select-Object ProcessId,ParentProcessId,ExecutablePath,CommandLine,CreationDate | ConvertTo-Json -Compress }`,
     ].join("; ");
 
     const { stdout } = await execFileBounded(
@@ -53,6 +54,7 @@ export async function queryWindowsProcessIdentity(pid: number): Promise<LiveProc
     }
     return {
       pid: safePid,
+      ...(typeof parsed.ParentProcessId === "number" ? { parentPid: parsed.ParentProcessId } : {}),
       executablePath:
         typeof parsed.ExecutablePath === "string" && parsed.ExecutablePath.trim() !== "" ? parsed.ExecutablePath : null,
       commandLine:

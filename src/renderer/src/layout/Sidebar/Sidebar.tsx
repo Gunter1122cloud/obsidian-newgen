@@ -1,5 +1,4 @@
 import type { ReactElement } from "react";
-import { useState } from "react";
 import {
   ArrowCircleUp,
   Broadcast,
@@ -31,7 +30,6 @@ import type { HostedResourcesHealth } from "@features/hosted-resources/model/hos
 import { navSelectedClassName } from "@ui/NavSelected/navSelectedClassName";
 import { Fragment } from "react";
 import obsidianLogo from "../../assets/brand/obsidian-logo.svg";
-import { QuitYarkModal } from "./QuitYarkModal";
 import classes from "./Sidebar.module.css";
 
 export type Route = "overview" | "downloads" | "clusters" | "backups" | "logs" | "hostedResources" | "settings";
@@ -60,8 +58,7 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 /** Operator-facing hover copy for sidebar Quit (#532). */
-export const QUIT_YARK_TOOLTIP =
-  "Stops servers safely and closes Obsidian. Close the window to keep them running in the tray.";
+export const QUIT_YARK_TOOLTIP = "Close Obsidian and choose whether to leave servers running.";
 
 interface Props {
   route: Route;
@@ -110,7 +107,6 @@ export function Sidebar(props: Props): ReactElement {
   };
   const compact = density === "compact";
   const iconMode = props.iconMode === true;
-  const [quitOpened, setQuitOpened] = useState(false);
   const navIconSize = compact ? 16 : 18;
   // Keep secondary sidebar copy readable in Compact without enlarging Comfortable.
   const metadataTextSize = compact ? "sm" : "xs";
@@ -398,7 +394,7 @@ export function Sidebar(props: Props): ReactElement {
                 className={classes.quitIcon}
                 data-yark-quit
                 onClick={() => {
-                  setQuitOpened(true);
+                  void window.api.quitApp();
                 }}
               >
                 <SignOut size={compact ? 14 : 16} weight="regular" aria-hidden />
@@ -413,7 +409,7 @@ export function Sidebar(props: Props): ReactElement {
                 className={classes.quitButton}
                 data-yark-quit
                 onClick={() => {
-                  setQuitOpened(true);
+                  void window.api.quitApp();
                 }}
               >
                 Quit Obsidian
@@ -422,17 +418,6 @@ export function Sidebar(props: Props): ReactElement {
           </Tooltip>
         </div>
       </div>
-
-      <QuitYarkModal
-        opened={quitOpened}
-        onClose={() => {
-          setQuitOpened(false);
-        }}
-        onConfirm={() => {
-          setQuitOpened(false);
-          void window.api.quitApp();
-        }}
-      />
     </MantineStack>
   );
 }

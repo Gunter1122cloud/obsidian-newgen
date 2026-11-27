@@ -261,3 +261,95 @@
     linear-gradient(155deg, rgba(12, 15, 16, 0.94), rgba(12, 15, 16, 0.86)), url("../assets/newgen/metal.webp");
   background-repeat: no-repeat, repeat;
 }
+
+/* Final visual direction: the two user-supplied rusted-iron textures are the actual shell artwork. */
+:global([data-mantine-color-scheme="dark"][data-newgen-background="on"]) .shell::before {
+  background-image:
+    linear-gradient(112deg, rgba(8, 9, 10, 0.56), rgba(8, 10, 11, 0.42) 48%, rgba(8, 9, 10, 0.62)),
+    url("../assets/newgen/rusty-iron.webp");
+  background-size: cover, cover;
+  background-position: center, center;
+  filter: saturate(0.72) contrast(1.08);
+  transform: scale(1.035);
+  animation: newgenRustSceneDrift 54s ease-in-out infinite alternate;
+}
+
+:global([data-mantine-color-scheme="dark"][data-newgen-background="on"]) .shell::after {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  content: "";
+  background-image:
+    linear-gradient(118deg, transparent 28%, rgba(205, 169, 99, 0.035) 49%, transparent 70%),
+    url("../assets/newgen/rusty-iron-02.webp");
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat;
+  opacity: 0.34;
+  mix-blend-mode: soft-light;
+  animation: newgenRustSecondPass 42s ease-in-out infinite alternate;
+}
+
+:global([data-mantine-color-scheme="dark"][data-newgen-background="on"]) .main {
+  background-color: transparent;
+  background-image:
+    radial-gradient(ellipse at 92% 0%, rgba(181, 157, 109, 0.18), transparent 48%),
+    linear-gradient(rgba(190, 158, 96, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(190, 158, 96, 0.028) 1px, transparent 1px),
+    linear-gradient(155deg, rgba(10, 12, 13, 0.12), rgba(10, 12, 13, 0.3));
+  background-size:
+    auto,
+    52px 52px,
+    52px 52px,
+    auto;
+}
+
+:global([data-mantine-color-scheme="dark"]) .navbar {
+  background:
+    linear-gradient(160deg, rgba(12, 14, 15, 0.72), rgba(12, 14, 15, 0.62)),
+    url("../assets/newgen/rusty-iron-02.webp") center / cover no-repeat;
+  background-blend-mode: normal, soft-light;
+  border-right-color: rgba(190, 158, 96, 0.42);
+  box-shadow: 8px 0 32px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+@keyframes newgenRustSceneDrift {
+  from {
+    transform: scale(1.035) translate3d(-0.25%, 0, 0);
+  }
+  to {
+    transform: scale(1.075) translate3d(0.25%, -0.35%, 0);
+  }
+}
+
+@keyframes newgenRustSecondPass {
+  from {
+    opacity: 0.13;
+    background-position:
+      center,
+      48% 50%;
+  }
+  to {
+    opacity: 0.25;
+    background-position:
+      center,
+      52% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global([data-mantine-color-scheme="dark"][data-newgen-background="on"]) .shell::before,
+  :global([data-mantine-color-scheme="dark"][data-newgen-background="on"]) .shell::after {
+    animation: none;
+    transform: none;
+  }
+}
+
+:global([data-newgen-motion="off"]) .shell::before,
+:global([data-newgen-motion="off"]) .shell::after {
+  animation: none !important;
+  transform: none !important;
+}

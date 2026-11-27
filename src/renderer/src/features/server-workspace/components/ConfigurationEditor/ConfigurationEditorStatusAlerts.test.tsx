@@ -26,9 +26,9 @@ describe("ConfigurationEditorStatusAlerts", () => {
         pendingQueued={false}
       />,
     );
-    const alert = screen.getByRole("alert", { name: "INI updated outside YARK" });
+    const alert = screen.getByRole("alert", { name: "INI updated outside NewGen" });
     expect(alert).toBeVisible();
-    expect(alert).toHaveTextContent(/changed 1 setting outside YARK/i);
+    expect(alert).toHaveTextContent(/changed 1 setting outside NewGen/i);
     expect(alert).toHaveTextContent(/Click Save to merge/i);
     expect(screen.getByRole("button", { name: "View outside changes" })).toBeVisible();
     expect(screen.queryByRole("button", { name: "Reload from disk" })).not.toBeInTheDocument();
@@ -73,7 +73,7 @@ describe("ConfigurationEditorStatusAlerts", () => {
         pendingQueued={false}
       />,
     );
-    const alert = screen.getByRole("alert", { name: "INI changed outside YARK" });
+    const alert = screen.getByRole("alert", { name: "INI changed outside NewGen" });
     expect(alert).toBeVisible();
     expect(alert).toHaveTextContent(/refuse to overwrite/i);
   });
@@ -81,7 +81,7 @@ describe("ConfigurationEditorStatusAlerts", () => {
   it("uses a conflict title when Save fails on a stale/overlapping document", () => {
     renderAlerts(
       <ConfigurationEditorStatusAlerts
-        error="XPMultiplier changed outside YARK"
+        error="XPMultiplier changed outside NewGen"
         onDismissError={vi.fn()}
         staleDocument
         iniMode="visual"
@@ -96,7 +96,7 @@ describe("ConfigurationEditorStatusAlerts", () => {
   it("shows loaded, your edit, and disk as separate values", () => {
     renderAlerts(
       <ConfigurationEditorStatusAlerts
-        error="XPMultiplier changed outside YARK"
+        error="XPMultiplier changed outside NewGen"
         onDismissError={vi.fn()}
         staleDocument
         conflicts={[
@@ -125,7 +125,7 @@ describe("ConfigurationEditorStatusAlerts", () => {
     );
     expect(alert).toHaveTextContent("Last save");
     expect(alert).toHaveTextContent("Your edit");
-    expect(alert).toHaveTextContent("Changed in YARK");
+    expect(alert).toHaveTextContent("Changed in NewGen");
     expect(alert).toHaveTextContent("On disk");
     expect(alert).toHaveTextContent("Changed in the file");
     expect(alert).toHaveTextContent("Empty");
@@ -145,7 +145,7 @@ describe("ConfigurationEditorStatusAlerts", () => {
     const user = setupUser();
     renderAlerts(
       <ConfigurationEditorStatusAlerts
-        error="Several settings changed outside YARK"
+        error="Several settings changed outside NewGen"
         onDismissError={vi.fn()}
         staleDocument
         conflicts={[
@@ -184,7 +184,7 @@ describe("ConfigurationEditorStatusAlerts", () => {
     const onAccept = vi.fn();
     renderAlerts(
       <ConfigurationEditorStatusAlerts
-        error="XPMultiplier changed outside YARK"
+        error="XPMultiplier changed outside NewGen"
         onDismissError={vi.fn()}
         staleDocument
         conflicts={[
