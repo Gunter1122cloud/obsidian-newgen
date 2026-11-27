@@ -75,6 +75,8 @@ export function maintenancePolicyWriteFromStatus(
     manualRestartWarnings: policy.manualRestartWarnings,
     restartDaysOfWeek: policy.restartDaysOfWeek,
     restartTimeLocal: policy.restartTimeLocal,
+    primaryRestartEnabled: policy.primaryRestartEnabled ?? true,
+    additionalRestartTimers: policy.additionalRestartTimers ?? [],
     wipeSaveWorldFirst: true,
     restartWarnings: policy.restartWarnings,
     updateWarnings: policy.updateWarnings,
@@ -153,7 +155,11 @@ export function formatMaintenanceLocalDateTime(iso: string): string {
 export function formatRestartSummary(policy: MaintenancePolicyStatus): string {
   const days = formatRestartDaysSummary(policy.restartDaysOfWeek);
   const warningsLabel = formatJobWarningsLabel(policy.restartWarnings);
-  return `${days} ${policy.restartTimeLocal} · ${warningsLabel}`;
+  const extra = (policy.additionalRestartTimers ?? []).filter((timer) => timer.enabled).length;
+  const primary = policy.primaryRestartEnabled === false ? 0 : 1;
+  return extra > 0 || primary === 0
+    ? `${primary + extra} active timers · ${warningsLabel}`
+    : `${days} ${policy.restartTimeLocal} · ${warningsLabel}`;
 }
 
 function formatJobWarningsLabel(warnings: MaintenanceJobWarnings): string {

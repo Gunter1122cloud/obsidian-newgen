@@ -104,7 +104,7 @@ export function MaintenanceUpNext(props: Props): ReactElement {
             <Text className={classes.upNextLabel}>Up next</Text>
             <h2 className={classes.upNextTitle}>Nothing scheduled</h2>
             <Text size="sm" c="dimmed" mt={4} maw={480}>
-              Turn on a job below. Restart and wipe share one weekly window; auto-update runs on its own when a new Ark
+              Turn on a job below. Restart timers can each enable wild wipe; auto-update runs on its own when a new Ark
               server update is out.
             </Text>
           </div>
@@ -136,7 +136,9 @@ export function MaintenanceUpNext(props: Props): ReactElement {
           : "Players are being warned in-game";
     }
   } else if (policy.restartEnabled) {
-    title = `Restart · ${daysLabel} ${policy.restartTimeLocal}`;
+    title = (policy.additionalRestartTimers ?? []).some((timer) => timer.enabled)
+      ? "Restart · Multiple timers"
+      : `Restart · ${daysLabel} ${policy.restartTimeLocal}`;
     subtitle = formatRestartUpNextSubtitle(policy);
   } else if (policy.updateEnabled) {
     const { preset } = policy.updateWarnings;

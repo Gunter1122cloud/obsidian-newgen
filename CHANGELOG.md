@@ -9,6 +9,8 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
+- Add independent per-map daily restart timers with individual enable and wild wipe options; reuse the existing restart runtime and preserve existing weekly schedules.
+
 - Wait ten minutes after server and RCON readiness before maintenance wild wipe, skip wipe if the server process changed, and scope completed restart occurrences to each map.
 
 ### Added

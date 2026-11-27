@@ -26,9 +26,13 @@ describe("MaintenanceRepository", () => {
         restartEnabled: true,
         wipeEnabled: true,
         restartTimeLocal: "04:00",
+        primaryRestartEnabled: false,
+        additionalRestartTimers: [{ timeLocal: "15:00", enabled: true, wipeEnabled: false }],
       });
       expect(saved.restartEnabled).toBe(true);
       expect(saved.wipeEnabled).toBe(true);
+      expect(saved.primaryRestartEnabled).toBe(false);
+      expect(saved.additionalRestartTimers).toEqual([{ timeLocal: "15:00", enabled: true, wipeEnabled: false }]);
       expect(repo.listPolicies()).toHaveLength(1);
     } finally {
       db.close();

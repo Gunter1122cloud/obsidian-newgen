@@ -58,6 +58,7 @@ interface ActiveCountdown {
   timerGeneration: number;
   runPromise: Promise<void> | null;
   source: "schedule" | "run_now" | "manual";
+  scheduledAtMs: number | null;
 }
 
 interface LastRestartMemory {
@@ -162,6 +163,27 @@ export class MaintenanceRestartRuntime {
     this.failStreak.delete(serverId);
   }
 
+  private nextScheduledOccurrence(policy: MaintenancePolicy, fromMs: number): { at: Date; wipe: boolean } | null {
+    if (!policy.restartEnabled) return null;
+    const timers = [
+      ...(policy.primaryRestartEnabled !== false
+        ? [{ days: policy.restartDaysOfWeek, timeLocal: policy.restartTimeLocal, wipe: policy.wipeEnabled }]
+        : []),
+      ...(policy.additionalRestartTimers ?? [])
+        .filter((timer) => timer.enabled)
+        .map((timer) => ({ days: [0, 1, 2, 3, 4, 5, 6], timeLocal: timer.timeLocal, wipe: timer.wipeEnabled })),
+    ];
+    let next: { at: Date; wipe: boolean } | null = null;
+    for (const timer of timers) {
+      let at = nextLocalRestartAt(timer.days, timer.timeLocal, fromMs);
+      while (at !== null && this.completedTargets.has(`${policy.serverId}:${at.toISOString()}`)) {
+        at = nextLocalRestartAt(timer.days, timer.timeLocal, at.getTime());
+      }
+      if (at !== null && (next === null || at < next.at)) next = { at, wipe: timer.wipe };
+    }
+    return next;
+  }
+
   enrichStatus(policy: MaintenancePolicy): MaintenancePolicyStatus {
     const active = this.active.get(policy.serverId);
     const last = this.lastRestart.get(policy.serverId);
@@ -170,8 +192,8 @@ export class MaintenanceRestartRuntime {
     const paused = this.pausedServerIds.has(policy.serverId);
     let nextRestartAt: string | null = null;
     if (policy.restartEnabled && active === undefined && !paused) {
-      const next = nextLocalRestartAt(policy.restartDaysOfWeek, policy.restartTimeLocal, now);
-      if (next !== null) nextRestartAt = next.toISOString();
+      const next = this.nextScheduledOccurrence(policy, now);
+      if (next !== null) nextRestartAt = next.at.toISOString();
     } else if (active !== undefined) {
       nextRestartAt = new Date(active.targetAtMs).toISOString();
     }
@@ -350,10 +372,10 @@ export class MaintenanceRestartRuntime {
     if (this.isIntentionalStop(policy.serverId)) return;
 
     const now = Date.now();
-    const next = nextLocalRestartAt(policy.restartDaysOfWeek, policy.restartTimeLocal, now);
-    if (next === null) return;
+    const occurrence = this.nextScheduledOccurrence(policy, now);
+    if (occurrence === null) return;
+    const next = occurrence.at;
     const targetKey = `${policy.serverId}:${next.toISOString()}`;
-    if (this.completedTargets.has(targetKey)) return;
 
     const offsets = resolveWarningOffsetLabels(policy.restartWarnings, MAINTENANCE_RESTART_PRESET_OFFSETS);
     // Warnings Off → lead 0; still arm within one scheduler tick so T0 runs.
@@ -361,7 +383,7 @@ export class MaintenanceRestartRuntime {
     const remaining = next.getTime() - now;
     if (remaining > armWindowMs) return;
 
-    this.startCountdown(policy, Math.max(now + 1_000, next.getTime()), "schedule", targetKey);
+    this.startCountdown(policy, Math.max(now + 1_000, next.getTime()), "schedule", targetKey, next.getTime());
   }
 
   private startCountdown(
@@ -369,6 +391,7 @@ export class MaintenanceRestartRuntime {
     targetAtMs: number,
     source: "schedule" | "run_now" | "manual",
     scheduleTargetKey: string | null,
+    scheduledAtMs: number | null = null,
   ): void {
     const remaining = targetAtMs - Date.now();
     const warnings = this.warningsForSource(policy, source);
@@ -376,6 +399,7 @@ export class MaintenanceRestartRuntime {
       serverId: policy.serverId,
       targetAtMs,
       scheduleTargetKey,
+      scheduledAtMs,
       firedOffsets: new Set(),
       rconFailStreak: 0,
       cancelRequested: false,
@@ -477,6 +501,13 @@ export class MaintenanceRestartRuntime {
 
     const policy = this.repo.getPolicy(serverId);
     const now = Date.now();
+    if (state.scheduledAtMs !== null) {
+      const occurrence = this.nextScheduledOccurrence(policy, state.scheduledAtMs - 1);
+      if (occurrence?.at.getTime() !== state.scheduledAtMs) {
+        this.abortWindowQuiet(state);
+        return;
+      }
+    }
     const remainingMs = state.targetAtMs - now;
 
     if (remainingMs <= 0) {
@@ -562,13 +593,16 @@ export class MaintenanceRestartRuntime {
           this.abortWindowQuiet(state);
           return;
         }
+        const wipe = state.scheduledAtMs === null
+          ? policy.wipeEnabled
+          : this.nextScheduledOccurrence(policy, state.scheduledAtMs - 1)?.wipe === true;
         await this.instances.restart(serverId);
         const atIso = new Date().toISOString();
         this.lastRestart.set(serverId, { atIso, ok: true });
         this.failStreak.delete(serverId);
         this.markOccurrenceDone(state);
 
-        if (policy.wipeEnabled) {
+        if (wipe) {
           const still = this.isCurrentTick(serverId, expectedTargetAtMs);
           if (still === null) return;
           still.phase = "wiping";

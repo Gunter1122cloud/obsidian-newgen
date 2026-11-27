@@ -233,6 +233,11 @@ export const maintenancePolicyWriteSchema = z
     manualRestartWarnings: maintenanceJobWarningsSchema,
     restartDaysOfWeek: z.array(z.number().int().min(0).max(6)).min(1).max(7),
     restartTimeLocal: z.string().regex(/^\d{2}:\d{2}$/),
+    primaryRestartEnabled: z.boolean().optional(),
+    additionalRestartTimers: z
+      .array(z.object({ timeLocal: z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/), enabled: z.boolean(), wipeEnabled: z.boolean() }).strict())
+      .max(24)
+      .optional(),
     wipeSaveWorldFirst: z.boolean(),
     restartWarnings: maintenanceJobWarningsSchema,
     updateWarnings: maintenanceJobWarningsSchema,
