@@ -81,7 +81,7 @@ describe("NewGen Discord control", () => {
       () => true,
       () => true,
     );
-    expect(result).toMatchObject({ ok: true, maps: [{ mapId: id, playerCount: 1 }] });
+    expect(result).toMatchObject({ ok: true, data: { maps: [{ mapId: id, playerCount: 1 }] } });
     expect(handlers.listPlayers).toHaveBeenCalledExactlyOnceWith(id);
     expect(handlers.start).not.toHaveBeenCalled();
     expect(handlers.stop).not.toHaveBeenCalled();
