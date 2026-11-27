@@ -246,6 +246,8 @@ export function createRendererApiMock(overrides: Partial<RendererApi> = {}): Ren
     getAppearance: vi.fn().mockResolvedValue({ ok: true, data: { ...DEFAULT_APPEARANCE_SETTINGS } }),
     setAppearance: vi.fn().mockResolvedValue({ ok: true, data: { ...DEFAULT_APPEARANCE_SETTINGS } }),
     getOpenNativeConsole: vi.fn().mockResolvedValue({ ok: true, data: false }),
+    getOptimizeRamBeforeStart: vi.fn().mockResolvedValue({ ok: true, data: false }),
+    setOptimizeRamBeforeStart: vi.fn().mockResolvedValue({ ok: true, data: false }),
     setOpenNativeConsole: vi.fn().mockResolvedValue({ ok: true, data: false }),
     getLastSeenChangelogVersion: vi.fn().mockResolvedValue({
       ok: true,

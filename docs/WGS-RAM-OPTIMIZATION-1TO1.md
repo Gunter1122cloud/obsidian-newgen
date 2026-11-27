@@ -33,12 +33,14 @@ Az eredeti hívás közvetlenül a szerverfolyamat elindítása előtt történi
 ## Eredeti beállítás és UI
 
 `WGS/Services/ConfigService.cs`:
+
 - 96. sor: `public bool   OptimizeRamBeforeStart { get; set; } = false;`
 - 154. sor: `bool   OptimizeRamBeforeStart = false,`
 - 191. sor: `OptimizeRamBeforeStart   = d.OptimizeRamBeforeStart;`
 - 211. sor: az OptimizeRamBeforeStart átadása a mentendő beállítások között.
 
 `WGS/ViewModels/SettingsViewModel.cs`:
+
 - 111. sor: `[ObservableProperty] private bool   _optimizeRamBeforeStart;`
 - 238. sor: `OptimizeRamBeforeStart    = _config.OptimizeRamBeforeStart;`
 - 308. sor: `_config.OptimizeRamBeforeStart   = OptimizeRamBeforeStart;`
@@ -87,3 +89,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## NewGen technical adaptation
+
+NewGen is Electron/TypeScript, not .NET. The original C# body executes via the built-in Windows PowerShell immediately before the existing process factory launches a server. The GC call therefore collects the helper's .NET heap, not the Electron manager's heap. The global EmptyWorkingSet loop and default-off behavior are unchanged. No additional optimization policies.
