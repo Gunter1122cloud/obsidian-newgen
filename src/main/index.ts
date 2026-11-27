@@ -766,7 +766,7 @@ if (isPrimaryInstance) {
           void dialog.showMessageBox(ensureMainWindow(), {
             type: "info",
             title: "Server operation in progress",
-            message: "Finish the active server operation before quitting Obsidian."
+            message: "Finish the active server operation before quitting Obsidian.",
             detail: "Keep the application open so stop/restart backup work can complete safely.",
             buttons: ["OK"],
           });
