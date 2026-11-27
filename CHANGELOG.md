@@ -11,7 +11,8 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ### Added
 
-- Use both supplied rusted-iron textures in the desktop shell, navigation, server cards, dialogs, notifications and cinematic operation overlay; add motion-aware scene drift and radar/light-sweep effects.
+- Use both supplied rusted-iron textures as the visual foundation for the desktop shell, navigation, server cards, dialogs and notifications; add motion-aware scene drift and radar/light-sweep effects.
+- Extend the tactical command-deck material system across Server, Mods, Launch, INI, Backups, Logs and Settings with stronger texture visibility, brass structure and clearer telemetry surfaces.
 - Use the bundled real ASA map landscapes as server-card hero covers, with a dark title veil and restrained hover motion.
 - Remove YARK branding from ordinary UI labels and gallery demo content while preserving required GPL third-party attribution.
 - Rename the INI/profile reconciliation choices to plain file/profile language; keep the profile values behavior unchanged.

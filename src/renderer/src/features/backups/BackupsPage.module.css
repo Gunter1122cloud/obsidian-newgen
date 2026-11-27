@@ -378,3 +378,21 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* Backup policy and empty-state plates share the same field-worn metal surface. */
+:global([data-mantine-color-scheme="dark"]) .volumeCard,
+:global([data-mantine-color-scheme="dark"]) .kindSettings,
+:global([data-mantine-color-scheme="dark"]) .listEmpty {
+  border-color: rgba(190, 158, 96, 0.4);
+  background-color: rgba(12, 14, 15, 0.76);
+  background-image:
+    linear-gradient(145deg, rgba(18, 20, 20, 0.68), rgba(8, 10, 11, 0.82)),
+    url("../../assets/newgen/rusty-iron-02.webp");
+  background-size: cover, cover;
+  background-position: center, center;
+}
+
+:global([data-mantine-color-scheme="dark"]) .cleanupPreview {
+  border: 1px solid rgba(190, 158, 96, 0.2);
+  background-image: linear-gradient(145deg, rgba(190, 158, 96, 0.12), rgba(8, 10, 11, 0.78));
+}
