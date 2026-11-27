@@ -46,15 +46,16 @@ describe("ServerLaunchPanel", () => {
     } as typeof window.api;
   });
 
-  it("keeps manual passive IDs out of YARK's -mods= preview", () => {
+  it("shows normalized passive IDs in both effective launch lists", () => {
     const preview = buildLaunchPreviewParts({
       server: profile({ mods: ["123", "456"] }),
       structured: {},
       extraArgs: ["-passivemods=123 456"],
     });
 
-    expect(preview.yark).not.toContain("-mods=123,456");
-    expect(preview.raw).toContain("-passivemods=123 456");
+    expect(preview.yark).toContain("-mods=123,456");
+    expect(preview.yark).toContain("-passivemods=123,456");
+    expect(preview.raw).not.toContain("-passivemods=123 456");
   });
 
   it("renders common structured options and opens the catalog (#93)", async () => {

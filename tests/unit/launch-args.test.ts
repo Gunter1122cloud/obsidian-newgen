@@ -117,17 +117,15 @@ describe("buildLaunchArgs", () => {
     expect(args).toContain("-mods=111,333");
   });
 
-  it("emits passive mods only on -passivemods= (never duplicated on -mods=)", () => {
+  it("puts passive mods first in -mods= and also in -passivemods=", () => {
     const args = buildLaunchArgs(
       profile({
         mods: ["111", "222", "333"],
         passiveMods: ["222"],
       }),
     );
-    expect(args).toContain("-mods=111,333");
+    expect(args).toContain("-mods=222,111,333");
     expect(args).toContain("-passivemods=222");
-    const modsToken = args.find((a) => a.startsWith("-mods="))!;
-    expect(modsToken).not.toContain("222");
   });
 
   it("drops a passive ID that is also disabled", () => {
@@ -136,9 +134,9 @@ describe("buildLaunchArgs", () => {
     expect(args.some((a) => a.startsWith("-passivemods="))).toBe(false);
   });
 
-  it("excludes manual -passivemods= IDs from -mods= when the profile owns none", () => {
+  it("normalizes legacy manual passive IDs into both lists", () => {
     const args = buildLaunchArgs(profile({ mods: ["111", "222"], extraArgs: ["-passivemods=222"] }));
-    expect(args).toContain("-mods=111");
+    expect(args).toContain("-mods=222,111");
     expect(args).toContain("-passivemods=222");
   });
 
@@ -151,10 +149,10 @@ describe("buildLaunchArgs", () => {
       }),
     );
     expect(args.filter((a) => a.startsWith("-passivemods="))).toEqual(["-passivemods=222"]);
-    expect(args).toContain("-mods=111");
+    expect(args).toContain("-mods=222,111");
   });
 
-  it("does not emit -MapModID= or -mods= for a passive-linked official map mod", () => {
+  it("preserves linked official map identity in the argument builder", () => {
     const args = buildLaunchArgs(
       profile({
         map: "TheIsland_WP",
@@ -163,9 +161,34 @@ describe("buildLaunchArgs", () => {
         passiveMods: ["1460513"],
       }),
     );
-    expect(args.join(" ")).not.toContain("-MapModID=");
-    expect(args).toContain("-mods=947033");
+    expect(args).toContain("-MapModID=1460513");
+    expect(args).toContain("-mods=1460513,947033");
     expect(args).toContain("-passivemods=1460513");
+  });
+
+  it("keeps stable bucket order and deduplicates both mod arguments", () => {
+    const args = buildLaunchArgs(
+      profile({
+        mods: ["111", "877752", "222", "333", "877752", "444"],
+        passiveMods: ["333", "877752", "877752"],
+        extraArgs: ["-mods=999", "-passivemods=999"],
+      }),
+    );
+    expect(args.filter((a) => a.startsWith("-mods="))).toEqual(["-mods=877752,333,111,222,444"]);
+    expect(args.filter((a) => a.startsWith("-passivemods="))).toEqual(["-passivemods=877752,333"]);
+  });
+
+  it("cannot resurrect a removed or disabled mod through legacy raw tokens", () => {
+    const args = buildLaunchArgs(
+      profile({
+        mods: ["111", "222"],
+        disabledMods: ["222"],
+        passiveMods: ["877752"],
+        extraArgs: ["-mods=877752,222", "-passivemods=877752,222"],
+      }),
+    );
+    expect(args.filter((a) => a.startsWith("-mods="))).toEqual(["-mods=111"]);
+    expect(args.some((a) => a.startsWith("-passivemods="))).toBe(false);
   });
 
   it("adds cluster flags when clusterId and clusterDir are set", () => {

@@ -17,7 +17,8 @@ export function confirmRemoveServerMod(
     title: "Remove mod?",
     children: dangerConfirmBody(
       <>
-        Remove <strong>{row.name}</strong> from this server and discard its cached metadata?
+        Remove <strong>{row.name}</strong> from this server and discard its cached metadata? Downloaded files and world saves are not deleted by
+        this action. Back up the world before the next start without the mod.
       </>,
     ),
     confirmLabel: "Remove mod",
@@ -45,7 +46,8 @@ export function confirmRemoveDisabledMods(count: number, onConfirm: () => void |
     children: dangerConfirmBody(
       <>
         Remove <strong>{count}</strong> disabled {count === 1 ? "mod" : "mods"} from this server and discard their
-        cached metadata?
+        cached metadata? Downloaded files and world saves are not deleted by
+        this action. Back up the world before the next start without the mod.
       </>,
     ),
     confirmLabel: "Remove all disabled",
@@ -62,7 +64,8 @@ export function confirmRemoveSelectedMods(count: number, onConfirm: () => void |
     children: dangerConfirmBody(
       <>
         Remove <strong>{count}</strong> selected {count === 1 ? "mod" : "mods"} from this server and discard their
-        cached metadata?
+        cached metadata? Downloaded files and world saves are not deleted by
+        this action. Back up the world before the next start without the mod.
       </>,
     ),
     confirmLabel: "Remove selected",

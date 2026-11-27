@@ -388,7 +388,7 @@ export function parsePassiveModIds(args: readonly string[]): string[] {
 }
 
 /**
- * Split configured mods into `-mods=` (active) and `-passivemods=` (passive).
+ * Split configured mods into mutually exclusive active and passive buckets.
  * Passive implies enabled; a disabled ID can never be passive. Load order
  * follows the `mods` array for both buckets.
  */
@@ -398,13 +398,35 @@ export function resolveProfileModBuckets(profile: {
   passiveMods?: readonly string[];
 }): { active: string[]; passive: string[] } {
   const disabled = new Set(profile.disabledMods ?? []);
-  const enabled = profile.mods.filter((id) => !disabled.has(id));
+  const enabled = [...new Set(profile.mods.filter((id) => !disabled.has(id)))];
   const enabledSet = new Set(enabled);
   const passiveSet = new Set((profile.passiveMods ?? []).filter((id) => enabledSet.has(id)));
   return {
     active: enabled.filter((id) => !passiveSet.has(id)),
     passive: enabled.filter((id) => passiveSet.has(id)),
   };
+}
+
+/** True for either manager-owned mod-list token, including legacy raw overrides. */
+export function isManagedModListArg(arg: string): boolean {
+  return tokenStem(arg) === "mods" || isPassiveModsArg(arg);
+}
+
+/**
+ * ASA requires passive IDs at the front of -mods and also in -passivemods.
+ * Only configured, enabled IDs can launch. Legacy raw passive tokens are
+ * considered only when no enabled profile passive IDs exist.
+ */
+export function resolveLaunchModLists(
+  profile: Parameters<typeof resolveProfileModBuckets>[0],
+  trailingArgs: readonly string[],
+): { mods: string[]; passive: string[] } {
+  const buckets = resolveProfileModBuckets(profile);
+  const effective =
+    buckets.passive.length > 0
+      ? buckets
+      : resolveProfileModBuckets({ ...profile, passiveMods: parsePassiveModIds(trailingArgs) });
+  return { mods: [...effective.passive, ...effective.active], passive: effective.passive };
 }
 
 /**

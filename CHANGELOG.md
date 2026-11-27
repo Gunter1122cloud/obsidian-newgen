@@ -9,6 +9,8 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
+- Compose ASA passive mods first in `-mods` and once in `-passivemods`; share the same effective mod lists with Launch preview and prevent stale raw flags from relaunching removed mods.
+
 ### Added
 
 - Independent GitHub release packaging and optional direct CurseForge metadata access with a Windows user-encrypted local API key that survives app updates.

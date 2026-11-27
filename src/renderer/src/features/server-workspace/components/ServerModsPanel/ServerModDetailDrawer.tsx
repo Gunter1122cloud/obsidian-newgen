@@ -173,7 +173,7 @@ export function ServerModDetailDrawer(props: Props): ReactElement {
                   </Text>
                   <Text size="xs" c="dimmed">
                     {props.passive
-                      ? "Loads data only — no spawns. Sent on -passivemods=."
+                      ? "Loads data without spawns. Listed first in -mods= and also in -passivemods=."
                       : "Load data without spawns (cluster transfer)."}
                   </Text>
                 </div>
