@@ -593,9 +593,10 @@ export class MaintenanceRestartRuntime {
           this.abortWindowQuiet(state);
           return;
         }
-        const wipe = state.scheduledAtMs === null
-          ? policy.wipeEnabled
-          : this.nextScheduledOccurrence(policy, state.scheduledAtMs - 1)?.wipe === true;
+        const wipe =
+          state.scheduledAtMs === null
+            ? policy.wipeEnabled
+            : this.nextScheduledOccurrence(policy, state.scheduledAtMs - 1)?.wipe === true;
         await this.instances.restart(serverId);
         const atIso = new Date().toISOString();
         this.lastRestart.set(serverId, { atIso, ok: true });

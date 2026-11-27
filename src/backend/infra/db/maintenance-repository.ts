@@ -75,19 +75,22 @@ function parseAdditionalTimers(raw: string): NonNullable<MaintenancePolicy["addi
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
     const seen = new Set<string>();
-    return parsed.flatMap((item) => {
-      if (item === null || typeof item !== "object") return [];
-      const { timeLocal, enabled, wipeEnabled } = item as Record<string, unknown>;
-      if (
-        typeof timeLocal !== "string" ||
-        !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(timeLocal) ||
-        typeof enabled !== "boolean" ||
-        typeof wipeEnabled !== "boolean" ||
-        seen.has(timeLocal)
-      ) return [];
-      seen.add(timeLocal);
-      return [{ timeLocal, enabled, wipeEnabled }];
-    }).slice(0, 24);
+    return parsed
+      .flatMap((item) => {
+        if (item === null || typeof item !== "object") return [];
+        const { timeLocal, enabled, wipeEnabled } = item as Record<string, unknown>;
+        if (
+          typeof timeLocal !== "string" ||
+          !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(timeLocal) ||
+          typeof enabled !== "boolean" ||
+          typeof wipeEnabled !== "boolean" ||
+          seen.has(timeLocal)
+        )
+          return [];
+        seen.add(timeLocal);
+        return [{ timeLocal, enabled, wipeEnabled }];
+      })
+      .slice(0, 24);
   } catch {
     return [];
   }

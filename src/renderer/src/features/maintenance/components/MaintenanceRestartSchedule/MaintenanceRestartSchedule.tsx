@@ -145,9 +145,11 @@ export function MaintenanceRestartSchedule({
             disabled={disabled}
             onBlur={(event) => {
               const timeLocal = event.currentTarget.value;
-              if (!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(timeLocal) ||
-                  timeLocal === policy.restartTimeLocal ||
-                  timers.some((row, i) => i !== index && row.timeLocal === timeLocal)) {
+              if (
+                !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(timeLocal) ||
+                timeLocal === policy.restartTimeLocal ||
+                timers.some((row, i) => i !== index && row.timeLocal === timeLocal)
+              ) {
                 event.currentTarget.value = timer.timeLocal;
                 return;
               }
@@ -165,7 +167,12 @@ export function MaintenanceRestartSchedule({
               onPatchTimers(timers.map((row, i) => (i === index ? { ...row, wipeEnabled } : row)));
             }}
           />
-          <Button size="xs" variant="subtle" disabled={disabled} onClick={() => onPatchTimers(timers.filter((_, i) => i !== index))}>
+          <Button
+            size="xs"
+            variant="subtle"
+            disabled={disabled}
+            onClick={() => onPatchTimers(timers.filter((_, i) => i !== index))}
+          >
             Remove
           </Button>
         </Group>
