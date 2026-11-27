@@ -829,6 +829,10 @@ export interface MaintenancePolicy {
   restartDaysOfWeek: number[];
   /** `HH:mm` 24h local time. */
   restartTimeLocal: string;
+  /** Independent additional daily timers; absent for older profiles. */
+  additionalRestartTimers?: { timeLocal: string; enabled: boolean; wipeEnabled: boolean }[];
+  /** The original weekly/daily timer can be disabled independently of additional timers. */
+  primaryRestartEnabled?: boolean;
   wipeSaveWorldFirst: boolean;
   restartWarnings: MaintenanceJobWarnings;
   updateWarnings: MaintenanceJobWarnings;

@@ -1,4 +1,4 @@
-name: First NewGen Windows preview
+name: Verified NewGen Windows preview
 
 on:
   workflow_run:
@@ -14,8 +14,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  first-preview:
-    # Only a successful push CI on our main may queue the first preview.
+  release-preview:
+    # Only a successful push CI on our main may queue the requested preview.
     if: >-
       github.repository == 'Gunter1122cloud/obsidian-newgen' &&
       github.event.workflow_run.conclusion == 'success' &&
@@ -27,14 +27,14 @@ jobs:
       contents: write
       actions: write
     steps:
-      - name: Queue first verified preview release
+      - name: Queue verified 0.29.0 preview release
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           VERIFIED_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
           set -euo pipefail
-          TAG=v0.28.0
+          TAG=v0.29.0
           MAIN=$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq .commit.sha)
           if [ "$VERIFIED_SHA" != "$MAIN" ]; then
             echo "Verified CI is no longer for current main; skip."
@@ -42,12 +42,12 @@ jobs:
           fi
           VERSION=$(gh api "repos/$GITHUB_REPOSITORY/contents/package.json?ref=$VERIFIED_SHA" --jq .content | base64 -d | jq -r .version)
           if [ "v$VERSION" != "$TAG" ]; then
-            echo "This one-time automation is only for $TAG; skip."
+            echo "This release automation is only for $TAG; skip."
             exit 0
           fi
           RELEASE=$(gh api --paginate "repos/$GITHUB_REPOSITORY/releases" --jq ".[] | select(.tag_name == \"$TAG\") | .id")
           if [ -n "$RELEASE" ]; then
-            echo "First preview release already exists; skip."
+            echo "Preview release already exists; skip."
             exit 0
           fi
           TAG_SHA=$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/$TAG" --jq ".[] | select(.ref == \"refs/tags/$TAG\") | .object.sha")

@@ -17,12 +17,12 @@ export function summarizeExternalIniDiff(
 
 export function formatExternalIniChangeSummary(changedCount: number): string {
   if (changedCount <= 0) {
-    return "Another tool updated these files outside YARK (comments or formatting may differ).";
+    return "Another tool updated these files outside NewGen (comments or formatting may differ).";
   }
   if (changedCount === 1) {
-    return "Another tool changed 1 setting outside YARK.";
+    return "Another tool changed 1 setting outside NewGen.";
   }
-  return `Another tool changed ${changedCount} settings outside YARK.`;
+  return `Another tool changed ${changedCount} settings outside NewGen.`;
 }
 
 export function formatIniDiffChangeLabel(change: IniDiffEntry["change"]): string {

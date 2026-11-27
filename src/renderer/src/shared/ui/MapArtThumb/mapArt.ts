@@ -32,7 +32,7 @@ export function resolveMapArtUrl(mapId: string): string | null {
   if (key.length === 0) {
     return null;
   }
-  if (!(key in MAP_ART_BY_ID)) {
+  if (!Object.hasOwn(MAP_ART_BY_ID, key)) {
     return null;
   }
   return MAP_ART_BY_ID[key as KnownMapId];

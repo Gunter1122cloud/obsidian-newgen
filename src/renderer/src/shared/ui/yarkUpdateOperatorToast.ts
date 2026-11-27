@@ -14,13 +14,13 @@ export function yarkUpdateToastCopy(status: AppUpdateStatus): { title: string; m
   if (version.length === 0) return null;
   if (status.phase === "available") {
     return {
-      title: "YARK update available",
+      title: "Obsidian update available",
       message: `v${version} is ready to download. Open Settings → About (or click the version in the sidebar).`,
     };
   }
   if (status.phase === "ready") {
     return {
-      title: "YARK update ready to install",
+      title: "Obsidian update ready to install",
       message: `v${version} is downloaded. Open Settings → About to restart and install.`,
     };
   }

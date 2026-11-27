@@ -36,8 +36,8 @@ async function run() {
     const h1 = await page.locator("h1").first().textContent();
     assert.ok(h1 !== null, "Main UI title was not found");
     assert.ok(
-      h1.includes("Servers") || h1.includes("YARK"),
-      `Unexpected title. Expected to include 'Servers' or 'YARK', got: ${h1}`,
+      h1.includes("Servers") || h1.includes("Obsidian"),
+      `Unexpected title. Expected to include 'Servers' or 'Obsidian', got: ${h1}`,
     );
     assert.equal(
       await page.getByText("Monitor and manage all your ARK servers").count(),

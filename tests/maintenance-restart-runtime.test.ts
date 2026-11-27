@@ -259,9 +259,11 @@ describe("MaintenanceRestartRuntime", () => {
       });
 
       await runtime.runRestartNow("s1");
-      // Drain last-minute ticks through T0 + wipe settle (20s) + RCON probes.
+      // Wait for restart and verify no wipe before the ten-minute settle period.
       await vi.advanceTimersByTimeAsync(12_000);
-      await vi.advanceTimersByTimeAsync(25_000);
+      await vi.advanceTimersByTimeAsync(590_000);
+      expect(instances.execRcon).not.toHaveBeenCalledWith("s1", "DestroyWildDinos", { recordEvent: false });
+      await vi.advanceTimersByTimeAsync(10_000);
 
       expect(instances.restart).toHaveBeenCalled();
       const cmds = instances.execRcon.mock.calls.map((c: unknown[]) => String(c[1] ?? ""));
@@ -299,6 +301,29 @@ describe("MaintenanceRestartRuntime", () => {
       const status = runtime.enrichStatus(policy);
       expect(status.countdownPhase).not.toBe("idle");
       expect(status.cancelable).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("runs an additional daily timer without the primary timer's wipe", async () => {
+    vi.useFakeTimers();
+    try {
+      vi.setSystemTime(new Date(2026, 5, 1, 14, 59, 30));
+      const policy = {
+        ...defaultMaintenancePolicy("s1", "t"),
+        restartEnabled: true,
+        primaryRestartEnabled: false,
+        wipeEnabled: true,
+        additionalRestartTimers: [{ timeLocal: "15:00", enabled: true, wipeEnabled: false }],
+        restartWarnings: { preset: "none" as const, customOffsets: [], lastMinuteChat: false, template: "Restart" },
+      };
+      const { runtime, instances } = makeRuntime(policy);
+      await runtime.runScheduledCycle();
+      await vi.advanceTimersByTimeAsync(31_000);
+      expect(instances.restart).toHaveBeenCalledTimes(1);
+      expect(instances.execRcon).not.toHaveBeenCalledWith("s1", "DestroyWildDinos", { recordEvent: false });
+      expect(runtime.enrichStatus(policy).countdownPhase).toBe("idle");
     } finally {
       vi.useRealTimers();
     }

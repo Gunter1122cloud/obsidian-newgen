@@ -19,6 +19,8 @@ interface PolicyRow {
   restart_cadence: string;
   restart_day_of_week: number;
   restart_time_local: string;
+  additional_restart_timers_json: string;
+  primary_restart_enabled: number;
   restart_days_of_week_json: string | null;
   wipe_save_world_first: number;
   restart_warnings_json: string;
@@ -68,6 +70,32 @@ function parseRestartDaysOfWeek(row: PolicyRow): number[] {
   return normalizeRestartDaysOfWeek([row.restart_day_of_week]);
 }
 
+function parseAdditionalTimers(raw: string): NonNullable<MaintenancePolicy["additionalRestartTimers"]> {
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    const seen = new Set<string>();
+    return parsed
+      .flatMap((item) => {
+        if (item === null || typeof item !== "object") return [];
+        const { timeLocal, enabled, wipeEnabled } = item as Record<string, unknown>;
+        if (
+          typeof timeLocal !== "string" ||
+          !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(timeLocal) ||
+          typeof enabled !== "boolean" ||
+          typeof wipeEnabled !== "boolean" ||
+          seen.has(timeLocal)
+        )
+          return [];
+        seen.add(timeLocal);
+        return [{ timeLocal, enabled, wipeEnabled }];
+      })
+      .slice(0, 24);
+  } catch {
+    return [];
+  }
+}
+
 function rowToPolicy(row: PolicyRow): MaintenancePolicy {
   return {
     serverId: row.server_id,
@@ -80,6 +108,8 @@ function rowToPolicy(row: PolicyRow): MaintenancePolicy {
     ),
     restartDaysOfWeek: parseRestartDaysOfWeek(row),
     restartTimeLocal: /^\d{2}:\d{2}$/.test(row.restart_time_local) ? row.restart_time_local : "04:00",
+    primaryRestartEnabled: row.primary_restart_enabled !== 0,
+    additionalRestartTimers: parseAdditionalTimers(row.additional_restart_timers_json),
     wipeSaveWorldFirst: row.wipe_save_world_first === 1,
     restartWarnings: parseWarnings(row.restart_warnings_json, DEFAULT_RESTART_WARNINGS),
     updateWarnings: parseWarnings(row.update_warnings_json, DEFAULT_UPDATE_WARNINGS),
@@ -151,9 +181,9 @@ export class MaintenanceRepository {
           manual_restart_warnings,
           manual_restart_warning_json,
           restart_cadence, restart_day_of_week, restart_time_local,
-          restart_days_of_week_json,
+          restart_days_of_week_json, primary_restart_enabled, additional_restart_timers_json,
           wipe_save_world_first, restart_warnings_json, update_warnings_json, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(server_id) DO UPDATE SET
           restart_enabled = excluded.restart_enabled,
           wipe_enabled = excluded.wipe_enabled,
@@ -164,6 +194,8 @@ export class MaintenanceRepository {
           restart_day_of_week = excluded.restart_day_of_week,
           restart_time_local = excluded.restart_time_local,
           restart_days_of_week_json = excluded.restart_days_of_week_json,
+          primary_restart_enabled = excluded.primary_restart_enabled,
+          additional_restart_timers_json = excluded.additional_restart_timers_json,
           wipe_save_world_first = excluded.wipe_save_world_first,
           restart_warnings_json = excluded.restart_warnings_json,
           update_warnings_json = excluded.update_warnings_json,
@@ -180,6 +212,8 @@ export class MaintenanceRepository {
         legacyDay,
         time,
         daysJson,
+        input.primaryRestartEnabled === false ? 0 : 1,
+        JSON.stringify(parseAdditionalTimers(JSON.stringify(input.additionalRestartTimers ?? []))),
         input.wipeSaveWorldFirst ? 1 : 0,
         JSON.stringify(input.restartWarnings),
         JSON.stringify(input.updateWarnings),

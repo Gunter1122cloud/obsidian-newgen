@@ -27,7 +27,7 @@ export interface AppUpdateSafetyGate {
   /** Returns a block reason when install must not quit the app. */
   evaluate(): AppUpdateSafetyReason;
   /** Mark the real quit path so close-to-tray cannot swallow quitAndInstall. */
-  prepareQuit?: () => void;
+  prepareQuit?: () => void | Promise<void>;
 }
 
 type StatusListener = (status: AppUpdateStatus) => void;
@@ -248,7 +248,7 @@ export class AppUpdateService {
     }
 
     // isSilent=false, isForceRunAfter=true — relaunch after NSIS finishes.
-    this.safety.prepareQuit?.();
+    await this.safety.prepareQuit?.();
     autoUpdater.quitAndInstall(false, true);
   }
 

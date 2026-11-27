@@ -9,7 +9,22 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
+- Integrated release verification for NewGen 0.29.0.
+
+## [0.29.0] - 2026-11-27
+
 ### Added
+
+- Use both supplied rusted-iron textures as the visual foundation for the desktop shell, navigation, server cards, dialogs and notifications; add motion-aware scene drift and radar/light-sweep effects.
+- Extend the tactical command-deck material system across Server, Mods, Launch, INI, Backups, Logs and Settings with stronger texture visibility, brass structure and clearer telemetry surfaces.
+- Use the bundled real ASA map landscapes as server-card hero covers, with a dark title veil and restrained hover motion.
+- Remove YARK branding from ordinary UI labels and gallery demo content while preserving required GPL third-party attribution.
+- Rename the INI/profile reconciliation choices to plain file/profile language; keep the profile values behavior unchanged.
+- Compose ASA passive mods first in `-mods` and once in `-passivemods`; share the same effective mod lists with Launch preview and prevent stale raw flags from relaunching removed mods.
+- Add independent per-map daily restart timers with individual enable and wild wipe options; reuse the existing restart runtime and preserve existing weekly schedules.
+- Wait ten minutes after server and RCON readiness before maintenance wild wipe, skip wipe if the server process changed, and scope completed restart occurrences to each map.
+- Preserve verified ASA Loader and game process identities across manager restart; recover a live Loader checkpoint through its verified ASA child and fix Windows child discovery.
+- Keep managed ASA servers running on desktop quit or manager self-update using the existing process checkpoint and reattach path, with one quit dialog offering Leave, Stop, and Cancel.
 
 - Obsidian Command NewGen's independent black-and-gold desktop identity, crystal logo and splash, while preserving the existing server list, live metrics, and original UI actions.
 

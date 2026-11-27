@@ -15,8 +15,8 @@ export function SettingsAboutLegalSection(): ReactElement {
         Third-party notices
       </Title>
       <Text size="sm" c="dimmed">
-        Obsidian Command NewGen is a GPL-3.0-only fork of YARK by gabomarin and contributors. Original copyright,
-        license and third-party notices are retained.
+        Obsidian Command NewGen preserves its GPL-3.0-only license, original copyright and all required third-party
+        attribution. Open the notices to review the full legal information.
       </Text>
       <Group gap="xs" align="center">
         <Anchor

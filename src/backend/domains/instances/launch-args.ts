@@ -5,10 +5,9 @@ import { linkedOfficialMapModLaunchId } from "@shared/asa/map-identity";
 import {
   argsIncludeServerPlatform,
   buildStructuredLaunchArgList,
-  isPassiveModsArg,
+  isManagedModListArg,
   isWinLiveMaxPlayersArg,
-  parsePassiveModIds,
-  resolveProfileModBuckets,
+  resolveLaunchModLists,
   YARK_DEFAULT_SERVER_PLATFORM_ARG,
   yarkClusterArgs,
   yarkModsArg,
@@ -130,29 +129,17 @@ export function buildLaunchArgs(profile: ServerProfile): string[] {
     args.push(YARK_DEFAULT_SERVER_PLATFORM_ARG);
   }
 
-  const { active: profileActive, passive: profilePassive } = resolveProfileModBuckets(profile);
-  // Mods tab owns `-passivemods=` whenever the profile declares passive IDs:
-  // strip manual tokens so a legacy structured/raw value cannot duplicate them.
-  const ownsPassive = profilePassive.length > 0;
-  if (ownsPassive) {
-    trailingArgs = trailingArgs.filter((arg) => !isPassiveModsArg(arg));
-  }
-  // Dedupe either direction: a manual passive ID must never also land on `-mods=`.
-  const passiveIds = new Set([...profilePassive, ...(ownsPassive ? [] : parsePassiveModIds(trailingArgs))]);
-  const activeMods = profileActive.filter((id) => !passiveIds.has(id));
+  const { mods, passive } = resolveLaunchModLists(profile, trailingArgs);
+  trailingArgs = trailingArgs.filter((arg) => !isManagedModListArg(arg));
   const mapModLaunchId = linkedOfficialMapModLaunchId({
     map: profile.map,
     mapModId: profile.mapModId,
   });
-  if (mapModLaunchId !== null && activeMods.includes(mapModLaunchId)) {
+  if (mapModLaunchId !== null && mods.includes(mapModLaunchId)) {
     args.push(`-MapModID=${mapModLaunchId}`);
   }
-  if (activeMods.length > 0) {
-    args.push(yarkModsArg(activeMods));
-  }
-  if (ownsPassive) {
-    args.push(yarkPassiveModsArg(profilePassive));
-  }
+  if (mods.length > 0) args.push(yarkModsArg(mods));
+  if (passive.length > 0) args.push(yarkPassiveModsArg(passive));
   if (profile.clusterId !== null && profile.clusterDir !== null) {
     args.push(...yarkClusterArgs(profile.clusterId, profile.clusterDir));
   }

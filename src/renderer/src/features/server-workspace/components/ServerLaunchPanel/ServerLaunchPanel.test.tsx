@@ -46,15 +46,16 @@ describe("ServerLaunchPanel", () => {
     } as typeof window.api;
   });
 
-  it("keeps manual passive IDs out of YARK's -mods= preview", () => {
+  it("shows normalized passive IDs in both effective launch lists", () => {
     const preview = buildLaunchPreviewParts({
       server: profile({ mods: ["123", "456"] }),
       structured: {},
       extraArgs: ["-passivemods=123 456"],
     });
 
-    expect(preview.yark).not.toContain("-mods=123,456");
-    expect(preview.raw).toContain("-passivemods=123 456");
+    expect(preview.yark).toContain("-mods=123,456");
+    expect(preview.yark).toContain("-passivemods=123,456");
+    expect(preview.raw).not.toContain("-passivemods=123 456");
   });
 
   it("renders common structured options and opens the catalog (#93)", async () => {
@@ -78,7 +79,7 @@ describe("ServerLaunchPanel", () => {
     expect(await screen.findByRole("dialog", { name: /asa launch-options catalog/i })).toBeInTheDocument();
   });
 
-  it("shows managed-in copy for YARK-owned catalog rows (#381)", async () => {
+  it("shows managed-in copy for NewGen-managed catalog rows (#381)", async () => {
     const user = userEvent.setup();
 
     render(
@@ -89,13 +90,15 @@ describe("ServerLaunchPanel", () => {
 
     await user.click(screen.getByRole("button", { name: /browse asa catalog/i }));
     await screen.findByRole("dialog", { name: /asa launch-options catalog/i });
-    await user.click(screen.getByRole("button", { name: /yark-owned filter/i }));
+    await user.click(screen.getByRole("button", { name: /NewGen-managed filter/i }));
 
     expect(
-      await screen.findAllByText(/YARK already sets this from Server settings\. Do not add it in Extra arguments\./),
+      await screen.findAllByText(
+        /NewGen already manages this from Server settings\. Do not add it in Extra arguments\./,
+      ),
     ).not.toHaveLength(0);
     expect(
-      screen.getByText(/YARK already sets this from Mods\. Do not add it in Extra arguments\./),
+      screen.getByText(/NewGen already manages this from Mods\. Do not add it in Extra arguments\./),
     ).toBeInTheDocument();
     expect(screen.queryByText(/extraArgs:/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/lifecycle\/profile argument/i)).not.toBeInTheDocument();
@@ -246,7 +249,7 @@ describe("ServerLaunchPanel", () => {
     );
 
     const legend = screen.getByTestId("launch-preview-legend");
-    expect(within(legend).getByText("YARK-owned").className).toMatch(/previewYark/);
+    expect(within(legend).getByText("NewGen-managed").className).toMatch(/previewYark/);
     expect(within(legend).getByText("Structured").className).toMatch(/previewStructured/);
     expect(within(legend).getByText("Caution").className).toMatch(/previewCaution/);
     expect(within(legend).getByText("Raw").className).toMatch(/previewRaw/);

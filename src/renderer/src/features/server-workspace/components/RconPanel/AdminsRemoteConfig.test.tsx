@@ -60,7 +60,7 @@ describe("AdminsRemoteConfig", () => {
     const user = userEvent.setup();
     const onUrlChange = setup();
 
-    await user.click(await screen.findByRole("button", { name: "Choose a YARK Hosted Resource" }));
+    await user.click(await screen.findByRole("button", { name: "Choose a hosted resource" }));
     await user.click(await screen.findByRole("option", { name: /Admins allowlist/ }));
 
     expect(onUrlChange).toHaveBeenCalledWith(ADMIN_URL);

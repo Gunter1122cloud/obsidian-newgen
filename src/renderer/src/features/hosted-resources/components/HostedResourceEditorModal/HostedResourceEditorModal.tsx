@@ -65,7 +65,7 @@ export function HostedResourceEditorModal(props: Props): ReactElement {
           <TextInput
             label="Display name"
             placeholder="Admins allowlist"
-            description="The name shown for this resource in YARK; it is not part of the URL."
+            description="The name shown for this resource in Obsidian Command; it is not part of the URL."
             value={draft.displayName}
             onChange={(event) => props.onChange({ displayName: event.currentTarget.value })}
             maxLength={HOSTED_RESOURCES_MAX_DISPLAY_NAME_LENGTH}
@@ -133,7 +133,7 @@ export function HostedResourceEditorModal(props: Props): ReactElement {
           <Textarea
             label="Notes"
             placeholder="e.g. Shared admin list for the PvE cluster"
-            description="Optional notes, visible only in YARK."
+            description="Optional notes, visible only in Obsidian Command."
             value={draft.notes}
             onChange={(event) => props.onChange({ notes: event.currentTarget.value })}
             maxLength={HOSTED_RESOURCES_MAX_NOTES_LENGTH}

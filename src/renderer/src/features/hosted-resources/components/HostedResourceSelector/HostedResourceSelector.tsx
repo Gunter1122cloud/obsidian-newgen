@@ -71,7 +71,7 @@ export function HostedResourceSelector(props: Props): ReactElement {
           <Combobox.Target withExpandedAttribute>
             <InputBase
               label={props.label === null ? undefined : (props.label ?? props.consumer.setting)}
-              description={props.description ?? "Type a URL or select a YARK Hosted Resource."}
+              description={props.description ?? "Type a URL or select a hosted resource."}
               size={props.size}
               disabled={props.disabled}
               value={props.value}
@@ -88,7 +88,7 @@ export function HostedResourceSelector(props: Props): ReactElement {
               rightSectionWidth={92}
               rightSectionPointerEvents="all"
               rightSection={
-                <Tooltip label="Choose a YARK Hosted Resource" withArrow openDelay={400}>
+                <Tooltip label="Choose a hosted resource" withArrow openDelay={400}>
                   <Button
                     size="compact-xs"
                     variant="default"
@@ -99,7 +99,7 @@ export function HostedResourceSelector(props: Props): ReactElement {
                     rightSection={<CaretDown size={10} weight="bold" />}
                     disabled={props.disabled}
                     onClick={() => combobox.toggleDropdown()}
-                    aria-label="Choose a YARK Hosted Resource"
+                    aria-label="Choose a hosted resource"
                   >
                     Choose
                   </Button>

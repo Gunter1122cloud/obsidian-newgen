@@ -77,7 +77,7 @@ interface HostedResourcesSettingsStore {
 interface HostedResourceReferenceSource {
   serverId: string;
   serverName: string;
-  /** GameUserSettings.ini text scanned for YARK resource URLs. */
+  /** GameUserSettings.ini text scanned for hosted-resource URLs. */
   text: string;
   /** Effective launch arguments; a consumer can take its URL from a flag as well. */
   launchArgs?: readonly string[];
@@ -526,7 +526,7 @@ export class HostedResourcesService {
         this.lastError = "Another process owns the port; serving stopped.";
         return { ok: false, message: this.lastError };
       }
-      return { ok: true, message: `Served by YARK on ${state.bindHost}.` };
+      return { ok: true, message: `Served by Obsidian Command on ${state.bindHost}.` };
     } catch (error) {
       return {
         ok: false,
@@ -625,7 +625,7 @@ export class HostedResourcesService {
       } else if (resource.publishedRevisionId === null) {
         status = "unpublished";
       } else if (found.parsed.port !== port) {
-        // A portless URL means port 80, which is never YARK's port: `null !== port`
+        // A portless URL means port 80, which is never this manager's port: `null !== port`
         // correctly reports the stale address rather than guessing a scheme default.
         status = "stale-port";
       }

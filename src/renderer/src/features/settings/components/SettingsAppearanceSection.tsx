@@ -180,12 +180,12 @@ export function SettingsAppearanceSection(props: Props): ReactElement {
         <div className={classes.settingRow}>
           <div className={classes.settingCopy}>
             <Text size="sm" fw={600}>
-              {visual.text("Background image", "Háttérkép")}
+              {visual.text("Industrial metal background", "Ipari fémháttér")}
             </Text>
             <Text size="xs" c="dimmed" mt={2}>
               {visual.text(
-                "Show the cinematic scene behind the dark interface. Off leaves a flat canvas.",
-                "Filmszerű háttér a sötét felület mögött. Kikapcsolva egyszínű háttér.",
+                "Use the two supplied rusted-iron textures across the shell, navigation and command surfaces. Off leaves a flat canvas.",
+                "A két megadott rozsdás fémtextúra jelenik meg a teljes háttéren, a navigáción és a műveleti felületeken. Kikapcsolva egyszínű háttér.",
               )}
             </Text>
           </div>

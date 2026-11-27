@@ -22,7 +22,7 @@ export interface ModRow {
   url: string | null;
   configured: boolean;
   enabled: boolean;
-  /** Enabled + marked passive: emitted on `-passivemods=` only. */
+  /** Enabled + marked passive: emitted first on `-mods=` and also on `-passivemods=`. */
   passive: boolean;
   /** No CurseForge metadata cache yet (#698 / import without names). */
   noPage: boolean;
