@@ -535,7 +535,11 @@ export class ProcessManager extends EventEmitter {
         return;
       }
       const loaderIdentity = await verifiedLoaderIdentity(
-        managed.installDir, live, managed.loaderPid, this.queryOsIdentity, managed.loaderIdentity,
+        managed.installDir,
+        live,
+        managed.loaderPid,
+        this.queryOsIdentity,
+        managed.loaderIdentity,
       );
       if (this.processes.get(serverId) !== managed || managed.child.pid !== pid) return;
       if (loaderIdentity !== undefined) managed.loaderIdentity = loaderIdentity;
@@ -575,9 +579,11 @@ export class ProcessManager extends EventEmitter {
     const liveLoader = loader === undefined ? null : await this.queryOsIdentity(loader.pid);
     if (
       process.platform === "win32" &&
-      loader !== undefined && liveLoader !== null &&
+      loader !== undefined &&
+      liveLoader !== null &&
       liveLoader.osCreationTime === loader.osCreationTime &&
-      liveLoader.executablePath?.replace(/\\/g, "/").toLowerCase() === loader.executablePath.replace(/\\/g, "/").toLowerCase() &&
+      liveLoader.executablePath?.replace(/\\/g, "/").toLowerCase() ===
+        loader.executablePath.replace(/\\/g, "/").toLowerCase() &&
       (await killWinProcessTreeAsync(loader.pid))
     ) {
       return;

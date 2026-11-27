@@ -212,9 +212,12 @@ function coerceLeaveIdentity(value: unknown): LeftRunningProcessIdentity | null 
   const loader = row.loaderIdentity as LeftRunningProcessIdentity["loaderIdentity"] | undefined;
   const loaderIdentity =
     loader != null &&
-    Number.isInteger(loader.pid) && loader.pid > 0 &&
-    typeof loader.executablePath === "string" && loader.executablePath.length > 0 &&
-    typeof loader.osCreationTime === "string" && loader.osCreationTime.length > 0
+    Number.isInteger(loader.pid) &&
+    loader.pid > 0 &&
+    typeof loader.executablePath === "string" &&
+    loader.executablePath.length > 0 &&
+    typeof loader.osCreationTime === "string" &&
+    loader.osCreationTime.length > 0
       ? loader
       : undefined;
   return {

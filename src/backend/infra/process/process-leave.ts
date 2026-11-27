@@ -36,10 +36,14 @@ export async function verifiedLoaderIdentity(
   if (pid === undefined || pid === null || pid <= 0) return undefined;
   const live = isLoader ? game : await queryOs(pid);
   if (
-    live === null || live.pid !== pid || !samePath(live.executablePath, expected) || !live.osCreationTime ||
+    live === null ||
+    live.pid !== pid ||
+    !samePath(live.executablePath, expected) ||
+    !live.osCreationTime ||
     (previous !== undefined && (previous.pid !== pid || previous.osCreationTime !== live.osCreationTime)) ||
     (!isLoader && game?.parentPid !== pid)
-  ) return undefined;
+  )
+    return undefined;
   return { pid, executablePath: expected, osCreationTime: live.osCreationTime };
 }
 
@@ -103,7 +107,11 @@ export async function collectLeaveIdentities(
     }
 
     const loaderIdentity = await verifiedLoaderIdentity(
-      managed.installDir, live, managed.loaderPid, queryOs, managed.loaderIdentity,
+      managed.installDir,
+      live,
+      managed.loaderPid,
+      queryOs,
+      managed.loaderIdentity,
     );
     records.push({
       schemaVersion: LEFT_RUNNING_SCHEMA_VERSION,
@@ -213,14 +221,29 @@ export async function reattachManagedProcess(
     const pid = await findWindowsChildProcessByName(record.pid, "ArkAscendedServer.exe");
     const candidate = pid === null ? null : await queryOs(pid);
     const expected = serverExe(record.installDir, "ArkAscendedServer.exe");
-    if (candidate === null || candidate.parentPid !== record.pid || !samePath(candidate.executablePath, expected) || !candidate.osCreationTime) {
+    if (
+      candidate === null ||
+      candidate.parentPid !== record.pid ||
+      !samePath(candidate.executablePath, expected) ||
+      !candidate.osCreationTime
+    ) {
       throw new Error("ASA Loader is present but the game child is not yet verified");
     }
-    gameRecord = { ...record, pid: candidate.pid, executablePath: expected, osExecutablePath: expected, osCreationTime: candidate.osCreationTime };
+    gameRecord = {
+      ...record,
+      pid: candidate.pid,
+      executablePath: expected,
+      osExecutablePath: expected,
+      osCreationTime: candidate.osCreationTime,
+    };
     gameLive = candidate;
   }
   const loaderIdentity = await verifiedLoaderIdentity(
-    record.installDir, gameLive, record.loaderIdentity?.pid, queryOs, record.loaderIdentity,
+    record.installDir,
+    gameLive,
+    record.loaderIdentity?.pid,
+    queryOs,
+    record.loaderIdentity,
   );
   const child = host.createAdoptedChild(gameRecord.pid);
   const runtimePorts = record.runtimePorts ?? {
