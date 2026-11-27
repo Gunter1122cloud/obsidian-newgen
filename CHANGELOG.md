@@ -9,6 +9,12 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
+- Verify the GitHub-only 0.29.1 release.
+
+## [0.29.1] - 2026-11-27
+
+### Fixed
+
 - Remove inherited Cloudflare deployment; build website artifacts on GitHub only and keep desktop updates on NewGen GitHub Releases.
 
 - Integrated release verification for NewGen 0.29.0.
