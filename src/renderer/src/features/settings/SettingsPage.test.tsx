@@ -37,6 +37,8 @@ const readyStatus: SteamCmdStatus = {
 function stubSettingsApi(overrides: Record<string, unknown> = {}): void {
   vi.stubGlobal("api", {
     listAppDataFolders: vi.fn().mockResolvedValue({ ok: true, data: [] }),
+    getOptimizeRamBeforeStart: vi.fn().mockResolvedValue({ ok: true, data: false }),
+    setOptimizeRamBeforeStart: vi.fn().mockImplementation(async (enabled) => ({ ok: true, data: enabled })),
     openAppDataFolder: vi.fn(),
     pickPath: vi.fn(),
     getDesktopShellPreferences: vi.fn().mockResolvedValue({
@@ -734,6 +736,17 @@ describe("SettingsPage", () => {
       }),
     );
     expect(onOpenNativeTerminalOnStartChange).toHaveBeenCalledWith(true);
+  });
+
+  it("persists the single WGS RAM optimization switch", async () => {
+    const user = userEvent.setup();
+    renderSettings();
+    await openCategory(user, "Profiles");
+    const toggle = screen.getByRole("switch", { name: "Optimize system RAM before starting a server" });
+    expect(toggle).not.toBeChecked();
+    await user.click(toggle);
+    await waitFor(() => expect(toggle).toBeChecked());
+    expect(window.api.setOptimizeRamBeforeStart).toHaveBeenCalledWith(true);
   });
 
   it("prevents conflicting SteamCMD actions while installation is active", async () => {

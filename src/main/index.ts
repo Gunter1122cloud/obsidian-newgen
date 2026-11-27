@@ -11,6 +11,8 @@ import {
 import { BackupRepository } from "../backend/infra/db/backup-repository";
 import { ServerRepository } from "../backend/infra/db/server-repository";
 import { ProcessManager } from "../backend/infra/process/process-manager";
+import { spawnAsaProcess } from "../backend/infra/process/process-spawn";
+import { optimizeRamBeforeStart } from "../backend/infra/process/windows-ram-optimization";
 import { startDiscordControl } from "./discord-control";
 import { bootstrapBackgroundFromStored } from "../shared/app-chrome";
 import { APPEARANCE_SETTINGS_KEY } from "../shared/settings/appearance";
@@ -434,6 +436,10 @@ if (isPrimaryInstance) {
     const maintenanceRepo = new MaintenanceRepository(db);
     const crashRecoveryRepo = new CrashRecoveryRepository(db);
     const processManager = new ProcessManager({
+      spawnProcess: (...args) => {
+        if (settings.get("optimizeRamBeforeStart") === "1") optimizeRamBeforeStart();
+        return spawnAsaProcess(...args);
+      },
       onProcessCheckpoint: (record) => upsertLeftRunningProcess(settings, record),
       onProcessCheckpointCleared: (serverId) => removeLeftRunningProcess(settings, serverId),
       knownSecrets: () => collectKnownSecrets(repo.list()),

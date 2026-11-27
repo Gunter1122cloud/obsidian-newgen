@@ -87,3 +87,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## NewGen technical adaptation
+
+NewGen is Electron/TypeScript, not .NET. The original C# body executes via the built-in Windows PowerShell immediately before the existing process factory launches a server. The GC call therefore collects the helper's .NET heap, not the Electron manager's heap. The global EmptyWorkingSet loop and default-off behavior are unchanged. No additional optimization policies.

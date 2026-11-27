@@ -688,6 +688,14 @@ export function registerIpcHandlers(
     return appearance;
   });
 
+  handleValidated(IPC.appGetOptimizeRamBeforeStart, ipcArgSchemas[IPC.appGetOptimizeRamBeforeStart], (): boolean => {
+    return settings.get("optimizeRamBeforeStart") === "1";
+  });
+  handleValidated(IPC.appSetOptimizeRamBeforeStart, ipcArgSchemas[IPC.appSetOptimizeRamBeforeStart], ([enabled]): boolean => {
+    settings.set("optimizeRamBeforeStart", enabled ? "1" : "0");
+    return enabled;
+  });
+
   handleValidated(IPC.appGetOpenNativeConsole, ipcArgSchemas[IPC.appGetOpenNativeConsole], (): boolean | null => {
     return parseStoredOpenNativeConsole(settings.get(OPEN_NATIVE_CONSOLE_SETTING_KEY));
   });

@@ -129,3 +129,34 @@ Wildcard and related rights holders. See [Trademarks](#trademarks) below.
 ARK: Survival Ascended, map names, and related marks are trademarks of their
 respective owners. YARK is an independent community project and is not
 affiliated with or endorsed by Studio Wildcard. See [README.md](README.md).
+
+
+---
+
+## WGS RAM optimization — [MadBee71/WGS](https://github.com/MadBee71/WGS)
+
+Original `WGS/Services/ServerManagerService.cs` C# optimizer, hosted via Windows PowerShell in NewGen. The .NET GC runs in the helper, not in Electron.
+
+```text
+MIT License
+
+Copyright (c) 2025 Windows Game Server Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```

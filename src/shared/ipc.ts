@@ -160,6 +160,8 @@ export const IPC = {
   appGetPublicIp: "app:get-public-ip",
   appGetAppearance: "app:get-appearance",
   appSetAppearance: "app:set-appearance",
+  appGetOptimizeRamBeforeStart: "app:get-optimize-ram-before-start",
+  appSetOptimizeRamBeforeStart: "app:set-optimize-ram-before-start",
   appGetOpenNativeConsole: "app:get-open-native-console",
   appSetOpenNativeConsole: "app:set-open-native-console",
   appGetLastSeenChangelogVersion: "app:get-last-seen-changelog-version",
@@ -604,6 +606,8 @@ export interface RendererApi {
   setAppearance(settings: AppearanceSettings): Promise<IpcResult<AppearanceSettings>>;
   /** `null` when unset in `app_settings` (caller may migrate / apply default). */
   getOpenNativeConsole(): Promise<IpcResult<boolean | null>>;
+  getOptimizeRamBeforeStart(): Promise<IpcResult<boolean>>;
+  setOptimizeRamBeforeStart(enabled: boolean): Promise<IpcResult<boolean>>;
   setOpenNativeConsole(enabled: boolean): Promise<IpcResult<boolean>>;
   /** `null` when the operator has not dismissed What's new yet. */
   getLastSeenChangelogVersion(): Promise<IpcResult<string | null>>;
