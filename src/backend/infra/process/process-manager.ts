@@ -21,6 +21,7 @@ import {
   detachAfterLeavePersist as detachAfterLeavePersistForHost,
   detachForLeave as detachForLeaveForHost,
   reattachManagedProcess,
+  verifiedLoaderIdentity,
   type ProcessLeaveHost,
 } from "./process-leave";
 import {
@@ -533,6 +534,11 @@ export class ProcessManager extends EventEmitter {
         );
         return;
       }
+      const loaderIdentity = await verifiedLoaderIdentity(
+        managed.installDir, live, managed.loaderPid, this.queryOsIdentity, managed.loaderIdentity,
+      );
+      if (this.processes.get(serverId) !== managed || managed.child.pid !== pid) return;
+      if (loaderIdentity !== undefined) managed.loaderIdentity = loaderIdentity;
       this.onProcessCheckpoint({
         schemaVersion: LEFT_RUNNING_SCHEMA_VERSION,
         serverId,
@@ -543,6 +549,7 @@ export class ProcessManager extends EventEmitter {
         expectedCommandLine: managed.expectedCommandLine,
         launchArgs: [...managed.launchArgs],
         runtimePorts: { ...managed.runtimePorts },
+        ...(loaderIdentity !== undefined ? { loaderIdentity } : {}),
         osCreationTime,
         osExecutablePath: live?.executablePath ?? null,
         leftAt: new Date().toISOString(),
@@ -564,12 +571,14 @@ export class ProcessManager extends EventEmitter {
 
   private async terminateManaged(serverId: string, managed: ManagedProcess): Promise<void> {
     this.stopManagedCapture(serverId, managed);
-    const loaderPid = managed.loaderPid;
+    const loader = managed.loaderIdentity;
+    const liveLoader = loader === undefined ? null : await this.queryOsIdentity(loader.pid);
     if (
       process.platform === "win32" &&
-      typeof loaderPid === "number" &&
-      loaderPid > 0 &&
-      (await killWinProcessTreeAsync(loaderPid))
+      loader !== undefined && liveLoader !== null &&
+      liveLoader.osCreationTime === loader.osCreationTime &&
+      liveLoader.executablePath?.replace(/\\/g, "/").toLowerCase() === loader.executablePath.replace(/\\/g, "/").toLowerCase() &&
+      (await killWinProcessTreeAsync(loader.pid))
     ) {
       return;
     }

@@ -28,6 +28,8 @@ export interface LeftRunningProcessIdentity {
    * Optional for older leave/checkpoint rows; reattach falls back to the saved profile.
    */
   runtimePorts?: SessionPortSet;
+  /** Verified Loader identity, separate from the actual ASA game PID. */
+  loaderIdentity?: { pid: number; executablePath: string; osCreationTime: string };
   /**
    * OS process creation stamp (WMI CreationDate or ISO).
    * Rejects stale PID reuse when present on both sides.
@@ -47,6 +49,7 @@ export interface LiveProcessIdentity {
   executablePath: string | null;
   commandLine: string | null;
   osCreationTime: string | null;
+  parentPid?: number;
 }
 
 function normalizePath(value: string): string {
@@ -206,6 +209,14 @@ function coerceLeaveIdentity(value: unknown): LeftRunningProcessIdentity | null 
     return null;
   }
   const runtimePorts = coerceSessionPorts(row.runtimePorts);
+  const loader = row.loaderIdentity as LeftRunningProcessIdentity["loaderIdentity"] | undefined;
+  const loaderIdentity =
+    loader != null &&
+    Number.isInteger(loader.pid) && loader.pid > 0 &&
+    typeof loader.executablePath === "string" && loader.executablePath.length > 0 &&
+    typeof loader.osCreationTime === "string" && loader.osCreationTime.length > 0
+      ? loader
+      : undefined;
   return {
     schemaVersion: LEFT_RUNNING_SCHEMA_VERSION,
     serverId: row.serverId,
@@ -216,6 +227,7 @@ function coerceLeaveIdentity(value: unknown): LeftRunningProcessIdentity | null 
     expectedCommandLine: row.expectedCommandLine,
     launchArgs: row.launchArgs as string[],
     ...(runtimePorts !== undefined ? { runtimePorts } : {}),
+    ...(loaderIdentity !== undefined ? { loaderIdentity } : {}),
     osCreationTime,
     osExecutablePath,
     leftAt: row.leftAt,

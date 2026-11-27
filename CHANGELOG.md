@@ -9,6 +9,8 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
+- Preserve verified ASA Loader and game process identities across manager restart; recover a live Loader checkpoint through its verified ASA child and fix Windows child discovery.
+
 - Keep managed ASA servers running on desktop quit or manager self-update using the existing process checkpoint and reattach path, with one quit dialog offering Leave, Stop, and Cancel.
 
 ### Added
