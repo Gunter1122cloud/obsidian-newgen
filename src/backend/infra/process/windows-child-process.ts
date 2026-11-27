@@ -24,8 +24,7 @@ export async function findWindowsChildProcessByName(parentPid: number, imageName
     const script = [
       `$ParentProcessId = ${safeParent}`,
       `$Name = '${safeName}'`,
-      `$rows = Get-CimInstance -ClassName Win32_Process -Filter ('ParentProcessId=' + $ParentProcessId) -ErrorAction SilentlyContinue |`,
-      `  Where-Object { $_.Name -ieq $Name }`,
+      `$rows = Get-CimInstance -ClassName Win32_Process -Filter ('ParentProcessId=' + $ParentProcessId) -ErrorAction SilentlyContinue | Where-Object { $_.Name -ieq $Name }`,
       `if ($null -eq $rows) { '' } else { @($rows)[0] | Select-Object ProcessId,Name | ConvertTo-Json -Compress }`,
     ].join("; ");
 

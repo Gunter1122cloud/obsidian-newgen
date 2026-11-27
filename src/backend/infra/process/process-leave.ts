@@ -1,4 +1,6 @@
 import { type ChildProcess } from "node:child_process";
+import { join } from "node:path";
+import { findWindowsChildProcessByName } from "./windows-child-process";
 import type { ServerProfile } from "@shared/types";
 import {
   LEFT_RUNNING_SCHEMA_VERSION,
@@ -11,6 +13,39 @@ import { disconnectChildStdio } from "./process-spawn";
 import type { ProcessStartManaged } from "./process-start";
 
 type LeaveManagedProcess = ProcessStartManaged;
+
+function samePath(a: string | null, b: string): boolean {
+  return a !== null && a.replace(/\\/g, "/").toLowerCase() === b.replace(/\\/g, "/").toLowerCase();
+}
+
+function serverExe(installDir: string, name: string): string {
+  return join(installDir, "ShooterGame", "Binaries", "Win64", name);
+}
+
+/** Revalidate the Loader independently: never treat an arbitrary reused PID as ASA. */
+export async function verifiedLoaderIdentity(
+  installDir: string,
+  game: LiveProcessIdentity | null,
+  knownPid: number | null | undefined,
+  queryOs: (pid: number) => Promise<LiveProcessIdentity | null>,
+  previous?: LeftRunningProcessIdentity["loaderIdentity"],
+): Promise<LeftRunningProcessIdentity["loaderIdentity"]> {
+  const expected = serverExe(installDir, "AsaApiLoader.exe");
+  const isLoader = game !== null && samePath(game.executablePath, expected);
+  const pid = isLoader ? game.pid : (knownPid ?? game?.parentPid);
+  if (pid === undefined || pid === null || pid <= 0) return undefined;
+  const live = isLoader ? game : await queryOs(pid);
+  if (
+    live === null ||
+    live.pid !== pid ||
+    !samePath(live.executablePath, expected) ||
+    !live.osCreationTime ||
+    (previous !== undefined && (previous.pid !== pid || previous.osCreationTime !== live.osCreationTime)) ||
+    (!isLoader && game?.parentPid !== pid)
+  )
+    return undefined;
+  return { pid, executablePath: expected, osCreationTime: live.osCreationTime };
+}
 
 export interface ProcessLeaveHost {
   isActive(serverId: string): boolean;
@@ -71,6 +106,13 @@ export async function collectLeaveIdentities(
       );
     }
 
+    const loaderIdentity = await verifiedLoaderIdentity(
+      managed.installDir,
+      live,
+      managed.loaderPid,
+      queryOs,
+      managed.loaderIdentity,
+    );
     records.push({
       schemaVersion: LEFT_RUNNING_SCHEMA_VERSION,
       serverId: profile.id,
@@ -81,6 +123,7 @@ export async function collectLeaveIdentities(
       expectedCommandLine: managed.expectedCommandLine,
       launchArgs: [...managed.launchArgs],
       runtimePorts: { ...managed.runtimePorts },
+      ...(loaderIdentity !== undefined ? { loaderIdentity } : {}),
       osCreationTime,
       osExecutablePath: live?.executablePath ?? null,
       leftAt,
@@ -172,7 +215,37 @@ export async function reattachManagedProcess(
     throw new Error(`Leave identity for "${profile.name}" failed re-validation (${classification})`);
   }
 
-  const child = host.createAdoptedChild(record.pid);
+  let gameRecord = record;
+  let gameLive = live;
+  if (samePath(record.executablePath, serverExe(record.installDir, "AsaApiLoader.exe"))) {
+    const pid = await findWindowsChildProcessByName(record.pid, "ArkAscendedServer.exe");
+    const candidate = pid === null ? null : await queryOs(pid);
+    const expected = serverExe(record.installDir, "ArkAscendedServer.exe");
+    if (
+      candidate === null ||
+      candidate.parentPid !== record.pid ||
+      !samePath(candidate.executablePath, expected) ||
+      !candidate.osCreationTime
+    ) {
+      throw new Error("ASA Loader is present but the game child is not yet verified");
+    }
+    gameRecord = {
+      ...record,
+      pid: candidate.pid,
+      executablePath: expected,
+      osExecutablePath: expected,
+      osCreationTime: candidate.osCreationTime,
+    };
+    gameLive = candidate;
+  }
+  const loaderIdentity = await verifiedLoaderIdentity(
+    record.installDir,
+    gameLive,
+    record.loaderIdentity?.pid,
+    queryOs,
+    record.loaderIdentity,
+  );
+  const child = host.createAdoptedChild(gameRecord.pid);
   const runtimePorts = record.runtimePorts ?? {
     gamePort: profile.gamePort,
     queryPort: profile.queryPort,
@@ -187,17 +260,19 @@ export async function reattachManagedProcess(
     readinessGeneration: 0,
     logTailer: null,
     logSessionAnchor: captureAsaLogSessionAnchor(record.installDir),
-    executablePath: record.executablePath,
+    executablePath: gameRecord.executablePath,
     installDir: record.installDir,
     launchArgs: [...record.launchArgs],
     expectedCommandLine: record.expectedCommandLine,
     runtimePorts: { ...runtimePorts },
     adminPassword: profile.adminPassword,
     asaApiLoading: false,
+    loaderPid: loaderIdentity?.pid ?? null,
+    loaderIdentity,
   };
   host.setManaged(profile.id, managed);
-  host.appendRuntimeLog(profile.id, "system", `Reattached to left-running process (pid ${record.pid})`);
-  void host.writeProcessCheckpoint(profile.id, managed, live);
+  host.appendRuntimeLog(profile.id, "system", `Reattached to left-running process (pid ${gameRecord.pid})`);
+  void host.writeProcessCheckpoint(profile.id, managed, gameLive);
 
   managed.logTailer = new AsaSavedLogsTailer(profile.installDir, (text) => {
     if (host.getManaged(profile.id) !== managed) return;
