@@ -9,6 +9,8 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
+- Keep managed ASA servers running on desktop quit or manager self-update using the existing process checkpoint and reattach path, with one quit dialog offering Leave, Stop, and Cancel.
+
 ### Added
 
 - Independent GitHub release packaging and optional direct CurseForge metadata access with a Windows user-encrypted local API key that survives app updates.

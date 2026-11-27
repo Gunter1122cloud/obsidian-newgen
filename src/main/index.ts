@@ -595,8 +595,13 @@ if (isPrimaryInstance) {
       if (instances.shouldBlockAppQuit()) {
         return "operation-in-progress";
       }
-      if (repo.list().some((profile) => processManager.isActive(profile.id))) {
-        return "servers-running";
+      if (
+        repo.list().some((profile) => {
+          const status = processManager.getStatus(profile.id).status;
+          return status === "starting" || status === "stopping";
+        })
+      ) {
+        return "operation-in-progress";
       }
       const steam = updateService.getSteamCmdStatus();
       if (steam.busy) {
@@ -632,11 +637,50 @@ if (isPrimaryInstance) {
       app.quit();
     };
 
+    // The existing Leave snapshot/reattach path is shared by normal quit and self-update.
+    const leaveRunningServers = async (): Promise<void> => {
+      const assertIdle = (): void => {
+        if (evaluateAppUpdateSafety() !== null) {
+          throw new Error("Wait for the active server operation to finish.");
+        }
+      };
+      assertIdle();
+      backupScheduler.stop();
+      maintenanceScheduler.stop();
+      crashRecoveryService.dispose();
+      try {
+        const records = await processManager.collectLeaveIdentities(repo.list());
+        assertIdle();
+        const activeIds = repo
+          .list()
+          .filter((profile) => processManager.isActive(profile.id))
+          .map((profile) => profile.id);
+        if (activeIds.some((id) => !records.some((record) => record.serverId === id))) {
+          throw new Error("Server processes changed during exit preparation. Try again.");
+        }
+        for (const record of records) {
+          upsertLeftRunningProcess(settings, record);
+        }
+        processManager.detachAfterLeavePersist(records);
+      } catch (error) {
+        backupScheduler.start();
+        maintenanceScheduler.start();
+        crashRecoveryService.start();
+        throw error;
+      }
+    };
+
     const appUpdateService = new AppUpdateService({
       evaluate: evaluateAppUpdateSafety,
-      prepareQuit: () => {
-        allowQuit = true;
+      prepareQuit: async () => {
         isQuitting = true;
+        try {
+          await leaveRunningServers();
+          allowQuit = true;
+        } catch (error) {
+          isQuitting = false;
+          throw error;
+        }
       },
     });
 
@@ -722,11 +766,10 @@ if (isPrimaryInstance) {
           void dialog.showMessageBox(ensureMainWindow(), {
             type: "info",
             title: "Server operation in progress",
-            message: "Obsidian will close after the active server operation finishes.",
+            message: "Finish the active server operation before quitting Obsidian."
             detail: "Keep the application open so stop/restart backup work can complete safely.",
             buttons: ["OK"],
           });
-          quitAfter(instances.settleForAppQuit());
           return;
         }
 
@@ -926,8 +969,8 @@ if (isPrimaryInstance) {
           revealMainWindow();
           void dialog.showMessageBox(ensureMainWindow(), {
             type: "error",
-            title: "Could not finish server stop",
-            message: "Obsidian will remain open because the active stop did not finish safely.",
+            title: "Could not exit Obsidian",
+            message: "Obsidian will remain open. No additional stop will be attempted.",
             detail: error instanceof Error ? error.message : String(error),
             buttons: ["OK"],
           });
@@ -957,35 +1000,36 @@ if (isPrimaryInstance) {
       if (allowQuit) {
         return;
       }
-      if (instances.shouldBlockAppQuit()) {
-        isQuitting = true;
+      if (pendingQuit !== null || quitPolicyPromptInFlight) {
         event.preventDefault();
-        revealMainWindow();
-        quitAfter(instances.settleForAppQuit());
         return;
       }
-      // Cancel pending SteamCMD/sync on quit (without requiring a live UI).
-      try {
-        void updateService.cancelSteamCmd();
-      } catch {
-        // Ignore: the app is shutting down.
+      if (instances.shouldBlockAppQuit()) {
+        event.preventDefault();
+        isQuitting = false;
+        revealMainWindow();
+        void dialog.showMessageBox(ensureMainWindow(), {
+          type: "info",
+          title: "Server operation in progress",
+          message: "Finish the active server operation before quitting Obsidian.",
+          buttons: ["OK"],
+        });
+        return;
       }
       const profiles = repo.list();
       const activeProfiles = profiles.filter((p) => processManager.isActive(p.id));
       if (activeProfiles.length === 0) {
         // Allow BrowserWindow destroy; otherwise isQuitting + tray hide deadlocks quit.
+        void updateService.cancelSteamCmd();
         allowQuit = true;
         isQuitting = true;
         return;
       }
 
-      // Active servers: always confirm before stop-and-quit (#59).
+      // One native dialog for all quit entry points when servers are active.
       event.preventDefault();
-      if (pendingQuit !== null || quitPolicyPromptInFlight) {
-        return;
-      }
 
-      const applyQuitDecision = (decision: "stop" | "cancel"): void => {
+      const applyQuitDecision = (decision: "leave" | "stop" | "cancel"): void => {
         if (decision === "cancel") {
           const reset = quitFlagsAfterCancel();
           allowQuit = reset.allowQuit;
@@ -993,6 +1037,10 @@ if (isPrimaryInstance) {
           quitPolicyPromptInFlight = reset.quitPolicyPromptInFlight;
           pendingQuit = null;
           revealMainWindow();
+          return;
+        }
+        if (decision === "leave") {
+          quitAfter(leaveRunningServers());
           return;
         }
         // Keep UI visible so stop-progress (wait / save / backup) can show.
@@ -1009,18 +1057,20 @@ if (isPrimaryInstance) {
       void dialog
         .showMessageBox(win, {
           type: "question",
-          buttons: ["Stop", "Cancel"],
+          buttons: ["Leave servers running", "Stop servers and quit", "Cancel"],
           defaultId: 0,
-          cancelId: 1,
+          cancelId: 2,
           noLink: true,
           title: "Quit Obsidian?",
           message: count === 1 ? "1 server is still running." : `${count} servers are still running.`,
           detail:
-            "Stop them before quitting. To keep servers and backups running, enable Close window to tray in Settings, then close the window instead of quitting.",
+            "Leave running keeps ASA online. Obsidian reconnects on the next launch. Scheduled jobs pause while Obsidian is closed.",
         })
         .then((result) => {
           quitPolicyPromptInFlight = false;
           if (result.response === 0) {
+            applyQuitDecision("leave");
+          } else if (result.response === 1) {
             applyQuitDecision("stop");
           } else {
             applyQuitDecision("cancel");

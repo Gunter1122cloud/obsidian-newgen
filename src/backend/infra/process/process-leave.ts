@@ -94,13 +94,17 @@ export async function collectLeaveIdentities(
  * Detach previously snapshotted Leave processes (after durable metadata write).
  */
 export function detachAfterLeavePersist(host: ProcessLeaveHost, records: LeftRunningProcessIdentity[]): void {
+  // Validate every record before detaching any server.
+  for (const record of records) {
+    const managed = host.getManaged(record.serverId);
+    if (managed !== undefined && host.isActive(record.serverId) && managed.child.pid !== record.pid) {
+      throw new Error(`Cannot detach "${record.serverId}": process id changed since Leave snapshot`);
+    }
+  }
   for (const record of records) {
     const managed = host.getManaged(record.serverId);
     if (managed === undefined || !host.isActive(record.serverId)) {
       continue;
-    }
-    if (managed.child.pid !== record.pid) {
-      throw new Error(`Cannot detach "${record.serverId}": process id changed since Leave snapshot`);
     }
 
     host.appendRuntimeLog(
