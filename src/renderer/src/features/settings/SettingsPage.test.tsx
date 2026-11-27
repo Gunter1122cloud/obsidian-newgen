@@ -740,6 +740,7 @@ describe("SettingsPage", () => {
 
   it("persists the single WGS RAM optimization switch", async () => {
     const user = userEvent.setup();
+    stubSettingsApi();
     renderSettings();
     await openCategory(user, "Profiles");
     const toggle = screen.getByRole("switch", { name: "Optimize system RAM before starting a server" });
