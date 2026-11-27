@@ -23,7 +23,7 @@ Public product site and operator docs for YARK server manager.
 | `website/src/content/docs/docs/` | Starlight docs under `/docs/`                                                                                                                                                        |
 | `website/public/`                | Favicons, logo, screenshots                                                                                                                                                          |
 | `website/astro.config.mjs`       | `base: "/"`, Starlight sidebar, dark-only theme, `disable404Route: true` (avoid duplicate `/404` with docs catch-all); remark plugin prefixes content `/docs/…` links with that base |
-| `.github/workflows/pages.yml`    | Build Astro → deploy `website/dist` to Cloudflare Pages project `getyark`                                                                                                            |
+| `.github/workflows/pages.yml`    | Build Astro → upload GitHub Actions artifact                                                                                                                                         |
 
 ## 404 page
 
@@ -58,20 +58,9 @@ website/Pages workflows change. Unrelated app PRs skip this job.
 
 ## Deploy
 
-Workflow: [`.github/workflows/pages.yml`](../.github/workflows/pages.yml)
+NewGen does not deploy to Cloudflare Pages. The workflow [`.github/workflows/pages.yml`](../.github/workflows/pages.yml) builds the website and uploads the `newgen-website` GitHub Actions artifact. No Cloudflare project, credentials or external hosting are required.
 
-- Triggers: push to `main` touching `website/**`, root `package.json` (version for
-  download URL), or the workflow; plus `workflow_dispatch`
-- `npm ci` + `npm run build` in `website/`
-- Artifact: `website/dist` → Cloudflare Pages project **`getyark`** (`getyark.pages.dev`)
-- Permissions: `contents: read`
-- Secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
-
-**One-time Cloudflare setup:** Custom domains `getyark.com` and `www.getyark.com` on the
-`getyark` Pages project (same account as the `getyark.com` DNS zone).
-
-After deploy, submit `https://getyark.com/sitemap-index.xml` in Search Console
-when you care about SEO indexing.
+Desktop installers and update metadata are published exclusively through [NewGen GitHub Releases](https://github.com/Gunter1122cloud/obsidian-newgen/releases). The website build is not an update source.
 
 ### SEO notes (getyark.com)
 

@@ -1,12 +1,14 @@
-# Build website/ (Astro) and deploy dist/ to Cloudflare Pages (Direct Upload).
-# Secrets (repo Settings → Secrets and variables → Actions):
-#   CLOUDFLARE_API_TOKEN   — Account API token with Cloudflare Pages Edit
-#   CLOUDFLARE_ACCOUNT_ID  — from Cloudflare dashboard → Workers & Pages
-name: Deploy Cloudflare Pages
+# Build and retain the website on GitHub Actions only. No external deploy.
+name: GitHub Website Artifact
 
 on:
   push:
     branches: [main]
+    paths:
+      - "website/**"
+      - "package.json"
+      - ".github/workflows/pages.yml"
+  pull_request:
     paths:
       - "website/**"
       - "package.json"
@@ -17,7 +19,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: cloudflare-pages-getyark
+  group: github-website-newgen-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -40,9 +42,9 @@ jobs:
           npm ci
           npm run build
 
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@ebbaa1584979971c8614a24965b4405ff95890e0 # v4.0.0
+      - name: Upload verified website build
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy website/dist --project-name=getyark
+          name: newgen-website
+          path: website/dist
+          if-no-files-found: error
