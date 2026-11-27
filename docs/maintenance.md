@@ -49,7 +49,7 @@ No push channel — the Maintenance tab polls `getPolicy` while mounted.
 | `MAINTENANCE_RUN_NOW_LEAD_MS`       | 10s                                            | Run now confirm → warning window                                   |
 | `MAINTENANCE_FAIL_LIMIT`            | 3                                              | Hard failures before session pause (per runtime)                   |
 | `MAINTENANCE_RCON_SOFT_FAIL_LIMIT`  | 3                                              | Consecutive ServerChat fails in one window → hard-fail that window |
-| `MAINTENANCE_WIPE_POST_READY_MS`    | 10 min                                            | Extra wait after `running` before wipe                             |
+| `MAINTENANCE_WIPE_POST_READY_MS`    | 10 min                                         | Extra wait after `running` before wipe                             |
 | `MAINTENANCE_WIPE_READY_TIMEOUT_MS` | 10 min                                         | Cap waiting for post-restart ready + RCON                          |
 | Update retry cooldown               | 5 min                                          | Private in update-runtime; failed Steam build key                  |
 | Steam availability UI cache         | 30s                                            | Update-runtime snapshot reuse                                      |
