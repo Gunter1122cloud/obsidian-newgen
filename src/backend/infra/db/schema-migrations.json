@@ -126,5 +126,9 @@
   {
     "version": 32,
     "sql": "-- disk_missing ensured in JS (idempotent; repairs profiles that skipped the ALTER)"
+  },
+  {
+    "version": 33,
+    "sql": "ALTER TABLE maintenance_policies ADD COLUMN additional_restart_timers_json TEXT NOT NULL DEFAULT '[]';\nALTER TABLE maintenance_policies ADD COLUMN primary_restart_enabled INTEGER NOT NULL DEFAULT 1;"
   }
 ]

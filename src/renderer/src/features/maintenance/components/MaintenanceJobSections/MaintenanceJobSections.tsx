@@ -98,6 +98,12 @@ export function MaintenanceRestartSection(props: SharedProps): ReactElement {
               onPatchTime={(restartTimeLocal) => {
                 void props.patch({ restartTimeLocal });
               }}
+              onPatchTimers={(additionalRestartTimers) => {
+                void props.patch({ additionalRestartTimers });
+              }}
+              onPatchPrimaryEnabled={(primaryRestartEnabled) => {
+                void props.patch({ primaryRestartEnabled });
+              }}
             />
             <MaintenancePlayerWarnings
               kind="restart"

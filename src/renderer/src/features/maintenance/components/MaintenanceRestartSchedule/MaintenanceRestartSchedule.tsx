@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Group, Stack, Text } from "@mantine/core";
+import { ActionIcon, Button, Checkbox, Group, Stack, Text, TextInput } from "@mantine/core";
 import { TimePicker } from "@mantine/dates";
 import { Clock } from "@phosphor-icons/react";
 import type { MaintenancePolicyStatus } from "@shared/types";
@@ -11,14 +11,24 @@ interface Props {
   disabled: boolean;
   onPatchDays: (days: number[]) => void;
   onPatchTime: (timeLocal: string) => void;
+  onPatchTimers: (timers: NonNullable<MaintenancePolicyStatus["additionalRestartTimers"]>) => void;
+  onPatchPrimaryEnabled: (enabled: boolean) => void;
 }
 
 /** Restart schedule: multi-day + Mantine TimePicker (#315). */
-export function MaintenanceRestartSchedule({ policy, disabled, onPatchDays, onPatchTime }: Props): ReactElement {
+export function MaintenanceRestartSchedule({
+  policy,
+  disabled,
+  onPatchDays,
+  onPatchTime,
+  onPatchTimers,
+  onPatchPrimaryEnabled,
+}: Props): ReactElement {
   const [timeDropdownOpened, setTimeDropdownOpened] = useState(false);
   const [timeLocal, setTimeLocal] = useState(policy.restartTimeLocal);
   const days = normalizeRestartDaysOfWeek(policy.restartDaysOfWeek);
   const everyDay = days.length === 7;
+  const timers = policy.additionalRestartTimers ?? [];
 
   useEffect(() => {
     setTimeLocal(policy.restartTimeLocal);
@@ -32,6 +42,12 @@ export function MaintenanceRestartSchedule({ policy, disabled, onPatchDays, onPa
 
   return (
     <Stack gap="sm">
+      <Checkbox
+        label="Enable primary restart timer"
+        checked={policy.primaryRestartEnabled !== false}
+        disabled={disabled}
+        onChange={(event) => onPatchPrimaryEnabled(event.currentTarget.checked)}
+      />
       <div>
         <Text className={classes.fieldLabel}>On these days</Text>
         <Text size="xs" c="dimmed" mt={2}>
@@ -105,6 +121,77 @@ export function MaintenanceRestartSchedule({ policy, disabled, onPatchDays, onPa
           },
         }}
       />
+      <Text fw={600} size="sm">
+        Additional daily restart timers
+      </Text>
+      {timers.map((timer, index) => (
+        <Group key={index} gap="xs" align="center" wrap="wrap">
+          <Checkbox
+            label="Enabled"
+            checked={timer.enabled}
+            disabled={disabled}
+            onChange={(event) => {
+              const enabled = event.currentTarget.checked;
+              onPatchTimers(timers.map((row, i) => (i === index ? { ...row, enabled } : row)));
+            }}
+          />
+          <TextInput
+            aria-label={`Restart time ${index + 2}`}
+            type="time"
+            size="xs"
+            w={120}
+            key={timer.timeLocal}
+            defaultValue={timer.timeLocal}
+            disabled={disabled}
+            onBlur={(event) => {
+              const timeLocal = event.currentTarget.value;
+              if (
+                !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(timeLocal) ||
+                timeLocal === policy.restartTimeLocal ||
+                timers.some((row, i) => i !== index && row.timeLocal === timeLocal)
+              ) {
+                event.currentTarget.value = timer.timeLocal;
+                return;
+              }
+              if (timeLocal !== timer.timeLocal) {
+                onPatchTimers(timers.map((row, i) => (i === index ? { ...row, timeLocal } : row)));
+              }
+            }}
+          />
+          <Checkbox
+            label="Wild dino wipe"
+            checked={timer.wipeEnabled}
+            disabled={disabled}
+            onChange={(event) => {
+              const wipeEnabled = event.currentTarget.checked;
+              onPatchTimers(timers.map((row, i) => (i === index ? { ...row, wipeEnabled } : row)));
+            }}
+          />
+          <Button
+            size="xs"
+            variant="subtle"
+            disabled={disabled}
+            onClick={() => onPatchTimers(timers.filter((_, i) => i !== index))}
+          >
+            Remove
+          </Button>
+        </Group>
+      ))}
+      <Button
+        size="xs"
+        variant="light"
+        disabled={disabled || timers.length >= 24}
+        onClick={() => {
+          const used = new Set([policy.restartTimeLocal, ...timers.map((timer) => timer.timeLocal)]);
+          const timeLocal = Array.from({ length: 1440 }, (_, i) => {
+            const minute = (15 * 60 + i) % 1440;
+            return `${String(Math.floor(minute / 60)).padStart(2, "0")}:${String(minute % 60).padStart(2, "0")}`;
+          }).find((time) => !used.has(time));
+          if (timeLocal !== undefined) onPatchTimers([...timers, { timeLocal, enabled: true, wipeEnabled: false }]);
+        }}
+      >
+        Add restart timer
+      </Button>
     </Stack>
   );
 }

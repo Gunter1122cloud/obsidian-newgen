@@ -306,6 +306,29 @@ describe("MaintenanceRestartRuntime", () => {
     }
   });
 
+  it("runs an additional daily timer without the primary timer's wipe", async () => {
+    vi.useFakeTimers();
+    try {
+      vi.setSystemTime(new Date(2026, 5, 1, 14, 59, 30));
+      const policy = {
+        ...defaultMaintenancePolicy("s1", "t"),
+        restartEnabled: true,
+        primaryRestartEnabled: false,
+        wipeEnabled: true,
+        additionalRestartTimers: [{ timeLocal: "15:00", enabled: true, wipeEnabled: false }],
+        restartWarnings: { preset: "none" as const, customOffsets: [], lastMinuteChat: false, template: "Restart" },
+      };
+      const { runtime, instances } = makeRuntime(policy);
+      await runtime.runScheduledCycle();
+      await vi.advanceTimersByTimeAsync(31_000);
+      expect(instances.restart).toHaveBeenCalledTimes(1);
+      expect(instances.execRcon).not.toHaveBeenCalledWith("s1", "DestroyWildDinos", { recordEvent: false });
+      expect(runtime.enrichStatus(policy).countdownPhase).toBe("idle");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("notifies the peer runtime when fail-streak pauses schedules", async () => {
     vi.useFakeTimers();
     try {
