@@ -130,7 +130,6 @@ ARK: Survival Ascended, map names, and related marks are trademarks of their
 respective owners. YARK is an independent community project and is not
 affiliated with or endorsed by Studio Wildcard. See [README.md](README.md).
 
-
 ---
 
 ## WGS RAM optimization — [MadBee71/WGS](https://github.com/MadBee71/WGS)

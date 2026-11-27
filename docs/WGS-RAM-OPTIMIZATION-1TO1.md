@@ -33,12 +33,14 @@ Az eredeti hívás közvetlenül a szerverfolyamat elindítása előtt történi
 ## Eredeti beállítás és UI
 
 `WGS/Services/ConfigService.cs`:
+
 - 96. sor: `public bool   OptimizeRamBeforeStart { get; set; } = false;`
 - 154. sor: `bool   OptimizeRamBeforeStart = false,`
 - 191. sor: `OptimizeRamBeforeStart   = d.OptimizeRamBeforeStart;`
 - 211. sor: az OptimizeRamBeforeStart átadása a mentendő beállítások között.
 
 `WGS/ViewModels/SettingsViewModel.cs`:
+
 - 111. sor: `[ObservableProperty] private bool   _optimizeRamBeforeStart;`
 - 238. sor: `OptimizeRamBeforeStart    = _config.OptimizeRamBeforeStart;`
 - 308. sor: `_config.OptimizeRamBeforeStart   = OptimizeRamBeforeStart;`

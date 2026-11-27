@@ -17,9 +17,12 @@ interface Props {
 export function SettingsServersSection(props: Props): ReactElement {
   const [optimizeRam, setOptimizeRam] = useState(false);
   useEffect(() => {
-    void window.api?.getOptimizeRamBeforeStart?.().then((result) => {
-      if (result.ok) setOptimizeRam(result.data);
-    }).catch(() => undefined);
+    void window.api
+      ?.getOptimizeRamBeforeStart?.()
+      .then((result) => {
+        if (result.ok) setOptimizeRam(result.data);
+      })
+      .catch(() => undefined);
   }, []);
   return (
     <section className={classes.section} aria-labelledby="settings-servers">
@@ -49,9 +52,12 @@ export function SettingsServersSection(props: Props): ReactElement {
 
         <div className={classes.settingRow}>
           <div className={classes.settingCopy}>
-            <Text size="sm" fw={600}>Optimize system RAM before starting a server</Text>
+            <Text size="sm" fw={600}>
+              Optimize system RAM before starting a server
+            </Text>
             <Text size="xs" c="dimmed" mt={2}>
-              Flushes unused memory from background processes before each server launch to free up physical RAM. May cause a brief pause.
+              Flushes unused memory from background processes before each server launch to free up physical RAM. May
+              cause a brief pause.
             </Text>
           </div>
           <div className={classes.settingControl}>
@@ -59,9 +65,12 @@ export function SettingsServersSection(props: Props): ReactElement {
               checked={optimizeRam}
               aria-label="Optimize system RAM before starting a server"
               onChange={(event) => {
-                void window.api.setOptimizeRamBeforeStart(event.currentTarget.checked).then((result) => {
-                  if (result.ok) setOptimizeRam(result.data);
-                }).catch(() => undefined);
+                void window.api
+                  .setOptimizeRamBeforeStart(event.currentTarget.checked)
+                  .then((result) => {
+                    if (result.ok) setOptimizeRam(result.data);
+                  })
+                  .catch(() => undefined);
               }}
             />
           </div>
