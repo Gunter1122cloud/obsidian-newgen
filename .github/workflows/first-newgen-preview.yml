@@ -27,14 +27,14 @@ jobs:
       contents: write
       actions: write
     steps:
-      - name: Queue verified 0.29.1 preview release
+      - name: Queue verified 0.30.0 preview release
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           VERIFIED_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
           set -euo pipefail
-          TAG=v0.29.1
+          TAG=v0.30.0
           MAIN=$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq .commit.sha)
           if [ "$VERIFIED_SHA" != "$MAIN" ]; then
             echo "Verified CI is no longer for current main; skip."
