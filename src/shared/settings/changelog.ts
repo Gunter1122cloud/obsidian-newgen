@@ -27,6 +27,18 @@ const DEFAULT_RECENT_CHANGELOG_LIMIT = 8;
  */
 export const changelog: ChangelogEntry[] = [
   {
+    version: "0.30.0",
+    date: "2026-11-27",
+    sections: [
+      {
+        title: "Highlights",
+        items: [
+          "In Settings → Profiles, optionally optimize system RAM immediately before server launch. Uses the WGS working-set trim, off by default; may cause a brief pause.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.29.1",
     date: "2026-11-27",
     sections: [

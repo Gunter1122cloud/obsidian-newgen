@@ -9,9 +9,13 @@ How to bump versions and cut releases: see [docs/versioning.md](docs/versioning.
 
 ## [Unreleased]
 
-- Add the optional WGS RAM optimization switch in Settings → Profiles to trim accessible processes' working sets immediately before server launch. Disabled by default; may cause a brief pause.
+- Verify the GitHub-only 0.30.0 release.
 
-- Verify the GitHub-only 0.29.1 release.
+## [0.30.0] - 2026-11-27
+
+### Added
+
+- Add the optional WGS RAM optimization switch in Settings → Profiles to trim accessible processes' working sets immediately before server launch. Disabled by default; may cause a brief pause.
 
 ## [0.29.1] - 2026-11-27
 
